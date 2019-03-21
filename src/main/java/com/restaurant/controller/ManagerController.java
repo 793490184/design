@@ -28,14 +28,14 @@ public class ManagerController {
 
     @RequestMapping("/delete_account.do")
     @ResponseBody
-    public BaseExecution deleteAccount(int id) {
+    public BaseExecution deleteAccount(Integer id) {
         managerService.deleteAccount(id);
         return new BaseExecution(200, "ok", "删除账单成功");
     }
 
     @RequestMapping("/update_account.do")
     @ResponseBody
-    public BaseExecution updateAccount(int id, String date, String name, String message, double money, int paidFlag) {
+    public BaseExecution updateAccount(Integer id, String date, String name, String message, double money, int paidFlag) {
         Account account = new Account(id, date, name, message, money, paidFlag);
         managerService.updateAccount(account);
         return new BaseExecution(200, "ok", "更新账单成功");

@@ -1,7 +1,7 @@
 package com.restaurant.entity;
 
 public class Account {
-	private int id;
+	private Integer id;
 	private String date;
 	private String name;
 	private String message;

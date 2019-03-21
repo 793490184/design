@@ -19,13 +19,40 @@ public class CookerController {
     @Resource
     private CookerService cookerService;
 
+    /**
+     * @author lihaimeng
+     * @return
+     */
     @RequestMapping("/get_menu_number.do")
     @ResponseBody
     public BaseExecution getMenuNumber() {
+        class Number {
+            private String number;
+
+            public Number(String number) {
+                this.number = number;
+            }
+
+            public String getNumber() {
+                return number;
+            }
+
+            public void setNumber(String number) {
+                this.number = number;
+            }
+        }
         int result = cookerService.getMenuNumber();
-        return new BaseExecution(200, "ok", result);
+        Number number = new Number(String.valueOf(result));
+        return new BaseExecution(200, "ok", number);
     }
 
+    /**
+     * @author lohaimeng
+     * @param name
+     * @param type
+     * @param price
+     * @param season
+     */
     @RequestMapping("/add_menu.do")
     @ResponseBody
     public BaseExecution addMenu(String name, String type, double price, String season) {
@@ -42,7 +69,7 @@ public class CookerController {
     @ResponseBody
     public BaseExecution removeMenu(int id, String name) {
         int result = cookerService.removeMenu(id, name);
-        if (result == 1) {
+        if (result == 0) {
             return new BaseExecution(200, "ok", "该菜品不存在");
         } else {
             return new BaseExecution(200, "ok", "删除菜品成功");
@@ -99,7 +126,23 @@ public class CookerController {
     @RequestMapping("/get_public_number.do")
     @ResponseBody
     public BaseExecution getPublicNumber() {
-        int number = cookerService.getPublicNumber();
+        class Number {
+            int number;
+
+            public Number(int number) {
+                this.number = number;
+            }
+
+            public int getNumber() {
+                return number;
+            }
+
+            public void setNumber(int number) {
+                this.number = number;
+            }
+        }
+        int result = cookerService.getPublicNumber();
+        Number number = new Number(result);
         return new BaseExecution(200, "ok", number);
     }
 
@@ -148,7 +191,23 @@ public class CookerController {
     @RequestMapping("/get_private_number.do")
     @ResponseBody
     public BaseExecution getPrivateNumber() {
-        int number = cookerService.getPrivateNumber();
+        class Number {
+            private String number;
+
+            public Number(String number) {
+                this.number = number;
+            }
+
+            public String getNumber() {
+                return number;
+            }
+
+            public void setNumber(String number) {
+                this.number = number;
+            }
+        }
+        int result = cookerService.getPrivateNumber();
+        Number number = new Number(String.valueOf(result));
         return new BaseExecution(200, "ok", number);
     }
 
@@ -159,7 +218,7 @@ public class CookerController {
         return new BaseExecution(200, "ok", "选择成功");
     }
 
-    @RequestMapping("/select_menu_by_type.do")
+    @RequestMapping("/remove_menu_private.do")
     @ResponseBody
     public BaseExecution removeMenuPrivate(int id) {
         cookerService.removeMenuPrivate(id);

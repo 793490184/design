@@ -5,7 +5,7 @@
 <mapper namespace="com.restaurant.dao.SortedPrivateMenuMapper">
 
     <select id="getPrivateNumber" resultType="Integer">
-        select count(name) from tbl_menu_private where delete_flag != 1
+        select count(menu_id) from tbl_menu_private where delete_flag != 1
     </select>
 
 
@@ -27,7 +27,7 @@
         id = #{id}
     </update>
 
-    <select id="selectPrivateMenus" resultType="com.restaurant.entity.OrderedMenu">
+    <select id="selectPrivateMenus" resultType="com.restaurant.entity.SortedMenu">
         select id, menu_id, name, type, price, season, delete_flag
         from ( select
             tbl_menu_private.id, menu_id, name, type, price, season, tbl_menu_private.delete_flag
@@ -38,7 +38,7 @@
         limit #{start}, #{end}
     </select>
 
-    <select id="selectPrivateMenuByName" resultType="com.restaurant.entity.OrderedMenu">
+    <select id="selectPrivateMenuByName" resultType="com.restaurant.entity.SortedMenu">
         <bind name="name" value="'%' + _parameter.name + '%'" />
         select id, menu_id, name, type, price, season, delete_flag
         from ( select
@@ -52,7 +52,7 @@
         limit #{start}, #{end}
     </select>
 
-    <select id="selectPrivateMenuByType" resultType="com.restaurant.entity.OrderedMenu">
+    <select id="selectPrivateMenuByType" resultType="com.restaurant.entity.SortedMenu">
         <bind name="type" value="'%' + _parameter.type + '%'" />
         select id, menu_id, name, type, price, season, delete_flag
             from ( select
@@ -67,7 +67,7 @@
     </select>
 
 
-    <select id="selectPrivateMenuBySeason" resultType="com.restaurant.entity.OrderedMenu">
+    <select id="selectPrivateMenuBySeason" resultType="com.restaurant.entity.SortedMenu">
         <bind name="season" value="'%' + _parameter.season + '%'" />
         select id, menu_id, name, type, price, season, delete_flag
             from ( select

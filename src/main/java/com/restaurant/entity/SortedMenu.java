@@ -1,14 +1,17 @@
 package com.restaurant.entity;
 
 public class SortedMenu {
-    private String id;
-    private String menuId;
+    private int id;
+    private int menuId;
     private String name;
     private String type;
     private String price;
     private String season;
 
-    public SortedMenu(String menuId, String name, String type, String price, String season) {
+    public SortedMenu() {
+    }
+
+    public SortedMenu(int menuId, String name, String type, String price, String season) {
         this.menuId = menuId;
         this.name = name;
         this.type = type;
@@ -16,7 +19,7 @@ public class SortedMenu {
         this.season = season;
     }
 
-    public SortedMenu(String id, String menuId, String name, String type, String price, String season) {
+    public SortedMenu(int id, int menuId, String name, String type, String price, String season) {
 
         this.id = id;
         this.menuId = menuId;
@@ -38,19 +41,19 @@ public class SortedMenu {
                 '}';
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getMenuId() {
+    public int getMenuId() {
         return menuId;
     }
 
-    public void setMenuId(String menuId) {
+    public void setMenuId(int menuId) {
         this.menuId = menuId;
     }
 

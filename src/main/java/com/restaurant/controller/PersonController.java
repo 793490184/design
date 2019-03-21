@@ -18,8 +18,8 @@ import javax.annotation.Resource;
 @RequestMapping("/user")
 public class PersonController {
 
-    @Resource
-    private PersonService personService;
+	@Resource
+	private PersonService personService;
 
 
 	@RequestMapping("/test.do")
@@ -38,12 +38,12 @@ public class PersonController {
 		return baseExecution;
 	}
 
-    /**
-     * @author lihaimeng 2018/1/14
-     * @param account
-     * @param password
-     * @return
-     */
+	/**
+	 * @param account
+	 * @param password
+	 * @return
+	 * @author lihaimeng 2018/1/14
+	 */
 	@ResponseBody
 	@RequestMapping(value = "/register.do", method = RequestMethod.POST)
 	public BaseExecution register(String account, String password, String name, String telephone) {
@@ -53,18 +53,18 @@ public class PersonController {
 		return baseExecution;
 	}
 
-    /**
-     * @author lihaimeng 2018/1/14
-     * @param account
-     * @param password
-     * @return
-     */
+	/**
+	 * @param account
+	 * @param password
+	 * @return
+	 * @author lihaimeng 2018/1/14
+	 */
 	@ResponseBody
 	@RequestMapping(value = "/login.do", method = RequestMethod.POST)
-    public BaseExecution login(@RequestParam("account") String account, @RequestParam("password") String password) {
-        BaseExecution baseExecution = personService.login(account, password);
-        return baseExecution;
-    }
+	public BaseExecution login(@RequestParam("account") String account, @RequestParam("password") String password) {
+		BaseExecution baseExecution = personService.login(account, password);
+		return baseExecution;
+	}
 
 //	@ResponseBody
 //	@RequestMapping(value = "/getPerson.do", method = RequestMethod.POST)
@@ -75,10 +75,9 @@ public class PersonController {
 
 	/**
 	 * @author lihaimeng 2018/2/3
-	 *
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/changePassword.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/change_password.do", method = RequestMethod.POST)
 	public BaseExecution changePassword(@RequestParam("account") String account, @RequestParam("oldPassword") String oldPassword,
 										@RequestParam("newPassword") String newPassword) {
 		BaseExecution baseExecution = personService.changePassword(account, oldPassword, newPassword);
@@ -86,20 +85,20 @@ public class PersonController {
 	}
 
 
-		@ResponseBody
-		@RequestMapping(value = "/getPerson.do", method = RequestMethod.POST)
-		public BaseExecution getPerson(@RequestParam("account") String account) {
-			Person person = personService.getPerson(account);
-			if (person == null) {
-				return  new BaseExecution(200, "ok", "该用户不存在");
-			}
-			BaseExecution baseExecution = new BaseExecution(200, "ok", person);
+	@ResponseBody
+	@RequestMapping(value = "/get_person.do", method = RequestMethod.POST)
+	public BaseExecution getPerson(@RequestParam("account") String account) {
+		Person person = personService.getPerson(account);
+		if (person == null) {
+			return new BaseExecution(200, "ok", "该用户不存在");
+		}
+		BaseExecution baseExecution = new BaseExecution(200, "ok", person);
 		return baseExecution;
 	}
 
 
 	@ResponseBody
-	@RequestMapping(value = "/forgetPassword.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/forget_password.do", method = RequestMethod.POST)
 	public BaseExecution forgetPassword(@RequestParam("account") String account, @RequestParam("name") String name,
 										@RequestParam("telephone") String telephone, @RequestParam("password") String password) {
 		BaseExecution baseExecution = personService.forgetPassword(account, name, telephone, password);
@@ -107,12 +106,12 @@ public class PersonController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/updatePerson.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/update_person.do", method = RequestMethod.POST)
 	public BaseExecution updatePerson(@RequestParam("account") String account, @RequestParam("name") String name,
 									  @RequestParam("telephone") String telephone, @RequestParam("password") String password) {
 		BaseExecution baseExecution = personService.updatePerson(account, name, telephone, password);
 		return baseExecution;
 	}
-	
+
 
 }

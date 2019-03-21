@@ -31,7 +31,7 @@
         and account  = #{account}
         and tbl_menu_order_private.type  = #{type}
         and use_time = #{useTime}
-        and delete_flag != 1
+        and tbl_menu_order_private.delete_flag != 1
     </select>
     
     <select id="selectOrderedPrivateMenus" resultType="com.restaurant.entity.OrderedMenu">
@@ -41,18 +41,18 @@
         where tbl_menu_order_private.menu_id = tbl_menu.id
         and tbl_menu_order_private.type  = #{type}
         and use_time = #{useTime}
-        and delete_flag != 1
+        and tbl_menu_order_private.delete_flag != 1
         limit #{start}, #{end}
     </select>
 
     <select id="selectOrderedPrivateMenuNumbers" resultType="com.restaurant.entity.OrderedMenu">
-        select tbl_menu.name, tbl_menu_order_private.type, price,season,
+        select tbl_menu.name, tbl_menu_order_private.type, price,season, account,
         order_time, use_time, count(number) as number
         from tbl_menu, tbl_menu_order_private
         where tbl_menu_order_private.menu_id = tbl_menu.id
         and tbl_menu_order_private.type  = #{type}
         and use_time = #{useTime}
-        and delete_flag != 1
+        and tbl_menu_order_private.delete_flag != 1
         order by tbl_menu.name, tbl_menu_order_private.type, price, season, order_time, use_time
         limit #{start}, #{end}
     </select>
