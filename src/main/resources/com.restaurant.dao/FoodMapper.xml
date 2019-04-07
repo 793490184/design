@@ -68,5 +68,10 @@
         limit #{start}, #{end}
     </select>
 
+    <select id="sumOfFoods" resultType="Integer">
+        select count(name)
+        from tbl_food
+        where delete_flag != 1;
+    </select>
 
 </mapper>

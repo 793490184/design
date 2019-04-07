@@ -60,4 +60,13 @@ public class FoodMapperImpl implements FoodMapper {
 		sqlSession.close();
 		return foods;
 	}
+
+	@Override
+	public Integer sumOfFoods() {
+		SqlSession sqlSession = SqlSessionFactoryUtils.openSqlSession().openSession();
+		FoodMapper foodMapper = sqlSession.getMapper(FoodMapper.class);
+		int number = foodMapper.sumOfFoods();
+		sqlSession.close();
+		return number;
+	}
 }

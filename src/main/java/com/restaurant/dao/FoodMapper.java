@@ -13,5 +13,6 @@ public interface FoodMapper {
 	public List<Food> select(@Param("start") int start, @Param("end") int end);
 	public List<Food> total(@Param("startTime") String startTime, @Param("endTime") String endTime,
 							@Param("start") int start, @Param("end") int end);
+	public Integer sumOfFoods();
 
 }

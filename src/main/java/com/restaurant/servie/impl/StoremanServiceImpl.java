@@ -45,4 +45,10 @@ public class StoremanServiceImpl implements StoremanService {
 		List<Food> foods = foodMapper.total(startTime, endTime, start, end);
 		return foods;
 	}
+
+	@Override
+	public Integer sumOfFoods() {
+		Integer number = foodMapper.sumOfFoods();
+		return number;
+	}
 }

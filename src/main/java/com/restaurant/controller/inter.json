@@ -966,3 +966,118 @@
 		        }
 		    ]
 		}
+
+
+1:加入食物储备:
+	url: http://localhost:8080/design/storeman/insert.do
+	method: POST
+	参数:	
+		name: name
+		date: date
+		security: security
+		foodType: foodType
+		number: number
+		measure: measure(计量单位)
+		usedFlag: usedFlag(0代表未使用完毕)
+	返回：	
+		{
+		    "code": 200,
+		    "status": "ok",
+		    "message": "插入食材成功"
+		}
+2:查询食物储备数量:
+	url: http://localhost:8080/design/storeman/sum_of_foods.do
+	method: GET
+	返回：	
+		{
+		    "code": 200,
+		    "status": "ok",
+		    "message": 6
+		}
+3:移除食物储备:
+	url: http://localhost:8080/design/storeman/remove.do
+	method: POST
+	参数:	
+		id: id
+	返回：	
+		{
+		    "code": 200,
+		    "status": "ok",
+		    "message": "移除食材成功"
+		}
+4:加入食物储备:
+	url: http://localhost:8080/design/storeman/used.do
+	method: POST
+	参数:	
+		id: id
+	返回：	
+		{
+		    "code": 200,
+		    "status": "ok",
+		    "message": "食材已经用尽"
+		}
+5:更新食物储备:
+	url: http://localhost:8080/design/storeman/update.do
+	method: POST
+	参数:	
+		id: id
+		name: name
+		date: date
+		security: security
+		foodType: foodType
+		number: number
+		measure: measure(计量单位)
+	返回：	
+		{
+		    "code": 200,
+		    "status": "ok",
+		    "message": "食物更新成功"
+		}
+6:分页查询食物:
+	url: http://localhost:8080/design/storeman/select.do
+	method: POST
+	参数:	
+		start: start
+		end: end
+	返回：	
+		{
+		    "code": 200,
+		    "status": "ok",
+		    "message": [
+		        {
+		            "id": 1,
+		            "name": "name ?",
+		            "date": "2019-02-05",
+		            "security": 10,
+		            "foodType": "weA",
+		            "number": 13,
+		            "measure": "ge",
+		            "usedFlag": 0
+		        }
+		    ]
+		}
+7:按照时间分页查询食物:
+	url: http://localhost:8080/design/storeman/total.do
+	method: POST
+	参数:	
+		startTime: startTime
+		endTime: endTime
+		start: start
+		end: end
+	返回：	
+		{
+		    "code": 200,
+		    "status": "ok",
+		    "message": [
+		        {
+		            "id": 2,
+		            "name": "name,swwwwwj",
+		            "date": "2019-04-07",
+		            "security": 10,
+		            "foodType": "en?",
+		            "number": 1,
+		            "measure": "?",
+		            "usedFlag": 0
+		        }
+		    ]
+		}

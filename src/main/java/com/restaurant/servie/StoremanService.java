@@ -11,4 +11,5 @@ public interface StoremanService {
 	public void update(Food food);
 	public List<Food> select(int start, int end);
 	public List<Food> total(String startTime, String endTime, int start, int end);
+	public Integer sumOfFoods();
 }
