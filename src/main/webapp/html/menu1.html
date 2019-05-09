@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+.al {
+	background-color: azure;
+}
+
+.myButton {
+	background-color: #44c767;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	border: 2px solid #18ab29;
+	display: inline-block;
+	cursor: pointer;
+	color: #ffffff;
+	font-family: Arial;
+	font-size: 17px;
+	padding: 2px 14px;
+	text-decoration: none;
+	text-shadow: 0px 1px 0px #2f6627;
+}
+
+.myButton:hover {
+	background-color: #5cbf2a;
+}
+
+.myButton:active {
+	position: relative;
+	top: 1px;
+}
+
+.myphoto {
+	background-image: url('timg.jpg');
+	background-size: cover;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+}
+</style>
+
+<meta charset="UTF-8">
+
+<script
+	src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<!--<引用jquery库>-->
+<link rel="stylesheet"
+	href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="http://www.gongjuji.net/Content/files/jquery.md5.js"></script>
+<script src="JquerySession.js"></script>
+
+<title>大菜单</title>
+
+<script type="text/javascript">
+	function add() {//添加
+		var vno = $('#vno').val();
+		var vname = $('#vname').val();
+		var price = $('#price').val();
+		var season = $('#season').val();
+		var a = 1;//代表什么操作
+		$.ajax({//
+			type : "POST",
+			url : "insertmenu",//
+			dateType : "JSON",
+			data : {
+				vno : vno,
+				vname : vname,
+				price : price,
+				season : season,
+				//a : a
+			},
+			beforeSend : function() {
+			},
+			success : function(data) {
+				if (data[0].vno > 0) {
+					alert("添加成功！");
+				} else {
+					alert("输入信息有误无法操作！");
+
+				}
+			},
+			error : function(data) {
+				console.log();
+			},
+			complete : function() {
+			}
+		}
+
+		)
+	}
+
+	function my_delete() {
+		var vno = $('#vno').val();
+		var vname = $('#vname').val();
+		var price = $('#price').val();
+		var season = $('#season').val();
+		var a = 2;
+		$.ajax({//
+			type : "POST",
+			url : "login",//
+			dateType : "JSON",
+			data : {
+				vno : vno,
+				vname : vname,
+				price : price,
+				season : season,
+				//a : a
+			},
+			beforeSend : function() {
+			},
+			success : function(data) {
+				if (data.status == 1) {
+					alter("删除成功！");
+				} else {
+					alter("输入信息有误无法操作！");
+
+				}
+			},
+			error : function(data) {
+				console.log();
+			},
+			complete : function() {
+			}
+		}
+
+		)
+	}
+
+	function my_revice() {
+		var vno = $('#vno').val();
+		var vname = $('#vname').val();
+		var price = $('#price').val();
+		var season = $('#season').val();
+		var a = 3;
+		$.ajax({//
+			type : "POST",
+			url : "login",//
+			dateType : "JSON",
+			data : {
+				vno : vno,
+				vname : vname,
+				price : price,
+				season : season,
+				//a : a
+			},
+			beforeSend : function() {
+			},
+			success : function(data) {
+				if (data.status == 1) {
+					alter("修改成功！");
+				} else {
+					alter("输入信息有误无法操作！");
+				}
+			},
+			error : function(data) {
+				console.log();
+			},
+			complete : function() {
+			}
+		}
+
+		)
+	}
+
+	function my_inquire() {//查询
+		var vno = $('#vno').val();
+		var vname = $('#vname').val();
+		var price = $('#price').val();
+		var season = $('#season').val();
+		var a = 1;
+		$.ajax({//
+			type : "POST",
+			url : "searchmenu",//
+			dateType : "JSON",
+			data : {
+				vno : vno,
+				vname : vname,
+				price : price,
+				season : season,
+				type:type
+				//a : a
+			},
+			beforeSend : function() {
+			},
+			success : function(data) {
+				if (data.lenth != 0) {
+					var tab = document.getElementById("mytable_body");
+					//表格行数
+					var rows = data.length;
+					tab.rows.length = rows;
+
+					var cells = 4;
+					for (var i = 0; i < rows; i++) {//一行一列的放
+						var row = tab.insertRow(-1);
+						var cell = row.insertCell(-1);
+						tab.rows[i].cells[0].innerText = data[i].vno;
+						var cell = row.insertCell(-1);
+						tab.rows[i].cells[1].innerText = data[i].vname;
+						var cell = row.insertCell(-1);
+						tab.rows[i].cells[2].innerText = data[i].season;
+						var cell = row.insertCell(-1);
+						tab.rows[i].cells[3].innerText = data[i].price;
+
+					}
+				} else {
+				}
+				/* //alter(data.vno);
+				if (data[0].vno == 123) {
+					//alter(data.vno);
+					alert(data[0].vno);
+					alert(data[0].vname);
+					alert(data[0].price);
+					alert(data[0].season);
+				} else {
+					//alter("输入信息有误无法操作！");
+					alert(data[0].vno);
+					alert(data[0].vname);
+					alert(data[0].price);
+					alert(data[0].season);
+					
+				} */
+			},
+			error : function(data) {
+				console.log();
+			},
+			complete : function() {
+			}
+		}
+
+		)
+	}
+</script>
+</head>
+
+<body class="myphoto">
+
+	<div class="container">
+		<div class="row clearfix">
+			<div class="col-md-12 column">
+
+				<div class="al">
+					<ul class="nav nav-tabs">
+						<li><a href="dacaidan.html">总菜单</a></li>
+						<li><a href="todaymenu.html">今日菜单</a></li>
+						<li><a href="littlemenu.html">小菜单</a></li>
+						<li><a href="seeorder.html">查看预约</a></li>
+						<li><a href="pay.html">统计支出</a></li>
+						<li><a href="mark.html">记账</a></li>
+					</ul>
+				</div>
+
+				<hr
+					style="height: 10px; border: none; border-top: 10px groove skyblue;" />
+
+				<div class="row clearfix">
+					<div class="col-md-12 column">
+						<div class="container">
+
+							<div class="row clearfix">
+								<div class="col-md-1 column"></div>
+								<div class="col-md-2 column">
+									<button class="myButton" type="button" onclick="add()">增加</button>
+								</div>
+								<div class="col-md-1 column"></div>
+								<div class="col-md-2 column">
+									<button class="myButton" type="button" onclick="my_delete()">删除</button>
+
+
+								</div>
+								<div class="col-md-1 column"></div>
+								<div class="col-md-2 column">
+									<button class="myButton" type="button" onclick="my_revice()">修改</button>
+								</div>
+
+								<select id="type" style="width: 80px; height: 30px"> 
+									<option value="all">全部</option>
+									<option value="season">季节</option> 
+									<option value="vname">菜名</option>
+								</select>
+
+								<div class="col-md-2 column">
+									<button class="myButton" type="button" onclick="my_inquire()">查询</button>
+								</div>
+								<div class="col-md-1 column"></div>
+								<div class="col-md-1 column"></div>
+								<div class="col-md-1 column"></div>
+								<div class="col-md-1 column"></div>
+							</div>
+							<hr
+								style="height: 10px; border: none; border-top: 10px groove skyblue;" />
+
+							<div class="row clearfix">
+								<div class="col-md-1 column"></div>
+								<div class="col-md-1 column">
+									<label>编号：</label> <input type="text" id="vno" value=""
+										size="15">
+								</div>
+								<div class="col-md-1 column"></div>
+								<div class="col-md-1 column">
+									<label>菜名：</label> <input type="text" id="vname" value=""
+										size="15">
+								</div>
+								<div class="col-md-1 column"></div>
+								<div class="col-md-1 column">
+									<label>季节：</label> <select id="season"> 
+										<option value="春季">春季</option> 
+										<option value="1">夏季</option>
+										<option value="2">秋季</option>
+										<option value="3">冬季</option> 
+										<option value="4">通用</option> 
+									</select> 
+								</div>
+								<div class="col-md-1 column"></div>
+								<div class="col-md-1 column">
+									<label>价格：</label> <input type="text" id="price" value=""
+										size="15">
+								</div>
+								<div class="col-md-1 column"></div>
+								<div class="col-md-1 column"></div>
+								<div class="col-md-1 column"></div>
+								<div class="col-md-1 column"></div>
+							</div>
+
+							<hr
+								style="height: 10px; border: none; border-top: 10px groove skyblue;" />
+
+							<div class="row clearfix">
+								<div class="col-md-12 column">
+
+									<div class="container">
+										<div class="row clearfix">
+											<div class="col-md-12 column">
+												<table class="table table-bordered table-hover"
+													id="mytable_head">
+													<thead>
+														<tr>
+															<th>编号</th>
+															<th>菜名</th>
+															<th>季节</th>
+															<th>价格</th>
+															<th>操作</th>
+														</tr>
+													</thead>
+													<tbody id="mytable_body">
+
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

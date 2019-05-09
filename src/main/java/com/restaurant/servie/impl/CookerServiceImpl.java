@@ -41,9 +41,9 @@ public class CookerServiceImpl implements CookerService {
 
 	@Override
 	public int removeMenu(int id, String name) {
-		if (menuMapper.isExists(name) == 0) {
-			return 0;
-		}
+//		if (menuMapper.isExists(name) == 0) {
+//			return 0;
+//		}
 		menuMapper.deleteMenu(id);
 		return 1;
 	}

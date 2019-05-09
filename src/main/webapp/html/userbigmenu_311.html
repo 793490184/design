@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>今日食堂</title>
+
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>  <!--<引用jquery库>-->
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="http://www.gongjuji.net/Content/files/jquery.md5.js"></script>
+    <script src="JquerySession.js"></script>
+
+    <style>
+        div{
+            padding:0px 0px 0px 0px;
+            margin: 0px 0px 0px 0px;
+        }
+        .hr1{
+            width: 1520px;
+            border:none;
+            border-top:12px solid #F0745F;
+            margin: 0px 0px 0px 0px;
+            padding: 0px 0px 0px 0px;
+        }
+        .hr2{
+            width: 1220px;
+            border:none;
+            top:28px;
+            position: absolute;
+            border-top:2px solid #F0745F;
+            margin: 0px 0px 0px 0px;
+            padding: 0px 0px 0px 0px;
+        }
+        .hr3{
+            width: 1220px;
+            border:none;
+            top:0px;
+            position: absolute;
+            border-top:2px solid #F0745F;
+            margin: 0px 0px 0px 0px;
+            padding: 0px 0px 0px 0px;
+        }
+        .hr4{
+            width: 1220px;
+            border:none;
+            top:100px;
+            position: absolute;
+            border-top:2px solid #F0745F;
+            margin: 0px 0px 0px 0px;
+            padding: 0px 0px 0px 0px;
+        }
+        .myweb{
+            width: 1220px;
+            height:1350px;
+            position: absolute;
+            left:150px;
+            right:150px;
+            top:12px;
+
+        }
+        .myweb1{/*放login图标*/
+            width: 1220px;
+            height:150px;
+            position: absolute;
+
+        }
+        .myweb2{/*放导航栏*/
+            width: 1220px;
+            height:50px;
+            position: absolute;
+            top:150px;
+
+        }
+        .myweb3{
+            width: 1220px;
+            height:30px;
+            position: absolute;
+            top:200px;
+            background-color:white;
+        }
+        .myweb4{
+            width: 1220px;
+            height:440px;
+            position: absolute;
+            top:230px;
+
+        }
+        .myweb5{
+            width: 1220px;
+            height:30px;
+            position: absolute;
+            top:670px;
+            background-color:white;
+        }
+        .myweb7{
+            width: 1220px;
+            height:600px;
+            position: absolute;
+            top:700px;
+        }
+        .myweb6{
+            width: 1220px;
+            height: 50px;
+            background-color: #232323;
+            position: absolute;
+            top:1300px;
+
+        }
+
+        .photo1{
+            background-image: url('lebaite2.png');
+            background-repeat: no-repeat;
+            position: absolute;
+            top:0px;
+            left:0px;
+            height:111px ;
+            width: 452px;
+        }
+
+        .nav ul{
+            width:980px;/*设置元素宽度为980px*/
+            height:28px;
+            border:0px solid #000;/*设置一个颜色为#000，宽度为1px的边框*/
+            margin:0px 0px 0px 0px;/*也可以简写为margin:0 auto*/
+            padding: 0px;
+
+        }
+        .nav ul li{
+            float:left;/*让li元素左浮动*/
+            list-style-type:none;
+        }
+
+        .nav ul li a{
+            width:100px;
+            height:50px;
+            line-height:50px;
+            color:black;
+            margin:0px 0px 0px 0px;
+            font-size:15px;
+            display:block;/*此元素将显示为块级元素，此元素前后会带有换行符。*/
+            text-align:center;
+            text-decoration:none;
+            border-right:1px solid #000;/*设置右边框*/
+        }
+
+        .nav ul li a1{
+            width:100px;
+            height:50px;
+            line-height:50px;
+            color:black;
+            margin:0px 0px 0px 0px;
+            font-size:15px;
+            display:block;/*此元素将显示为块级元素，此元素前后会带有换行符。*/
+            text-align:center;
+            text-decoration:none;
+
+        }
+
+        .nav ul li a:hover{
+            width:100px;
+            height:50px;
+            line-height:50px;
+            color:white;
+            background-color:#CE5541 ;
+        }
+        .nav ul li a1:hover{
+            width:100px;
+            height:50px;
+            line-height:50px;
+            color:white;
+            background-color:#CE5541 ;
+        }
+
+        .pt1{
+            background-size:cover;
+            width:275px;
+            height:400px;
+            top:35px;
+            left: 15px;
+            position: absolute;
+            background-image: url("b1.png");
+            border-style:solid;
+        }
+
+        .pt2{
+            background-size:cover;
+            width:275px;
+            height:400px;
+            top:35px;
+            left: 320px;
+            position: absolute;
+            background-image: url("b2.jpg");
+            border-style:solid;
+        }
+        .pt3{
+            background-size:cover;
+            width:275px;
+            height:400px;
+            top:35px;
+            left: 625px;
+            position: absolute;
+            background-image: url("b3.jpg");
+            border-style:solid;
+        }
+        .pt4{
+            background-size:cover;
+            width:275px;
+            height:400px;
+            top:35px;
+            left: 930px;
+            position: absolute;
+            background-image: url("b4.jpg");
+            border-style:solid;
+        }
+
+        .btxg1{
+            position: absolute;
+            height:30px ;
+            width: 1220px;
+            top:40px;
+
+        }
+
+
+        .myButton {
+            -moz-box-shadow:inset 0px 39px 0px -24px #e67a73;
+            -webkit-box-shadow:inset 0px 39px 0px -24px #e67a73;
+            box-shadow:inset 0px 39px 0px -24px #e67a73;
+            background-color:#e4685d;
+            border:1px solid #ffffff;
+            display:inline-block;
+            cursor:pointer;
+            color:#ffffff;
+            font-family:Arial;
+            font-size:15px;
+            padding:5px 15px;
+            text-decoration:none;
+            text-shadow:0px 1px 0px #b23e35;
+        }
+        .myButton:hover {
+            background-color:#eb675e;
+        }
+        .myButton:active {
+            position:relative;
+            top:1px;
+        }
+
+        table{
+            border-collapse:collapse;
+            width: 1220px;
+            position: absolute;
+            top:110px;
+        }
+        table,th, td
+        {
+            border: 1px solid black;
+        }
+        th
+        {
+            height:50px;
+            text-align: center;
+        }
+        td{
+            height:20px;
+            text-align: center;
+        }
+
+    </style>
+
+    <script type="text/javascript">
+        function chaxun() {/*无需时间季节，后台直接取当前时间即可，只需提供后台餐类,0早餐，1中，2 晚*/
+            var tab = document.getElementById("mytable") ;
+            var rows = tab.rows.length ;//表格行数
+            for(i=rows-1;i>=1;i--){
+                document.getElementById('mytable').deleteRow(i);
+            }
+            var time=$('#time').val();
+            var can=$('#meal').val();
+            if(can==0)can='早餐';
+            else if(can==1)can='中餐';
+            else if(can==2)can='晚餐';
+            alert(can)
+            $.ajax({//
+                    type:"POST",
+                    url:"userViewPublic",//
+                    dateType:"JSON",
+                    data:{menutype:can},
+                    beforeSend:function () {},
+                    success:function(data){
+                        if(data.length != 0)
+                        {
+                            for(i=1;i<=data.length;i++)
+                            {
+                                var tr1=document.getElementById('mytable').insertRow(i);
+                                var c0=tr1.insertCell(0);
+                                var c1=tr1.insertCell(1);
+                                var c2=tr1.insertCell(2);
+                                var c3=tr1.insertCell(3);
+                                var c4=tr1.insertCell(4);
+                                var c5=tr1.insertCell(5);
+                                c0.innerHTML="<input type='checkbox' name='ck'/>";
+                                c1.innerHTML="<input type='text'  readonly style='text-align: center;' id='vno"+i+"' value='"+data[i-1].vno+"'/>";
+                                c2.innerHTML="<input type='text'  style='text-align: center;'id='vname"+i+"' value='"+data[i-1].vname+"'/>";
+                                c3.innerHTML="<input type='text'  style='text-align: center;' id='canlei"+i+"' value='"+data[i-1].menutype+"'/>";
+                                
+                                c4.innerHTML="";
+                            }
+
+                        }
+                        else
+                        {
+                            alert("当前菜单未补充");
+                        }
+                    },
+                    error:function(data){
+                        console.log();
+                    },
+                    complete:function(){}
+                }
+
+            )
+        }
+
+        function chaxun1() {/*无需时间季节，后台直接取当前时间即可，只需提供后台餐类,0早餐，1中，2 晚*/
+        		alert("aaaa");
+            var tab = document.getElementById("mytable") ;
+            userid=$.session.get('userid');
+            var rows = tab.rows.length ;//表格行数
+            for(i=rows-1;i>=1;i--){
+                document.getElementById('mytable').deleteRow(i);
+            }
+            var time=$('#time').val();
+            $.ajax({//
+                    type:"POST",
+                    url:"userViewOrderPublic",//
+                    dateType:"JSON",
+                    data:{date:time,eno:userid},
+                    beforeSend:function () {},
+                    success:function(data){
+                        if(data.length != 0)
+                        {
+                            for(i=1;i<=data.length;i++)
+                            {
+                                var tr1=document.getElementById('mytable').insertRow(i);
+                                var c0=tr1.insertCell(0);
+                                var c1=tr1.insertCell(1);
+                                var c2=tr1.insertCell(2);
+                                var c3=tr1.insertCell(3);
+                                var c4=tr1.insertCell(4);
+                              
+                                c0.innerHTML="<input type='checkbox' name='ck'/>";
+                                c1.innerHTML="<input type='text'  readonly style='text-align: center;' id='vno"+i+"' value='"+data[i-1].vno+"'/>";
+                                c2.innerHTML="<input type='text'  style='text-align: center;'id='vname"+i+"' value='"+data[i-1].vname+"'/>";
+                                c3.innerHTML="<input type='text'  style='text-align: center;' id='canlei"+i+"' value='"+data[i-1].menutype+"'/>";
+                                
+                                c4.innerHTML="";
+                            }
+
+                        }
+                        else
+                        {
+                            alert("当前菜单未补充");
+                        }
+                    },
+                    error:function(data){
+                        console.log();
+                    },
+                    complete:function(){}
+                }
+
+            )
+        }
+
+
+        function quxiao(){
+            var flag=0;
+            var time=$('#time').val();
+            var tb=document.getElementById('mytable');
+            var ch=document.getElementsByName('ck');
+            userid=$.session.get('userid');
+            for(i=ch.length-1;i>=0;i--){
+                var m=i+1;
+                var vno=$("#vno"+m).val();
+                var tr=ch[i].parentNode.parentNode;
+                var index=tr.rowIndex;
+                if(ch[i].checked==true){
+                    tb.deleteRow(index);
+                    $.ajax({//
+                            type:"POST",
+                            url:"userQuitOrderPublic",//
+                            dateType:"JSON",
+                            data:{vno:vno,eno:userid,date:time},
+                            beforeSend:function () {},
+                            success:function(data){
+                                if(data.status==1)
+                                {
+                                    alert("取消成功！");
+                                }
+                                else
+                                {
+                                    alert("信息有误无法操作！");
+
+                                }
+                            },
+                            error:function(data){
+                                console.log();
+                            },
+                            complete:function(){}
+                        }
+
+                    )
+                    flag=flag+1;
+                }
+            }
+            if(flag<=0){
+                alert("请选定取消项！");
+            }
+        }
+        
+        function tijiao(){//sno必须通过session获取，此时还未获取
+            var time=$('#time').val();
+            var can=$('#meal').val();
+            userid=$.session.get('userid');
+            if(can==0)can='早餐';
+            else if(can==1)can='中餐';
+            else if(can==2)can='晚餐';
+            alert(userid)
+            var flag=0;
+            var tb=document.getElementById('mytable');
+            var ch=document.getElementsByName('ck');
+            for(i=ch.length;i>=1;i--){
+                if(ch[i-1].checked==true){
+                    var vno=$("#vno"+i).val();
+                    $.ajax({//
+                            type:"POST",
+                            url:"preorderPublic",//
+                            dateType:"JSON",
+                            data:{vno:vno,time:time,menutype:can,eno:userid},
+                            beforeSend:function () {},
+                            success:function(data){
+                                if(data.status==1)
+                                {
+                                }
+                                else
+                                {
+                                }
+                            },
+                            error:function(data){
+                                console.log();
+                            },
+                            complete:function(){}
+                        }
+
+                    )
+                    flag=flag+1;
+                }
+            }
+            if(flag<=0){
+                alert("请选定要提交的菜！");
+            }
+
+
+        }
+
+        function my_time() {
+            var a=$('#mytime').val();
+            if(a=='1')
+            {
+                var today=new Date();
+                var submittime=today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                $("#time").attr('value',submittime);
+            }
+            else if(a=='2')
+            {
+                var today=new Date();
+                var submittime=today.getFullYear()+'-'+(today.getMonth()+1)+'-'+(today.getDate()+1);
+                $("#time").attr('value',submittime);
+            }
+        }
+
+		function a(){
+			alert("aaaa");
+			
+		}
+    </script>
+
+</head>
+<body style="margin: 0px 0px 0px 0px;padding: 0px 0px 0px 0px; ">
+
+<div>
+    <hr class="hr1"></hr>
+</div>
+
+<div class="myweb">
+    <div class="myweb1">/*放login图标*/
+        <div class="photo1">
+        </div>
+    </div>
+
+    <div class="myweb2">
+        <div class="nav" >
+            <ul >
+                   <li><a href="userbigmenu.html" >食堂预定</a><>
+                   <li><a href="userlittlemenu.html" >餐厅预定</a><>
+                	<li><a href="pingjia.html" >佳肴评价</a><>
+                
+            </ul>
+        </div>
+    </div>
+
+    <div class="myweb3">
+        <div class="hr2"></div>
+    </div>
+
+    <div class="myweb4">
+        <div class="pt1">
+        </div>
+        <div class="pt2">
+        </div>
+        <div class="pt3">
+        </div>
+        <div class="pt4">
+        </div>
+    </div>
+
+    <div class="myweb5">
+    </div>
+
+    <div class="myweb7">
+        <div class="hr3"></div>
+
+        <div class="btxg1">
+            <div style="position: absolute;left: 50px;top: 5px;text-align: center;width: 80px;">
+                <label >地点：</label>
+            </div>
+
+            <div style="position: absolute;left: 130px;">
+                <input type="text" id="地点"  value="食堂" size="5" readonly="true" style="text-align: center;width: 80px;">
+            </div>
+
+            <div style="position: absolute;left: 230px;top: 5px;text-align: center;width: 80px;">
+                <label >时间：</label>
+            </div>
+
+            <div style="position: absolute;left: 310px;">
+                <select id="mytime" style="width: 80px ;height:30px " onchange="my_time()" > 
+                    <option  value="1"  >&nbsp;&nbsp;&nbsp;今日</option> 
+                    <option  value="2" >&nbsp;&nbsp;&nbsp;明日</option>
+                </select> 
+            </div>
+
+            <div style="position: absolute;left: 410px;text-align: center;width: 80px;">
+                <input type="text" id="time"  style="width: 80px ;height:30px" size="10" readonly="true">
+                <script language="JavaScript">
+                    var today=new Date();
+                    var submittime=today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                    $("#time").attr('value',submittime);
+                </script>
+            </div>
+
+
+            <div style="position: absolute;left: 520px;top: 5px;text-align: center;width: 80px;">
+                <label >餐类：</label>
+            </div>
+
+            <div style="position: absolute;left: 600px;">
+                <select id="meal" style="width: 80px ;height:30px;text-align: center;"> 
+                    <option value="0" >&nbsp;&nbsp;&nbsp;早餐</option> 
+                    <option value="1">&nbsp;&nbsp;&nbsp;中餐</option>
+                    <option value="2">&nbsp;&nbsp;&nbsp;晚餐</option>
+                </select> 
+            </div>
+
+            <div style="position: absolute;left: 850px;">
+                <button class="myButton" type="button" onclick="chaxun()">查询菜单</button>
+            </div>
+
+            <div style="position: absolute;left: 950px;">
+                <button class="myButton" type="button" onclick="tijiao()">提交</button>
+            </div>
+
+            <div style="position: absolute;left: 1020px;">
+                <button class="myButton" type="button" onclick="chaxun1()">查询预定</button>
+            </div>
+
+            <div style="position: absolute;left: 1150px;">
+                <button class="myButton" type="button" onclick="quxiao()">取消</button>
+            </div>
+        </div>
+
+        <div class="hr4">
+        </div>
+
+        <div class="table1">
+            <table  id="mytable"  >
+                <thead >
+                <tr >
+                    <th style="background-color: #DEDEDE;">
+                        选择
+                    </th>
+                    <th style="background-color: #DEDEDE;">
+                        编号
+                    </th>
+                    <th style="background-color: #DEDEDE;">
+                        菜名
+                    </th>
+                    <th style="background-color: #DEDEDE;">
+                        餐类
+                    </th>
+                    <th style="background-color: #DEDEDE;">
+                        价格
+                    </th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+
+
+    </div>
+
+
+    <div class="myweb6">
+        <p style="text-align: center;color: white;">乐百特公司服务地址</p>
+    </div>
+</div>
+
+</body>
+</html>

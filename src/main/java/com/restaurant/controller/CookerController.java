@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Controller
-@RequestMapping("/cooker")
+@RequestMapping("/html")
 public class CookerController {
 
     @Resource
@@ -94,9 +94,11 @@ public class CookerController {
         return new BaseExecution(200, "ok", menu);
     }
 
-    @RequestMapping("/select_menu.do")
+    @RequestMapping("/searchmenu_all.do")
     @ResponseBody
-    public BaseExecution selectMenu(int start, int end) {
+    public BaseExecution selectMenu(int p) {
+        int start = 0;
+        int end = 5;
         List<Menu> menuList = cookerService.selectMenu(start, end);
         return new BaseExecution(200, "ok", menuList);
     }

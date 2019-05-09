@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>大菜单</title>
+
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>  <!--<引用jquery库>-->
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="http://www.gongjuji.net/Content/files/jquery.md5.js"></script>
+    <script src="JquerySession.js"></script>
+
+    <style>
+        div{
+            padding:0px 0px 0px 0px;
+            margin: 0px 0px 0px 0px;
+        }
+
+        .radio-check { position: relative; height: 35px; }
+
+        .hr1{
+            width: 1520px;
+            border:none;
+            border-top:12px solid #F0745F;
+            margin: 0px 0px 0px 0px;
+            padding: 0px 0px 0px 0px;
+        }
+        .hr2{
+            width: 1220px;
+            border:none;
+            top:28px;
+            position: absolute;
+            border-top:2px solid #F0745F;
+            margin: 0px 0px 0px 0px;
+            padding: 0px 0px 0px 0px;
+        }
+        .hr3{
+            width: 1220px;
+            border:none;
+            top:0px;
+            position: absolute;
+            border-top:2px solid #F0745F;
+            margin: 0px 0px 0px 0px;
+            padding: 0px 0px 0px 0px;
+        }
+        .hr4{
+            width: 1220px;
+            border:none;
+            top:100px;
+            position: absolute;
+            border-top:2px solid #F0745F;
+            margin: 0px 0px 0px 0px;
+            padding: 0px 0px 0px 0px;
+        }
+        .myweb{
+            width: 1220px;
+            height:1350px;
+            position: absolute;
+            left:150px;
+            right:150px;
+            top:12px;
+
+        }
+        .myweb1{/*放login图标*/
+            width: 1220px;
+            height:150px;
+            position: absolute;
+
+        }
+        .myweb2{/*放导航栏*/
+            width: 1220px;
+            height:50px;
+            position: absolute;
+            top:150px;
+
+        }
+        .myweb3{
+            width: 1220px;
+            height:30px;
+            position: absolute;
+            top:200px;
+            background-color:white;
+        }
+        .myweb4{
+            width: 1220px;
+            height:440px;
+            position: absolute;
+            top:230px;
+
+        }
+        .myweb5{
+            width: 1220px;
+            height:30px;
+            position: absolute;
+            top:670px;
+            background-color:white;
+        }
+        .myweb7{
+            width: 1220px;
+            height:600px;
+            position: absolute;
+            top:700px;
+        }
+        .myweb6{
+            width: 1220px;
+            height: 50px;
+            background-color: #232323;
+            position: absolute;
+            top:1300px;
+
+        }
+
+        .photo1{
+            background-image: url('lebaite2.png');
+            background-repeat: no-repeat;
+            position: absolute;
+            top:0px;
+            left:0px;
+            height:111px ;
+            width: 452px;
+        }
+
+        .nav ul{
+            width:980px;/*设置元素宽度为980px*/
+            height:28px;
+            border:0px solid #000;/*设置一个颜色为#000，宽度为1px的边框*/
+            margin:0px 0px 0px 0px;/*也可以简写为margin:0 auto*/
+            padding: 0px;
+
+        }
+        .nav ul li{
+            float:left;/*让li元素左浮动*/
+            list-style-type:none;
+        }
+
+        .nav ul li a{
+            width:100px;
+            height:50px;
+            line-height:50px;
+            color:black;
+            margin:0px 0px 0px 0px;
+            font-size:15px;
+            display:block;/*此元素将显示为块级元素，此元素前后会带有换行符。*/
+            text-align:center;
+            text-decoration:none;
+            border-right:1px solid #000;/*设置右边框*/
+        }
+
+        .nav ul li a1{
+            width:100px;
+            height:50px;
+            line-height:50px;
+            color:black;
+            margin:0px 0px 0px 0px;
+            font-size:15px;
+            display:block;/*此元素将显示为块级元素，此元素前后会带有换行符。*/
+            text-align:center;
+            text-decoration:none;
+
+        }
+
+        .nav ul li a:hover{
+            width:100px;
+            height:50px;
+            line-height:50px;
+            color:white;
+            background-color:#CE5541 ;
+        }
+        .nav ul li a1:hover{
+            width:100px;
+            height:50px;
+            line-height:50px;
+            color:white;
+            background-color:#CE5541 ;
+        }
+
+        .pt1{
+            background-size:cover;
+            width:275px;
+            height:400px;
+            top:35px;
+            left: 15px;
+            position: absolute;
+            background-image: url("d1.jpg");
+            border-style:solid;
+        }
+
+        .pt2{
+            background-size:cover;
+            width:275px;
+            height:400px;
+            top:35px;
+            left: 320px;
+            position: absolute;
+            background-image: url("d2.jpg");
+            border-style:solid;
+        }
+        .pt3{
+            background-size:cover;
+            width:275px;
+            height:400px;
+            top:35px;
+            left: 625px;
+            position: absolute;
+            background-image: url("d3.jpg");
+            border-style:solid;
+        }
+        .pt4{
+            background-size:cover;
+            width:275px;
+            height:400px;
+            top:35px;
+            left: 930px;
+            position: absolute;
+            background-image: url("d4.jpg");
+            border-style:solid;
+        }
+
+        .leibie
+        {
+            position: absolute;
+            top:50px;
+            left:800px;
+        }
+        .btxg{
+            position: absolute;
+            height:30px ;
+            width: 80px;
+            top:50px;
+            left:1050px;
+        }
+
+        .btxg1{
+            position: absolute;
+            height:30px ;
+            width: 300px;
+            top:50px;
+            left: 100px;
+        }
+        .xg{
+            display: none;
+            position: absolute;
+            top:50px;
+            left:890px;
+            height:50px ;
+            width: 80px;
+        }
+
+        .myButton {
+            -moz-box-shadow:inset 0px 39px 0px -24px #e67a73;
+            -webkit-box-shadow:inset 0px 39px 0px -24px #e67a73;
+            box-shadow:inset 0px 39px 0px -24px #e67a73;
+            background-color:#e4685d;
+            border:1px solid #ffffff;
+            display:inline-block;
+            cursor:pointer;
+            color:#ffffff;
+            font-family:Arial;
+            font-size:15px;
+            padding:5px 15px;
+            text-decoration:none;
+            text-shadow:0px 1px 0px #b23e35;
+        }
+        .myButton:hover {
+            background-color:#eb675e;
+        }
+        .myButton:active {
+            position:relative;
+            top:1px;
+        }
+
+        table{
+            border-collapse:collapse;
+            width: 1220px;
+            position: absolute;
+            top:110px;
+        }
+        table,th, td
+        {
+            border: 1px solid black;
+        }
+        th
+        {
+            height:50px;
+            text-align: center;
+        }
+        td{
+            height:20px;
+            text-align: center;
+        }
+
+    </style>
+
+    <script type="text/javascript">
+        function add() {/*增加*/
+
+            var tr1=document.getElementById('mytable').insertRow(2);
+            var c0=tr1.insertCell(0);
+            var c1=tr1.insertCell(1);
+            var c2=tr1.insertCell(2);
+            var c3=tr1.insertCell(3);
+            var c4=tr1.insertCell(4);
+            var c5=tr1.insertCell(5);
+            var c6=tr1.insertCell(6);
+
+            var season=$('#s0').val();
+            if(season==0)season='春季';
+            else if(season==1)season='夏季';
+            else if(season==2)season='秋季';
+            else if(season==3)season='冬季';
+            else if(season==4)season='通用';
+
+            c0.innerHTML="<input type='checkbox' name='ck'/>";
+
+
+            c2.innerHTML=document.getElementById("v0").value;
+            c3.innerHTML="<input type='text' style='text-align: center;'  value='"+season+"'/>";
+            c4.innerHTML=document.getElementById("p0").value;
+            c5.innerHTML="<button class='myButton'  type='button' onclick='del(this)' >删除</button>";
+            c6.innerHTML="<button class='myButton'  type='button' onclick='xiugai(this)' >修改</button>";
+            var vname=$('#v0').val();
+            var season=$('#s0').val();
+            if(season==0)season='春季';
+            else if(season==1)season='夏季';
+            else if(season==2)season='秋季';
+            else if(season==3)season='冬季';
+            else if(season==4)season='通用';
+            var price=$('#p0').val();
+            if($("#m0")[0].checked==true){
+                $.ajax({//
+                        type:"POST",
+                        url:"insertmenu",//
+                        dateType:"JSON",
+                        data:{vno: 0,vname:vname,price:price,season:season},
+                        beforeSend:function () {},
+                        success:function(data){
+                            if(data.status==1)
+                            {
+                                alter("添加成功！");
+                            }
+                            else
+                            {
+                                alter("输入信息有误无法操作！");
+
+                            }
+                        },
+                        error:function(data){
+                            console.log();
+                        },
+                        complete:function(){}
+                    }
+
+                )
+            }
+            else
+            {
+                alert("请选择表格中的操作后再点击增加按钮！")
+            }
+        }
+
+        function my_inquire() {
+            alert("tab.rows.length+'0a'");
+            alert("b");
+            
+            var tab = document.getElementById("mytable_body");
+            //表格行数
+            var rows = 2;
+            tab.rows.length  = rows;
+            alert(tab.rows.length+'0a');
+        }
+
+        function my_delete() {
+            var vno=new Array(100);
+            var tab = document.getElementById("mytable_body");
+            var n=0;
+            for(var i=0;i<tab.rows.length;i++) {//
+                var val=$("input:radio[name='t"+i+"']:checked").val();
+                if(val=='删除'){
+                    vno[n]=tab.rows[i].cells[0].innerText;
+                    n++;
+                }
+            }
+            $.ajax({//
+                    type:"POST",
+                    url:"deletemenu",//
+                    dateType:"JSON",
+                    data:{vno:vno},
+                    beforeSend:function () {},
+                    success:function(data){
+                        if(data.status==1)
+                        {
+                            alter("删除成功！");
+                        }
+                        else
+                        {
+                            alter("输入信息有误无法操作！");
+
+                        }
+                    },
+                    error:function(data){
+                        console.log();
+                    },
+                    complete:function(){}
+                }
+
+            )
+
+        }
+
+        function mclear() {
+            $('#v0').val('');
+            $('#s0').val('0')
+            $('#p0').val('');
+            $("#m0")[0].checked=false;
+        }
+
+
+
+
+        function my_se(){
+            var a=$('#liebiao').val();
+            if(a=='1')
+            {
+                $('#my_inquire1').hide();
+                $('#my_inquire2').show();
+            }
+            else if(a=='2')
+            {
+                $('#my_inquire2').hide();
+                $('#my_inquire1').show();
+            }
+        }
+    </script>
+
+</head>
+<body style="margin: 0px 0px 0px 0px;padding: 0px 0px 0px 0px; ">
+
+<div>
+    <hr class="hr1"></hr>
+</div>
+
+<div class="myweb">
+    <div class="myweb1">/*放login图标*/
+        <div class="photo1">
+        </div>
+    </div>
+
+    <div class="myweb2">
+        <div class="nav" >
+            <ul >
+                   <li><a href="shouye.html" >首页</a></li>
+                   <li><a href="dacaidan.html" >大菜单</a></li>
+                   <li><a href="todaymenu.html" >今日食堂</a></li>
+                   <li><a href="littlemenu.html" >今日餐厅</a></li>
+                   <li><a href="seeorder.html">查看预约</a></li>
+                   <li><a href="pay.html">统计支出</a></li>
+                   <li><a href="mark.html">签留单</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="myweb3">
+        <div class="hr2"></div>
+    </div>
+
+    <div class="myweb4">
+        <div class="pt1">
+        </div>
+        <div class="pt2">
+        </div>
+        <div class="pt3">
+        </div>
+        <div class="pt4">
+        </div>
+    </div>
+
+    <div class="myweb5">
+    </div>
+    <div class="myweb7" >
+        <div class="hr3"></div>
+
+        <div class="btxg1">
+            <!--
+            <div style="position: absolute;left: 0px;">
+                <button class="myButton" type="button" onclick="input_add()">增加</button>
+            </div>
+            <div style="position: absolute;left: 70px;">
+                <button class="myButton" type="button" onclick="my_delete()">删除</button>
+            </div>
+            <div style="position: absolute;left: 140px;">
+                <button class="myButton" type="button" onclick="my_show1()">修改</button>
+            </div>
+            -->
+        </div>
+
+        <div class="leibie">
+            <select id="liebiao" style="width: 80px ;height:30px" onchange="my_se()"> 
+                <option value="0" >全部</option> 
+                <option value="1" >季节</option> 
+                <option value="2">菜名</option>
+            </select> 
+        </div>
+
+        <div class="btxg">
+                <button class="myButton" type="button" onclick="my_inquire()">查询</button>
+        </div>
+
+        <div class="xg" id="my_inquire1">
+            <input type="text" id="vname2" value="" size="10" readonly>
+        </div>
+        <div class="xg" id="my_inquire2">
+            <select id="season2" style="width: 80px ;height:30px" > 
+                <option value="0" >春季</option> 
+                <option value="1">夏季</option>
+                <option value="2">秋季</option>
+                <option value="3">冬季</option> 
+                <option value="4">通用</option> 
+            </select> 
+        </div>
+
+        <div class="hr4"></div>
+
+        <div class="table1">
+            <table  id="mytable" >
+                <thead >
+                <tr >
+                    <th style="background-color: #DEDEDE;">
+                        选择
+                    </th>
+                    <th style="background-color: #DEDEDE;">
+                        编号
+                    </th>
+                    <th style="background-color: #DEDEDE;">
+                        菜名
+                    </th>
+                    <th style="background-color: #DEDEDE;">
+                        季节
+                    </th>
+                    <th style="background-color: #DEDEDE;">
+                        价格
+                    </th>
+                    <th style="background-color: #DEDEDE;">
+                        操作一
+                    </th>
+                    <th style="background-color: #DEDEDE;">
+                        操作二
+                    </th>
+                </tr>
+                </thead>
+                <tbody >
+                <tr >
+                    <th >
+                        <input type='checkbox' name='ck'/>
+                    </th>
+                    <th >
+
+                    </th>
+                    <th >
+                        <input type="text" id="v0" value="" size="10">
+                    </th>
+                    <th >
+                        <select id="s0" style="width: 80px ;height:30px" > 
+                            <option value="0" >&nbsp;&nbsp;&nbsp;春季</option> 
+                            <option value="1">&nbsp;&nbsp;&nbsp;夏季</option>
+                            <option value="2">&nbsp;&nbsp;&nbsp;秋季</option>
+                            <option value="3">&nbsp;&nbsp;&nbsp;冬季</option> 
+                            <option value="4">&nbsp;&nbsp;&nbsp;通用</option> 
+                        </select> 
+                    </th>
+                    <th >
+                        <input type="text" id="p0" value="" size="5">
+                    </th>
+                    <th>
+                        <button class="myButton" type="button" onclick="mclear()">清除</button>
+
+                    </th>
+                    <th>
+                        <button class="myButton" type="button" onclick="add()">增加</button>
+                    </th>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+    <div class="myweb6">
+        <p style="color: white;position: absolute;top:20px;left:500px;">乐百特公司服务地址</p>
+    </div>
+</div>
+
+</body>
+</html>

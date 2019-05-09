@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查看预约</title>
+
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>  <!--<引用jquery库>-->
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="http://www.gongjuji.net/Content/files/jquery.md5.js"></script>
+    <script src="JquerySession.js"></script>
+
+    <style>
+        div{
+            padding:0px 0px 0px 0px;
+            margin: 0px 0px 0px 0px;
+        }
+        .hr1{
+            width: 1520px;
+            border:none;
+            border-top:12px solid #F0745F;
+            margin: 0px 0px 0px 0px;
+            padding: 0px 0px 0px 0px;
+        }
+        .hr2{
+            width: 1220px;
+            border:none;
+            top:28px;
+            position: absolute;
+            border-top:2px solid #F0745F;
+            margin: 0px 0px 0px 0px;
+            padding: 0px 0px 0px 0px;
+        }
+        .hr3{
+            width: 1220px;
+            border:none;
+            top:0px;
+            position: absolute;
+            border-top:2px solid #F0745F;
+            margin: 0px 0px 0px 0px;
+            padding: 0px 0px 0px 0px;
+        }
+        .hr4{
+            width: 1220px;
+            border:none;
+            top:100px;
+            position: absolute;
+            border-top:2px solid #F0745F;
+            margin: 0px 0px 0px 0px;
+            padding: 0px 0px 0px 0px;
+        }
+        .hr5{
+            width: 780px;
+            border:none;
+            top:100px;
+            left:10px;
+            position: absolute;
+            border-top:2px solid white;
+            margin: 0px 0px 0px 0px;
+            padding: 0px 0px 0px 0px;
+        }
+        .myweb{
+            width: 1220px;
+            height:1150px;
+            position: absolute;
+            left:150px;
+            right:150px;
+            top:12px;
+
+        }
+        .myweb1{/*放login图标*/
+            width: 1220px;
+            height:150px;
+            position: absolute;
+
+        }
+        .myweb2{/*放导航栏*/
+            width: 1220px;
+            height:50px;
+            position: absolute;
+            top:150px;
+
+        }
+        .myweb3{
+            width: 1220px;
+            height:30px;
+            position: absolute;
+            top:200px;
+            background-color:white;
+        }
+        .myweb4{
+            width: 1220px;
+            height:290px;
+            position: absolute;
+            top:230px;
+
+        }
+        .myweb5{
+            width: 1220px;
+            height:30px;
+            position: absolute;
+            top:520px;
+
+        }
+        .myweb7{
+            width: 1220px;
+            height:600px;
+            position: absolute;
+            top:550px;
+
+        }
+        .myweb6{
+            width: 1220px;
+            height: 50px;
+            background-color: #232323;
+            position: absolute;
+            top:1150px;
+
+        }
+
+        .photo1{
+            background-image: url('lebaite2.png');
+            background-repeat: no-repeat;
+            position: absolute;
+            top:0px;
+            left:0px;
+            height:111px ;
+            width: 452px;
+        }
+
+        .nav ul{
+            width:980px;/*设置元素宽度为980px*/
+            height:28px;
+            border:0px solid #000;/*设置一个颜色为#000，宽度为1px的边框*/
+            margin:0px 0px 0px 0px;/*也可以简写为margin:0 auto*/
+            padding: 0px;
+
+        }
+        .nav ul li{
+            float:left;/*让li元素左浮动*/
+            list-style-type:none;
+        }
+
+        .nav ul li a{
+            width:100px;
+            height:50px;
+            line-height:50px;
+            color:black;
+            margin:0px 0px 0px 0px;
+            font-size:15px;
+            display:block;/*此元素将显示为块级元素，此元素前后会带有换行符。*/
+            text-align:center;
+            text-decoration:none;
+            border-right:1px solid #000;/*设置右边框*/
+        }
+
+        .nav ul li a1{
+            width:100px;
+            height:50px;
+            line-height:50px;
+            color:black;
+            margin:0px 0px 0px 0px;
+            font-size:15px;
+            display:block;/*此元素将显示为块级元素，此元素前后会带有换行符。*/
+            text-align:center;
+            text-decoration:none;
+
+        }
+
+        .nav ul li a:hover{
+            width:100px;
+            height:50px;
+            line-height:50px;
+            color:white;
+            background-color:#CE5541 ;
+        }
+        .nav ul li a1:hover{
+            width:100px;
+            height:50px;
+            line-height:50px;
+            color:white;
+            background-color:#CE5541 ;
+        }
+
+        .pt1{
+            background-size:cover;
+            width:300px;
+            height:220px;
+            top:35px;
+            left: 15px;
+            position: absolute;
+            background-image: url("d1.jpg");
+        }
+        .duan{
+            position: absolute;
+            top:35px;
+            left: 315px;
+            height: 220px;
+            width: 900px;
+            background-color:#F0745F;
+        }
+
+        .btxg1{
+            position: absolute;
+            height:30px ;
+            width: 1220px;
+            top:40px;
+
+        }
+
+
+        .myButton {
+            -moz-box-shadow:inset 0px 39px 0px -24px #e67a73;
+            -webkit-box-shadow:inset 0px 39px 0px -24px #e67a73;
+            box-shadow:inset 0px 39px 0px -24px #e67a73;
+            background-color:#e4685d;
+            border:1px solid #ffffff;
+            display:inline-block;
+            cursor:pointer;
+            color:#ffffff;
+            font-family:Arial;
+            font-size:15px;
+            padding:5px 15px;
+            text-decoration:none;
+            text-shadow:0px 1px 0px #b23e35;
+        }
+        .myButton:hover {
+            background-color:#eb675e;
+        }
+        .myButton:active {
+            position:relative;
+            top:1px;
+        }
+
+
+        table{
+            border-collapse:collapse;
+            width: 1220px;
+            position: absolute;
+            top:110px;
+        }
+        table,th, td
+        {
+            border: 1px solid black;
+        }
+        th
+        {
+            height:50px;
+            text-align: center;
+        }
+        td{
+            height:20px;
+            text-align: center;
+        }
+
+    </style>
+
+    <script type="text/javascript">
+
+        function chaxun(){
+            var a=$('#depart').val();
+            if(a==0)a="食堂"
+            else if(a==1)a="餐厅"
+            var b=$('#meal').val();
+            if(b==0)b="早餐"
+            else if(b==1)b="中餐"
+            else if(b==2)b="晚餐"
+            var c=$('#time').val();
+
+            alert(a)
+            alert(b)
+            alert(c)
+            var tab = document.getElementById("mytable") ;
+            var rows = tab.rows.length ;//表格行数
+            for(i=rows-1;i>=2;i--) {
+                document.getElementById('mytable').deleteRow(i);
+            }
+                $.ajax({//
+                        type:"POST",
+                        url:"vieworder",//
+                        dateType:"JSON",
+                        data:{restaurant:a,date:c,menutype:b},
+                        beforeSend:function () {},
+                        success:function(data){
+                            if(data.length != 0)
+                            {
+                                for(i=1;i<=data.length;i++)
+                                {
+                                    var tr1=document.getElementById('mytable').insertRow(i);
+                                    var c0=tr1.insertCell(0);
+                                    var c1=tr1.insertCell(1);
+                                    var c2=tr1.insertCell(2);
+                                    var c3=tr1.insertCell(3);
+                                    var c4=tr1.insertCell(4);
+                                    c0.innerHTML="<input type='text'  readonly style='text-align: center;' id='vno"+i+"' value='"+data[i-1].vno+"'/>";
+                                    c1.innerHTML="<input type='text'  readonly   style='text-align: center;'id='vname"+i+"' value='"+data[i-1].vname+"'/>";
+                                    c2.innerHTML="<input type='text'  readonly style='text-align: center;' id='canlei"+i+"' value='"+data[i-1].menutype+"'/>";
+                                    c3.innerHTML="<input type='text'  readonly style='text-align: center;' id='price"+i+"' value='"+data[i-1].price+"'/>";
+                                    c4.innerHTML="<input type='text'  readonly style='text-align: center;' id='"+i+"' value='"+data[i-1].num+"'/>";
+                                }
+
+                            }
+                            else
+                            {
+                            }
+                        },
+                        error:function(data){
+                            console.log();
+                        },
+                        complete:function(){}
+                    }
+
+                )
+
+        }
+
+
+
+
+        function my_time() {
+            var a=$('#mytime').val();
+            if(a=='1')
+            {
+                var today=new Date();
+                var submittime=today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                $("#time").attr('value',submittime);
+            }
+            else if(a=='2')
+            {
+                var today=new Date();
+                var submittime=today.getFullYear()+'-'+(today.getMonth()+1)+'-'+(today.getDate()+1);
+                $("#time").attr('value',submittime);
+            }
+        }
+    </script>
+
+</head>
+<body style="margin: 0px 0px 0px 0px;padding: 0px 0px 0px 0px; ">
+
+<div>
+    <hr class="hr1"></hr>
+</div>
+
+<div class="myweb">
+    <div class="myweb1">/*放login图标*/
+        <div class="photo1">
+        </div>
+    </div>
+
+    <div class="myweb2">
+        <div class="nav" >
+            <ul >
+                   <li><a href="shouye.html" >首页</a></li>
+                   <li><a href="dacaidan.html" >大菜单</a></li>
+                   <li><a href="todaymenu.html" >今日食堂</a></li>
+                   <li><a href="littlemenu.html" >今日餐厅</a></li>
+                   <li><a href="seeorder.html">查看预约</a></li>
+                   <li><a href="pay.html">统计支出</a></li>
+                   <li><a href="mark.html">签留单</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="myweb3">
+        <div class="hr2"></div>
+    </div>
+
+    <div class="myweb4">
+        <div class="pt1">
+        </div>
+        <div class="duan">
+            <p style="font-size: 35px;color: white;position: absolute;left: 180px;top: 10px;">"我是一个快乐的厨师!"</p>
+            <div class="hr5"></div>
+            <p style="font-size: 20px;color: white;position: absolute;left: 80px;top: 90px;">"我要workhard，因为这样我做出的菜肴才美味可口！"</p>
+            <p style="font-size: 20px;color: white;position: absolute;left: 80px;top: 120px;">"我要happyhappy，因为这样我做出的菜肴才美味可口！"</p>
+            <p style="font-size: 20px;color: white;position: absolute;left: 80px;top: 150px;">"我要everyone都喜欢我的菜，我要认真的对待每一个人的需求！"</p>
+        </div>
+    </div>
+
+
+    <div class="myweb5">
+    </div>
+
+    <div class="myweb7">
+        <div class="hr3"></div>
+
+        <div class="btxg1">
+            <div style="position: absolute;left: 50px;top: 5px;text-align: center;width: 80px;">
+                <label >地点：</label>
+            </div>
+
+            <div style="position: absolute;left: 130px;">
+                <select id="depart" style="width: 80px ;height:30px"> 
+                    <option value="0" >&nbsp;&nbsp;&nbsp;食堂</option> 
+                    <option value="1">&nbsp;&nbsp;&nbsp;餐厅</option>
+                </select> 
+            </div>
+
+            <div style="position: absolute;left: 230px;top: 5px;text-align: center;width: 80px;">
+                <label >时间：</label>
+            </div>
+
+            <div style="position: absolute;left: 310px;">
+                <select id="mytime" style="width: 80px ;height:30px " onchange="my_time()" > 
+                    <option  value="1"  >&nbsp;&nbsp;&nbsp;今日</option> 
+                    <option  value="2" >&nbsp;&nbsp;&nbsp;明日</option>
+                </select> 
+            </div>
+
+            <div style="position: absolute;left: 410px;text-align: center;width: 80px;">
+                <input type="text" id="time"  style="width: 80px ;height:30px" size="10" readonly="true">
+                <script language="JavaScript">
+                    var today=new Date();
+                    var submittime=today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                    $("#time").attr('value',submittime);
+                </script>
+            </div>
+
+            <div style="position: absolute;left: 510px;top: 5px;text-align: center;width: 80px;">
+                <label >餐类：</label>
+            </div>
+
+            <div style="position: absolute;left: 600px;">
+                <select id="meal" style="width: 80px ;height:30px;text-align: center;"> 
+                    <option value="0" >&nbsp;&nbsp;&nbsp;早餐</option> 
+                    <option value="1">&nbsp;&nbsp;&nbsp;中餐</option>
+                    <option value="2">&nbsp;&nbsp;&nbsp;晚餐</option>
+                </select> 
+            </div>
+
+            <div style="position: absolute;left: 800px;">
+                <button class="myButton" type="button" onclick="chaxun()">查询</button>
+            </div>
+        </div>
+
+        <div class="hr4"></div>
+
+        <div class="table1">
+            <table  id="mytable"  >
+                <thead >
+                <tr >
+                    <th style="background-color: #DEDEDE;">
+                        编号
+                    </th>
+                    <th style="background-color: #DEDEDE;">
+                        菜名
+                    </th>
+                    <th style="background-color: #DEDEDE;">
+                        季节
+                    </th>
+                    <th style="background-color: #DEDEDE;">
+                        价格
+                    </th>
+                    <th style="background-color: #DEDEDE;">
+                        份数
+                    </th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+
+
+    </div>
+
+
+    <div class="myweb6">
+        <p style="text-align: center;color: white;">乐百特公司服务地址</p>
+    </div>
+</div>
+
+</body>
+</html>
