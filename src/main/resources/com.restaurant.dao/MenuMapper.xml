@@ -33,6 +33,7 @@
         from tbl_menu
         where
         id = #{id}
+        and delete_flag != 1
     </select>
 
     <update id="updateMenu" parameterType="com.restaurant.entity.Menu">
@@ -67,6 +68,7 @@
         price,
         season
         from tbl_menu
+        where delete_flag != 1
         limit #{start}, #{end}
     </select>
 
@@ -81,6 +83,7 @@
         from tbl_menu
         where
         name like #{name}
+        and delete_flag != 1
         limit #{start}, #{end}
     </select>
 
@@ -95,6 +98,7 @@
         from tbl_menu
         where
         type like #{type}
+        and delete_flag != 1
         limit #{start}, #{end}
     </select>
 
@@ -110,6 +114,7 @@
         from tbl_menu
         where
         season like #{season}
+        and delete_flag != 1
         limit #{start}, #{end}
     </select>
 

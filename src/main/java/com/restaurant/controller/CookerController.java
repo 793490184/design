@@ -25,7 +25,7 @@ public class CookerController {
      */
     @RequestMapping("/get_menu_number.do")
     @ResponseBody
-    public BaseExecution getMenuNumber() {
+    public BaseExecution getMenuNumber(String type) {
         class Number {
             private String number;
 
@@ -94,11 +94,11 @@ public class CookerController {
         return new BaseExecution(200, "ok", menu);
     }
 
-    @RequestMapping("/searchmenu_all.do")
+    @RequestMapping("/select_menu.do")
     @ResponseBody
     public BaseExecution selectMenu(int p) {
         int start = 0;
-        int end = 5;
+        int end = 9;
         List<Menu> menuList = cookerService.selectMenu(start, end);
         return new BaseExecution(200, "ok", menuList);
     }
@@ -127,7 +127,7 @@ public class CookerController {
     // Sorted
     @RequestMapping("/get_public_number.do")
     @ResponseBody
-    public BaseExecution getPublicNumber() {
+    public BaseExecution getPublicNumber(String type) {
         class Number {
             int number;
 
@@ -143,7 +143,9 @@ public class CookerController {
                 this.number = number;
             }
         }
+        System.out.println(type);
         int result = cookerService.getPublicNumber();
+        System.out.println(result);
         Number number = new Number(result);
         return new BaseExecution(200, "ok", number);
     }

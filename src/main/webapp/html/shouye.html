@@ -3,149 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>首页</title>
-
-    <style>
-        div{
-            padding:0px 0px 0px 0px;
-            margin: 0px 0px 0px 0px;
-        }
-        .hr1{
-            width: 1520px;
-            border:none;
-            border-top:12px solid #F0745F;
-            margin: 0px 0px 0px 0px;
-            padding: 0px 0px 0px 0px;
-        }
-        .myweb{
-            width: 1220px;
-            height:750px;
-            position: absolute;
-            left:150px;
-            right:150px;
-            top:12px;
-
-        }
-        .myweb1{/*放login图标*/
-            width: 1220px;
-            height:150px;
-            position: absolute;
-
-        }
-        .myweb2{/*放导航栏*/
-            width: 1220px;
-            height:50px;
-            position: absolute;
-            top:150px;
-
-        }
-        .myweb3{
-            width: 1220px;
-            height:30px;
-            position: absolute;
-            top:200px;
-            background-color:white;
-        }
-        .myweb4{
-            width: 1220px;
-            height:440px;
-            position: absolute;
-            top:230px;
-
-        }
-        .myweb5{
-            width: 1220px;
-            height:30px;
-            position: absolute;
-            top:670px;
-            background-color:white;
-        }
-        .myweb6{
-            width: 1220px;
-            height: 50px;
-            background-color: #232323;
-            position: absolute;
-            top:700px;
-
-        }
-
-        .photo1{
-            background-image: url('lebaite2.png');
-            background-repeat: no-repeat;
-            position: absolute;
-            top:0px;
-            left:0px;
-            height:111px ;
-            width: 452px;
-        }
-
-        .nav ul{
-            width:980px;/*设置元素宽度为980px*/
-            height:28px;
-            border:0px solid #000;/*设置一个颜色为#000，宽度为1px的边框*/
-            margin:0px 0px 0px 0px;/*也可以简写为margin:0 auto*/
-            padding: 0px;
-
-        }
-        .nav ul li{
-            float:left;/*让li元素左浮动*/
-            list-style-type:none;
-        }
-
-        .nav ul li a{
-            width:100px;
-            height:50px;
-            line-height:50px;
-            color:black;
-            margin:0px 0px 0px 0px;
-            font-size:15px;
-            display:block;/*此元素将显示为块级元素，此元素前后会带有换行符。*/
-            text-align:center;
-            text-decoration:none;
-            border-right:1px solid #000;/*设置右边框*/
-        }
-
-        .nav ul li a1{
-            width:100px;
-            height:50px;
-            line-height:50px;
-            color:black;
-            margin:0px 0px 0px 0px;
-            font-size:15px;
-            display:block;/*此元素将显示为块级元素，此元素前后会带有换行符。*/
-            text-align:center;
-            text-decoration:none;
-
-        }
-
-        .nav ul li a:hover{
-            width:100px;
-            height:50px;
-            line-height:50px;
-            color:white;
-            background-color:#CE5541 ;
-        }
-        .nav ul li a1:hover{
-            width:100px;
-            height:50px;
-            line-height:50px;
-            color:white;
-            background-color:#CE5541 ;
-        }
-
-        #frame{position: absolute;width: 1220px;height: 440px;overflow: hidden;border-radius:5px; }
-        #photos img{float:left;width:1220px;height:440px}
-        #photos {  position: absolute;z-index:9;  width: calc(1220px * 4);/*---修改图片数量的话需要修改下面的动画参数*/  }
-        .play{ animation: ma 5s ease-out infinite alternate;}
-        @keyframes ma {
-            0%,25% {        margin-left: 0px;       }
-            30%,50% {       margin-left: -1220px;    }
-            55%,75% {       margin-left: -2440px;    }
-            80%,100% {       margin-left: -3660px;    }
-        }
-
-
-    </style>
-
+    <link href="../css/common.css" rel="stylesheet"/>
+    <link href="../css/shouye.css" rel="stylesheet"/>
 </head>
 <body style="margin: 0px 0px 0px 0px;padding: 0px 0px 0px 0px; ">
 
@@ -177,13 +36,15 @@
     <div class="myweb3">
     </div>
 
+
+
     <div class="myweb4">
         <div id="frame" >
             <div id="photos" class="play">
-                <img src="photo2.jpg" >
-                <img src="photo1.jpg" >
-                <img src="photo3.jpg" >
-                <img src="photo4.jpg" >
+                <img src="../photo/shouye/photo1.jpg" >
+                <img src="../photo/shouye/photo2.jpg" >
+                <img src="../photo/shouye/photo3.jpg" >
+                <img src="../photo/shouye/photo4.jpg" >
             </div>
         </div>
     </div>
