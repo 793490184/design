@@ -17,49 +17,75 @@
 
 
 
-    <script type="text/javascript">//查询所有菜单
+    <script type="text/javascript">
+        var number=0;
+        function getnum1(place,type1) {
+            $.ajax({
+                type:"POST",
+                url:"get_menu_number.do",//
+                dateType:"JSON",
+                data:{place:place,type:type1},
+                beforeSend:function () {},
+                success:function(data){
+                    number=data.message.number;
+                },
+                error:function(data){
+                    console.log();
+                },
+                complete:function(){}
+            })
+
+        }
     function AJAX(page) {
         var a=$('#depart').val();
-        if(a==0)a="食堂"
-        else if(a==1)a="餐厅"
+        if(a==0)a="public"
+        else if(a==1)a="private"
+
         var b=$('#meal').val();
-        if(b==0)b="早餐"
-        else if(b==1)b="中餐"
-        else if(b==2)b="晚餐"
+
+        if(b==0)b="breakfast"
+        else if(b==1)b="lunch"
+        else if(b==2)b="supper"
         var c=$('#time').val();
+
+        getnum1(a,b)
 
         $.ajax({//
                 type:"POST",
-                url:"todaymenuBytype",//
+                url:"select_ordered_public_menu_numbers.do",//
                 dateType:"JSON",
-                data:{p:page,restaurant:a,date:c,menutype:b},//传送想要的页数
+                data:{p:page,restaurant:a,date:c,type:b},//传送想要的页数
                 beforeSend:function () {},
                 success:function(data){
-                    var arr=JSON.parse(data);
-                    if(arr.data.length != 0)//判断为不为零
+
+                    var arr=data.message;
+                    if(data.message.length != 0)//判断为不为零
                     {
                         var  c22='<td>编号</td>';
                         var c23='<td>菜名</td>';
-                        var c24='<td>季节</td>';
+                        var c24='<td>使用时间</td>';
                         var c25='<td>价格</td>';
-                        var c26='<td>份数</td>';
+                        var c26='<td>类型</td>';
+                        var c27='<td>份数</td>';
 
                         str+='<tr>'+c22+c23+c24+c25+c26+'</tr>';
 
-                        for(var i=0;i<=arr.data.length-1;i++)
+                        for(var i=0;i<=data.message.length-1;i++)
                         {
                             var  c1='<td>'+"<input type='checkbox' name='ck'/>"+'</td>';
-                            var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr.data[i].vno+"'/>"+'</td>';
-                            var  c3='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr.data[i].vname+"'/>"+'</td>';
-                            var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='season"+i+"' value='"+arr.data[i].season+"'/>"+'</td>';
-                            var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px'id='price"+i+"'value='"+arr.data[i].price+"'/>"+'</td>';
-                            var c6='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='canlei"+i+"' value='"+arr.data[i].num+"'/>"+'</td>';
-                            str+='<tr>'+c1+c2+c3+c4+c5+c6+'</tr>';
+                            var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr[i].id+"'/>"+'</td>';
+                            var  c3='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr[i].name+"'/>"+'</td>';
+                            var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='season"+i+"' value='"+arr[i].useTime+"'/>"+'</td>';
+                            var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px'id='price"+i+"'value='"+arr[i].price+"'/>"+'</td>';
+                            var c6='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='canlei"+i+"' value='"+arr[i].type+"'/>"+'</td>';
+                            var c7='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='canlei"+i+"' value='"+arr[i].number+"'/>"+'</td>';
+                            str+='<tr>'+c1+c2+c3+c4+c5+c6+c7+'</tr>';
                         }
                         $('#mytable').html(str);//添加生成的行
-                        if(arr.rowcount%10==0)a=arr.rowcount/10;
+
+                        if(number%10==0)a=number/10;
                         else
-                            a=parseInt(arr.rowcount/10)+1;
+                            a=parseInt(number/10)+1;
 
                         if(page==0){
                             if(a<3){

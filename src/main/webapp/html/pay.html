@@ -19,20 +19,44 @@
     <link href="../css/pay.css" rel="stylesheet"/>
 
     <script type="text/javascript">//支出
+    var number=0;
+    function getnum2(time1,time2,type) {
+        $.ajax({
+            type:"POST",
+            url:"get_menu_number.do",//
+            dateType:"JSON",
+            data:{startTime:time1,endTime:time2,type:type},
+            beforeSend:function () {},
+            success:function(data){
+                number=data.message.number;
+            },
+            error:function(data){
+                console.log();
+            },
+            complete:function(){}
+        })
+
+    }
+
+
+
+
     function AJAX(page) {
     		
         var str='',span='',a=0;
         time1 = $('#time1').val();
         time2 = $('#time2').val();
+        getnum2(time1,time2,"out");
         $.ajax({//
                 type:"POST",
-                url:"viewdiaryaccountout",//
+                url:"select_account_by_date.do",//
                 dateType:"JSON",
-                data:{p:page,time1:time1,time2:time2},//传送想要的页数
+                data:{p:page,dateBegin:time1,dateEnd:time2,type:"out"},//传送想要的页数
                 beforeSend:function () {},
                 success:function(data){
-                    var arr=JSON.parse(data);
-                    if(arr.data.length != 0)//判断为不为零
+
+                    var arr=data.message;
+                    if(data.message.length != 0)//判断为不为零
                     {
                         var  c22='<td>选择</td>';
                         var  c23='<td>编号</td>';
@@ -47,29 +71,29 @@
                         var  c13='<td>'+'</td>';
                         var c14='<td>'+"<input type='text'   style='text-align: center;width: 80px ;height:30px' id='datepicker' onclick='rq()' value=''/>"+'</td>';
                         var c15='<td>'+"<input type='text'   style='text-align: center;width: 80px ;height:30px' id='money1' value=''/>"+'</td>';
-                        var c16='<td>'+"<select id='type' style='width: 80px ;height:30px' onchange='my_se()'><option value='1' >&nbsp;&nbsp;&nbsp;支出</option><option value='2' >&nbsp;&nbsp;&nbsp;收入</option></select>"+'</td>';
+                        var c16='<td>'+"<select id='type' style='width: 80px ;height:30px' onchange='my_se()'><option value='1' >&nbsp;&nbsp;&nbsp;out</option><option value='2' >&nbsp;&nbsp;&nbsp;收入</option></select>"+'</td>';
                         var c17='<td>'+"<button class='myButton'  type='button' onclick='mclear(this)' >清除</button>"+'</td>';
                         var c18='<td>'+"<button class='myButton'  type='button' onclick='add(this)' >增加</button>"+'</td>';
                         str+='<tr>'+c11+c13+c14+c15+c16+c17+c18+'</tr>';
 
-                        for(var i=0;i<=arr.data.length-1;i++)
+                        for(var i=0;i<=data.message.length-1;i++)
                         {
                         	    if(i==0){
                         	    	
-                        	    			var  c1='<td>'+'</td>';
-                                    var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='sno"+i+"' value='"+arr.data[i].sno+"'/>"+'</td>';
+                                    var  c1='<td>'+'</td>';
+                                    var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='sno"+i+"' value='"+arr[i].id+"'/>"+'</td>';
                                     var  c3='<td>'+'</td>';
-                                    var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='moneya"+i+"' value='"+arr.data[i].money+"'/>"+'</td>';
-                                    var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='diarytype"+i+"' value='"+arr.data[i].diarytype+"'/>"+'</td>';
+                                    var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='moneya"+i+"' value='"+arr[i].money+"'/>"+'</td>';
+                                    var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='diarytype"+i+"' value='ALLout'/>"+'</td>';
                                     var c6='<td>'+'</td>';
                                     var c7='<td>'+'</td>';
                         	    }
                         	    else{
                         	    	var  c1='<td>'+"<input type='checkbox' name='ck'/>"+'</td>';
-                                    var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='sno"+i+"' value='"+arr.data[i].sno+"'/>"+'</td>';
-                                    var  c3='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='date"+i+"' value='"+arr.data[i].date+"'/>"+'</td>';
-                                    var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='moneya"+i+"' value='"+arr.data[i].money+"'/>"+'</td>';
-                                    var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='diarytype"+i+"' value='"+arr.data[i].diarytype+"'/>"+'</td>';
+                                    var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='sno"+i+"' value='"+arr[i].id+"'/>"+'</td>';
+                                    var  c3='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='date"+i+"' value='"+arr[i].date+"'/>"+'</td>';
+                                    var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='moneya"+i+"' value='"+arr[i].money+"'/>"+'</td>';
+                                    var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='diarytype"+i+"' value='out'/>"+'</td>';
                                     var c6='<td>'+"<button class='myButton'  type='button' onclick='del(this)' >删除</button>"+'</td>';
                                     var c7='<td>'+"<button class='myButton'  type='button' onclick='xiugai(this)' >修改</button>"+'</td>';
                         	    	
@@ -77,9 +101,10 @@
                             str+='<tr>'+c1+c2+c3+c4+c5+c6+c7+'</tr>';
                         }
                         $('#mytable').html(str);//添加生成的行
-                        if(arr.rowcount%10==0)a=arr.rowcount/10;
+
+                        if(number%10==0)a=number/10;
                         else
-                            a=parseInt(arr.rowcount/10)+1;
+                            a=parseInt(number/10)+1;
 
                         if(page==0){
                             if(a<3){
@@ -163,15 +188,17 @@
         var str='',span='',a=0;
         time1 = $('#time1').val();
         time2 = $('#time2').val();
+        getnum2(time1,time2,"in");
         $.ajax({//
                 type:"POST",
-                url:"viewdiaryaccountin",//
+                url:"select_account_by_date.do",//
                 dateType:"JSON",
-                data:{p:page,time1:time1,time2:time2},//传送想要的页数
+                data:{p:page,dateBegin:time1,dateEnd:time2,type:"in"},//传送想要的页数
                 beforeSend:function () {},
                 success:function(data){
-                    var arr=JSON.parse(data);
-                    if(arr.data.length != 0)//判断为不为零
+
+                    var arr=data.message;
+                    if(data.message.length != 0)//判断为不为零
                     {
                         var  c22='<td>选择</td>';
                         var  c23='<td>编号</td>';
@@ -186,40 +213,40 @@
                         var  c13='<td>'+'</td>';
                         var c14='<td>'+"<input type='text'   style='text-align: center;width: 80px ;height:30px' id='datepicker' onclick='rq()' value=''/>"+'</td>';
                         var c15='<td>'+"<input type='text'   style='text-align: center;width: 80px ;height:30px' id='money1' value=''/>"+'</td>';
-                        var c16='<td>'+"<select id='type' style='width: 80px ;height:30px' onchange='my_se()'><option value='1' >&nbsp;&nbsp;&nbsp;支出</option><option value='2' >&nbsp;&nbsp;&nbsp;收入</option></select>"+'</td>';
+                        var c16='<td>'+"<select id='type' style='width: 80px ;height:30px' onchange='my_se()'><option value='1' >&nbsp;&nbsp;&nbsp;in</option><option value='2' >&nbsp;&nbsp;&nbsp;收入</option></select>"+'</td>';
                         var c17='<td>'+"<button class='myButton'  type='button' onclick='mclear(this)' >清除</button>"+'</td>';
                         var c18='<td>'+"<button class='myButton'  type='button' onclick='add(this)' >增加</button>"+'</td>';
                         str+='<tr>'+c11+c13+c14+c15+c16+c17+c18+'</tr>';
 
-                        for(var i=0;i<=arr.data.length-1;i++)
+                        for(var i=0;i<=data.message.length-1;i++)
                         {
 	                        	if(i==0){
-		            	    			var  c1='<td>'+'</td>';
-		                        var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='sno"+i+"' value='"+arr.data[i].sno+"'/>"+'</td>';
-		                        var  c3='<td>'+'</td>';
-		                        var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='moneya"+i+"' value='"+arr.data[i].money+"'/>"+'</td>';
-		                        var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='diarytype"+i+"' value='"+arr.data[i].diarytype+"'/>"+'</td>';
-		                        var c6='<td>'+'</td>';
-		                        var c7='<td>'+'</td>';
+                                        var  c1='<td>'+'</td>';
+                                        var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='sno"+i+"' value='"+arr[i].sno+"'/>"+'</td>';
+                                        var  c3='<td>'+'</td>';
+                                        var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='moneya"+i+"' value='"+arr[i].money+"'/>"+'</td>';
+                                        var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='diarytype"+i+"' value='allIn'/>"+'</td>';
+                                        var c6='<td>'+'</td>';
+                                        var c7='<td>'+'</td>';
 	            	    			}
 	            	    			else{
-	            	    			var  c1='<td>'+"<input type='checkbox' name='ck'/>"+'</td>';
-	                        var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='sno"+i+"' value='"+arr.data[i].sno+"'/>"+'</td>';
-	                        var  c3='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='date"+i+"' value='"+arr.data[i].date+"'/>"+'</td>';
-	                       
-	                        var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='moneya"+i+"' value='"+arr.data[i].money+"'/>"+'</td>';
-	                        //alert(c4)
-	                        var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='diarytype"+i+"' value='"+arr.data[i].diarytype+"'/>"+'</td>';
-	                        var c6='<td>'+"<button class='myButton'  type='button' onclick='del(this)' >删除</button>"+'</td>';
-	                        var c7='<td>'+"<button class='myButton'  type='button' onclick='xiugai(this)' >修改</button>"+'</td>';
+                                        var  c1='<td>'+"<input type='checkbox' name='ck'/>"+'</td>';
+                                        var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='sno"+i+"' value='"+arr[i].id+"'/>"+'</td>';
+                                        var  c3='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='date"+i+"' value='"+arr[i].date+"'/>"+'</td>';
+
+                                        var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='moneya"+i+"' value='"+arr[i].money+"'/>"+'</td>';
+                                        //alert(c4)
+                                        var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='diarytype"+i+"' value='in'/>"+'</td>';
+                                        var c6='<td>'+"<button class='myButton'  type='button' onclick='del(this)' >删除</button>"+'</td>';
+                                        var c7='<td>'+"<button class='myButton'  type='button' onclick='xiugai(this)' >修改</button>"+'</td>';
             	    	
             	    }
                             str+='<tr>'+c1+c2+c3+c4+c5+c6+c7+'</tr>';
                         }
                         $('#mytable').html(str);//添加生成的行
-                        if(arr.rowcount%10==0)a=arr.rowcount/10;
+                        if(number%10==0)a=number/10;
                         else
-                            a=parseInt(arr.rowcount/10)+1;
+                            a=parseInt(number/10)+1;
 
                         if(page==0){
                             if(a<3){
@@ -325,9 +352,9 @@
                 c6.innerHTML="";
                 $.ajax({//
                         type:"POST",
-                        url:"diaryinout",//
+                        url:"insert_expand.do",//
                         dateType:"JSON",
-                        data:{money:a,date:b,diarytype:c},
+                        data:{money:a,date:b,type:c},
                         beforeSend:function () {
                         	//alert("qq");
                         },
@@ -402,14 +429,14 @@
             //	alert("111")
                 $.ajax({//
                         type:"POST",
-                        url:"updatediary",//
+                        url:"update_account.do",//
                         dateType:"JSON",
-                        data:{sno:sno,date:time,money:money,diaryType:diarytype},
+                        data:{id:sno,date:time,money:money,Type:diarytype},
                         beforeSend:function () {     
                         	
                         },
                         success:function(data){
-                            if(data.status==1)
+                            if(data.status=="ok")
                             {
                                 alert("修改成功！");
                             }
@@ -446,14 +473,14 @@
             if(ch[i].checked==true){
                 $.ajax({//
                         type:"POST",
-                        url:"deletediary",//
+                        url:"delete_expand.do",//
                         dateType:"JSON",
-                        data:{sno:sno},
+                        data:{id:sno},
                         beforeSend:function () {
                         	//alert('aaa')
                         },
                         success:function(data){
-                            if(data.status==1)
+                            if(data.status=="ok")
                             {
                             		$("#sno"+i).val('已删除');
                                 alert("删除成功！");
@@ -527,15 +554,15 @@
                 /* 每周从周一开始 */
                 firstDay : 1,
                 /* 区域化月名为中文习惯 */
-                monthNames : ["1月", "2月", "3月", "4月", "5月", "6月",
-                    "7月", "8月", "9月", "10月", "11月", "12月"],
+                monthNames : ["1", "2", "3", "4", "5", "6",
+                    "7", "8", "9", "10", "11", "12"],
                 /* 月份显示在年后面 */
                 showMonthAfterYear : true,
                 /* 年份后缀字符 */
                 yearSuffix : "年",
                 /* 格式化中文日期
                 （因为月份中已经包含“月”字，所以这里省略） */
-                dateFormat : "yy年MMdd日"
+                dateFormat : "yy-MM-dd"
             });
         });
 
@@ -546,15 +573,15 @@
                 /* 每周从周一开始 */
                 firstDay : 1,
                 /* 区域化月名为中文习惯 */
-                monthNames : ["1月", "2月", "3月", "4月", "5月", "6月",
-                    "7月", "8月", "9月", "10月", "11月", "12月"],
+                monthNames : ["1", "2", "3", "4", "5", "6",
+                    "7", "8", "9", "10", "11", "12"],
                 /* 月份显示在年后面 */
                 showMonthAfterYear : true,
                 /* 年份后缀字符 */
                 yearSuffix : "年",
                 /* 格式化中文日期
                 （因为月份中已经包含“月”字，所以这里省略） */
-                dateFormat : "yy年MMdd日"
+                dateFormat : "yy-MM-dd"
             });
         });
 
@@ -566,15 +593,15 @@
                 /* 每周从周一开始 */
                 firstDay : 1,
                 /* 区域化月名为中文习惯 */
-                monthNames : ["1月", "2月", "3月", "4月", "5月", "6月",
-                    "7月", "8月", "9月", "10月", "11月", "12月"],
+                monthNames : ["1", "2", "3", "4", "5", "6",
+                    "7", "8", "9", "10", "11", "12"],
                 /* 月份显示在年后面 */
                 showMonthAfterYear : true,
                 /* 年份后缀字符 */
                 yearSuffix : "年",
                 /* 格式化中文日期
                 （因为月份中已经包含“月”字，所以这里省略） */
-                dateFormat : "yy年MMdd日"
+                dateFormat : "yy-MM-dd"
             });
         });
 
@@ -585,15 +612,15 @@
                 /* 每周从周一开始 */
                 firstDay : 1,
                 /* 区域化月名为中文习惯 */
-                monthNames : ["1月", "2月", "3月", "4月", "5月", "6月",
-                    "7月", "8月", "9月", "10月", "11月", "12月"],
+                monthNames : ["1", "2", "3", "4", "5", "6",
+                    "7", "8", "9", "10", "11", "12"],
                 /* 月份显示在年后面 */
                 showMonthAfterYear : true,
                 /* 年份后缀字符 */
                 yearSuffix : "年",
                 /* 格式化中文日期
                 （因为月份中已经包含“月”字，所以这里省略） */
-                dateFormat : "yy年MMdd日"
+                dateFormat : "yy-MM-dd"
             });
 			$("#datepicker").blur();
 			$("#datepicker").focus();
@@ -675,7 +702,7 @@
                 </div>
                 <script language="JavaScript">
                     var today=new Date();
-                    var submittime=today.getFullYear()+'年'+(today.getMonth()+1)+'月'+today.getDate()+'日';
+                    var submittime=today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
                     $("#time2").attr('value',submittime);
                 </script>
 

@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface OrderedPublicMenuMapper {
 
+	public int selectOrderedPublic(String type);
+
 	public void selectOrderedAsPublic(@Param("menuId")int menuId, @Param("account")String account,
 									   @Param("type")String type, @Param("useTime")String useTime,
 									   @Param("number")int number);

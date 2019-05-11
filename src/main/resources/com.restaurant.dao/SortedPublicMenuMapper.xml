@@ -53,29 +53,29 @@
 
     <select id="selectPublicMenuByType" resultType="com.restaurant.entity.SortedMenu">
         <bind name="type" value="'%' + _parameter.type + '%'" />
+        <bind name="season" value="'%' + _parameter.season + '%'" />
         select id, menu_id, name, type, price, season, delete_flag
-        from ( select
-        tbl_menu_public.id, menu_id, name, type, price, season, tbl_menu_public.delete_flag
-        from
-        tbl_menu_public left join tbl_menu
-        on tbl_menu_public.menu_id = tbl_menu.id ) as tbl
-        where
-        tbl.type like #{type}
+            from ( select
+            tbl_menu_public.id, menu_id, name, type, price, season, tbl_menu_public.delete_flag
+            from
+            tbl_menu_public left join tbl_menu
+            on tbl_menu_public.menu_id = tbl_menu.id ) as tbl
+        where tbl.season like #{season}
+        and tbl.type like #{type}
         and delete_flag != 1
         limit #{start}, #{end}
     </select>
 
 
-    <select id="selectPublicMenuBySeason" resultType="com.restaurant.entity.SortedMenu">
+    <select id="selectPublicSortedMenu" resultType="com.restaurant.entity.SortedMenu">
         <bind name="season" value="'%' + _parameter.season + '%'" />
-        select id, menu_id, name, type, price, season, delete_flag
-        from ( select
-            tbl_menu_public.id, menu_id, name, type, price, season, tbl_menu_public.delete_flag
-            from
-            tbl_menu_public left join tbl_menu
-            on tbl_menu_public.menu_id = tbl_menu.id ) as tbl
-        where
-        tbl.season like #{season}
+        <bind name="type" value="'%' + _parameter.type + '%'" />
+        select
+        id, name, type, price, season
+        from
+        tbl_menu
+        where season like #{season}
+        and type like #{type}
         and delete_flag != 1
         limit #{start}, #{end}
     </select>

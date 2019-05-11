@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface OrderedPrivateMenuMapper {
 
+	public int selectOrderedPrivate(String type);
+
 	public void selectOrderedAsPrivate(@Param("menuId")int menuId, @Param("account")String account,
 									   @Param("type")String type, @Param("useTime")String useTime,
 									   @Param("number")int number);

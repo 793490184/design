@@ -20,6 +20,7 @@
 
 
     <script type="text/javascript">//查询全部的
+
     function AJAX(page) {
         var a=$('#liebiao').val();
         if(a==0)a="食材"
@@ -28,13 +29,13 @@
         var str='',span='';
         $.ajax({//
                 type:"POST",
-                url:"searchFood",//
+                url:"select.do",//
                 dateType:"JSON",
-                data:{p:page,foodtype:a},//传送想要的页数
+                data:{p:page,foodType:a},//传送想要的页数
                 beforeSend:function () {},
                 success:function(data){
-                    var arr=JSON.parse(data);
-                    if(arr.data.length != 0)//判断为不为零
+                    var arr=data.message;
+                    if(data.message.length != 0)//判断为不为零
                     {
                         var  c22='<td>选择</td>';
                         var  c23='<td>编号</td>';
@@ -61,24 +62,24 @@
                         var c110='<td>'+'</td>';
                         str+='<tr>'+c11+c12+c13+c14+c15+c16+c17+c18+c19+c110+'</tr>';
 
-                        for(var i=0;i<=arr.data.length-1;i++)
+                        for(var i=0;i<=data.message.length-1;i++)
                         {
                             var  c1='<td>'+"<input type='checkbox' name='ck'/>"+'</td>';
-                            var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr.data[i].fno+"'/>"+'</td>';
-                            var  c3='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vname"+i+"' value='"+arr.data[i].fname+"'/>"+'</td>';
-                            var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='leibie"+i+"' value='"+arr.data[i].foodtype+"'/>"+'</td>';
-                            var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='num"+i+"' value='"+arr.data[i].num+"'/>"+'</td>';
-                            var c6='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px'id='datepicker1"+i+"'value='"+arr.data[i].date+"'/>"+'</td>';
-                            var c7='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px'id='datepicker2"+i+"'value='"+arr.data[i].security+"'/>"+'</td>';
+                            var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr[i].id+"'/>"+'</td>';
+                            var  c3='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vname"+i+"' value='"+arr[i].name+"'/>"+'</td>';
+                            var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='leibie"+i+"' value='"+arr[i].foodType+"'/>"+'</td>';
+                            var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='num"+i+"' value='"+arr[i].number+"'/>"+'</td>';
+                            var c6='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px'id='datepicker1"+i+"'value='"+arr[i].date+"'/>"+'</td>';
+                            var c7='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px'id='datepicker2"+i+"'value='"+arr[i].security+"'/>"+'</td>';
                             var c8='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px'id='use"+i+"'value=''/>"+'</td>';
                             var c9='<td>'+'</td>';
                             var c10='<td>'+"<button class='myButton'  type='button' onclick='shiyong(this)' >使用</button>"+'</td>';
                             str+='<tr>'+c1+c2+c3+c4+c5+c6+c7+c8+c9+c10+'</tr>';
                         }
                         $('#mytable').html(str);//添加生成的行
-                        if(arr.rowcount%10==0)a=arr.rowcount/10;
+                        if(number%10==0)a=number/10;
                         else
-                            a=parseInt(arr.rowcount/10)+1;
+                            a=parseInt(number/10)+1;
 
                         if(page==0){
                             if(a<3){
@@ -189,12 +190,12 @@
                 c9.innerHTML="";
                 $.ajax({//
                         type:"POST",
-                        url:"insertFood",//
+                        url:"insert.do",//
                         dateType:"JSON",
-                        data:{fname:vname,num:num,date:datepicker1,security:datepicker2,foodtype:q},
+                        data:{name:vname,number:num,date:datepicker1,security:datepicker2,foodType:q},
                         beforeSend:function () {},
                         success:function(data){
-                            if(data.status==1)
+                            if(data.status=="ok")
                             {
                                 alert("添加成功！");
                             }
@@ -250,12 +251,12 @@
             	//alert('111')
                 $.ajax({//
                         type:"POST",
-                        url:"useFood",//
+                        url:"update.do",//
                         dateType:"JSON",
-                        data:{fno:vno,use:use},
+                        data:{id:vno,usenumber:use},
                         beforeSend:function () {},
                         success:function(data){
-                            if(data.status==1)
+                            if(data.status=="ok")
                             {
                                 alert("修改成功！");
                             }

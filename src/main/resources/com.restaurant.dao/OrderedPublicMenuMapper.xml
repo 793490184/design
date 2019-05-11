@@ -5,6 +5,14 @@
 <mapper namespace="com.restaurant.dao.OrderedPublicMenuMapper">
 
     <!--useGeneratedKeys="true" keyProperty="id"-->
+
+    <select id="selectOrderedPublic" resultType="Integer">
+        select count(account)
+        from tbl_menu_order_public
+        where delete_flag != 1
+        and type = #{type}
+    </select>
+
     <insert id="selectOrderedAsPublic">
         insert into
         tbl_menu_order_public

@@ -20,22 +20,44 @@
 
 
     <script type="text/javascript">//已买单
+    var number=0;
+    function getnum2(time1,time2,type) {
+        $.ajax({
+            type:"POST",
+            url:"get_menu_number.do",//
+            dateType:"JSON",
+            data:{startTime:time1,endTime:time2,type:type},
+            beforeSend:function () {},
+            success:function(data){
+                number=data.message.number;
+            },
+            error:function(data){
+                console.log();
+            },
+            complete:function(){}
+        })
+
+
+    }
+
+
     function AJAX(page) {
         var str='',span='',a=0;
         var a=$('#type').val();
         var b=$('#time1').val();
         var c=$('#time2').val();
+        getnum2(b,c,a)
 
         $.ajax({//
                 type:"POST",
                 url:"searchAccount",//
                 dateType:"JSON",
                 timeout :1000,
-                data:{p:page,time1:b,time2:c,finished: a},//传送想要的页数
+                data:{p:page,startTime:b,endTime:c,type: a},//传送想要的页数
                 beforeSend:function () {},
                 success:function(data){
-                    var arr=JSON.parse(data);
-                    if(arr.data.length != 0)//判断为不为零
+                    var arr=data.message;
+                    if(data.message.length != 0)//判断为不为零
                     {
                         var  c22='<td>选择</td>';
                         var  c23='<td>编号</td>';
@@ -65,17 +87,17 @@
                         var c9="<td>"+" <button class='myButton' type='button' onclick='add()'>签单</button>"+"</td>";
                         str+='<tr>'+c0+c1+c2+c3+c4+c5+c6+c7+c8+c9+c10+'</tr>';
                         
-                        for(var i=0;i<=arr.data.length-1;i++)
+                        for(var i=0;i<=data.message.length-1;i++)
                         {
                         		if(i==0){
                         			
                         			var  c1='<td>'+'</td>';
                                     var  c2='<td>'+'</td>';
-                                    var  c3='<td>'+"<input type='text'  size='8'  style='text-align: center;'id='vname"+i+"' value='"+arr.data[i].name+"'/>"+'</td>';
+                                    var  c3='<td>'+"<input type='text'  size='8'  style='text-align: center;'id='vname"+i+"' value='"+arr[i].name+"'/>"+'</td>';
                                     var c4='<td>'+'</td>';
                                     var c5='<td>'+'</td>';
                                     var c6='<td>'+'</td>';
-                                    var c7='<td>'+"<input type='text'  size='5' style='text-align: center;' id='price"+i+"' value='"+arr.data[i].price+"'/>"+'</td>';
+                                    var c7='<td>'+"<input type='text'  size='5' style='text-align: center;' id='price"+i+"' value='"+arr[i].price+"'/>"+'</td>';
                                     var c8='<td>'+'</td>';
                                     if(a==1)
                                     		{
@@ -94,15 +116,15 @@
                         		else
                         			{
                         				var  c1='<td>'+"<input type='checkbox' name='ck'/>"+'</td>';
-                                    var  c2='<td>'+"<input type='text'  readonly  size='8' style='text-align: center;' id='vno"+i+"' value='"+arr.data[i].no+"'/>"+'</td>';
-                                    var  c3='<td>'+"<input type='text'  size='8'  style='text-align: center;'id='vname"+i+"' value='"+arr.data[i].name+"'/>"+'</td>';
-                                    var c4='<td>'+"<input type='text'  size='8' style='text-align: center;' id='fno"+i+"' value='"+arr.data[i].location+"'/>"+'</td>';
-                                    var c5='<td>'+"<input type='text'  size='8' style='text-align: center;' id='num"+i+"' value='"+arr.data[i].num+"'/>"+'</td>';
-                                    var c6='<td>'+"<input type='text'  size='8' style='text-align: center;' id='ttime"+i+"' value='"+arr.data[i].date+"'/>"+'</td>';
+                                    var  c2='<td>'+"<input type='text'  readonly  size='8' style='text-align: center;' id='vno"+i+"' value='"+arr[i].no+"'/>"+'</td>';
+                                    var  c3='<td>'+"<input type='text'  size='8'  style='text-align: center;'id='vname"+i+"' value='"+arr[i].name+"'/>"+'</td>';
+                                    var c4='<td>'+"<input type='text'  size='8' style='text-align: center;' id='fno"+i+"' value='"+arr[i].location+"'/>"+'</td>';
+                                    var c5='<td>'+"<input type='text'  size='8' style='text-align: center;' id='num"+i+"' value='"+arr[i].num+"'/>"+'</td>';
+                                    var c6='<td>'+"<input type='text'  size='8' style='text-align: center;' id='ttime"+i+"' value='"+arr[i].date+"'/>"+'</td>';
                                     
                                     // alert(c6)
-                                    var c7='<td>'+"<input type='text'  size='5' style='text-align: center;' id='price"+i+"' value='"+arr.data[i].price+"'/>"+'</td>';
-                                    var c8='<td>'+"<input type='text'  size='8' style='text-align: center;'id='beizhu"+i+"' value='"+arr.data[i].other+"'/>"+'</td>';
+                                    var c7='<td>'+"<input type='text'  size='5' style='text-align: center;' id='price"+i+"' value='"+arr[i].price+"'/>"+'</td>';
+                                    var c8='<td>'+"<input type='text'  size='8' style='text-align: center;'id='beizhu"+i+"' value='"+arr[i].other+"'/>"+'</td>';
                                     if(a==1)
 		                            		{
 		                                		var c9='<td>'+"<input type='text' readonly size='8' style='text-align: center;'value='已埋单'/>"+'</td>';
@@ -122,9 +144,9 @@
                             
                         }
                         $('#mytable').html(str);//添加生成的行
-                        if(arr.rowcount%10==0)a=arr.rowcount/10;
+                        if(number%10==0)a=number/10;
                         else
-                            a=parseInt(arr.rowcount/10)+1;
+                            a=parseInt(number/10)+1;
 
                         if(page==0){
                             if(a<3){
@@ -468,15 +490,15 @@
                 /* 每周从周一开始 */
                 firstDay : 1,
                 /* 区域化月名为中文习惯 */
-                monthNames : ["1月", "2月", "3月", "4月", "5月", "6月",
-                    "7月", "8月", "9月", "10月", "11月", "12月"],
+                monthNames : ["1", "2", "3", "4", "5", "6",
+                    "7", "8", "9", "10", "11", "12"],
                 /* 月份显示在年后面 */
                 showMonthAfterYear : true,
                 /* 年份后缀字符 */
                 yearSuffix : "年",
                 /* 格式化中文日期
                 （因为月份中已经包含“月”字，所以这里省略） */
-                dateFormat : "yy年MMdd日"
+                dateFormat : "yy-MM-dd"
             });
         });
 
@@ -487,15 +509,15 @@
                 /* 每周从周一开始 */
                 firstDay : 1,
                 /* 区域化月名为中文习惯 */
-                monthNames : ["1月", "2月", "3月", "4月", "5月", "6月",
-                    "7月", "8月", "9月", "10月", "11月", "12月"],
+                monthNames : ["1", "2", "3", "4", "5", "6",
+                    "7", "8", "9", "10", "11", "12"],
                 /* 月份显示在年后面 */
                 showMonthAfterYear : true,
                 /* 年份后缀字符 */
                 yearSuffix : "年",
                 /* 格式化中文日期
                 （因为月份中已经包含“月”字，所以这里省略） */
-                dateFormat : "yy年MMdd日"
+                dateFormat : "yy-MM-dd"
             });
         });
 
@@ -507,15 +529,15 @@
                 /* 每周从周一开始 */
                 firstDay : 1,
                 /* 区域化月名为中文习惯 */
-                monthNames : ["1月", "2月", "3月", "4月", "5月", "6月",
-                    "7月", "8月", "9月", "10月", "11月", "12月"],
+                monthNames : ["1", "2", "3", "4", "5", "6",
+                    "7", "8", "9", "10", "11", "12"],
                 /* 月份显示在年后面 */
                 showMonthAfterYear : true,
                 /* 年份后缀字符 */
                 yearSuffix : "年",
                 /* 格式化中文日期
                 （因为月份中已经包含“月”字，所以这里省略） */
-                dateFormat : "yy年MMdd日"
+                dateFormat : "yy-MM-dd"
             });
         });
 
@@ -545,15 +567,15 @@
                 /* 每周从周一开始 */
                 firstDay : 1,
                 /* 区域化月名为中文习惯 */
-                monthNames : ["1月", "2月", "3月", "4月", "5月", "6月",
-                    "7月", "8月", "9月", "10月", "11月", "12月"],
+                monthNames : ["1", "2", "3", "4", "5", "6",
+                    "7", "8", "9", "10", "11", "12"],
                 /* 月份显示在年后面 */
                 showMonthAfterYear : true,
                 /* 年份后缀字符 */
                 yearSuffix : "年",
                 /* 格式化中文日期
                 （因为月份中已经包含“月”字，所以这里省略） */
-                dateFormat : "yy年MMdd日"
+                dateFormat : "yy-MM-dd"
             });
             $("#datepicker").blur();
             $("#datepicker").focus();
@@ -646,7 +668,7 @@
             </div>
             <script language="JavaScript">
                 var today=new Date();
-                var submittime=today.getFullYear()+'年'+(today.getMonth()+1)+'月'+today.getDate()+'日';
+                var submittime=today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
                 $("#time2").attr('value',submittime);
             </script>
             <div style="position: absolute;left: 1150px;width: 80px;">

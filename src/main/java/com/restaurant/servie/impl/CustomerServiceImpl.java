@@ -48,4 +48,9 @@ public class CustomerServiceImpl implements CustomerService {
 		List<OrderedMenu> orderedMenuList = orderedPrivateMenuMapper.selectOrderedPrivateByCustomer(account, type, useTime);
 		return orderedMenuList;
 	}
+
+	@Override
+	public int selectOrderedByCustomer(String type, String account) {
+		return 0;
+	}
 }

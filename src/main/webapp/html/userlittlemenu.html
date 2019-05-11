@@ -19,22 +19,43 @@
 
 
     <script type="text/javascript">//
+    var number=0;
+    function getnum3(time,account,type) {
+        $.ajax({
+            type:"POST",
+            url:"get_menu_number.do",//
+            dateType:"JSON",
+            data:{place:"userprivate",useTime:time,account:account,type:type},
+            beforeSend:function () {},
+            success:function(data){
+                number=data.message.number;
+            },
+            error:function(data){
+                console.log();
+            },
+            complete:function(){}
+        })
+
+    }
+
+
     function AJAX(page) {//查询菜单
         var str='',span='',a=0;
         var time=$('#time').val();
         var can=$('#meal').val();
-        if(can==0)can='早餐';
-        else if(can==1)can='中餐';
-        else if(can==2)can='晚餐';
+        if(can==0)can='breakfast';
+        else if(can==1)can='lunch';
+        else if(can==2)can='supper';
+        getnum3(can,"accountnone",can)
         $.ajax({//
                 type:"POST",
-                url:"userViewPrivate",//
+                url:"select_private_menus.do",//
                 dateType:"JSON",
-                data:{p:page,menutype:can},//传送想要的页数
+                data:{p:page,type:can},//传送想要的页数
                 beforeSend:function () {},
                 success:function(data){
-                    var arr=JSON.parse(data);
-                    if(arr.data.length != 0)//判断为不为零
+                    var arr=data.message;
+                    if(data.message.length != 0)//判断为不为零
                     {
                         var  c22='<td>选择</td>';
                         var  c23='<td>编号</td>';
@@ -42,19 +63,20 @@
                         var c25='<td>餐类</td>';
                         var c26='<td>价格</td>';
                         str+='<tr>'+c22+c23+c24+c25+c26+'</tr>';
-                        for(var i=0;i<=arr.data.length-1;i++)
+                        for(var i=0;i<=data.message.length-1;i++)
                         {
                             var  c1='<td>'+"<input type='checkbox' name='ck'/>"+'</td>';
-                            var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr.data[i].vno+"'/>"+'</td>';
-                            var  c3='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vname"+i+"' value='"+arr.data[i].vname+"'/>"+'</td>';
-                            var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='canlei"+i+"' value='"+arr.data[i].menutype+"'/>"+'</td>';
+                            var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr[i].menuid+"'/>"+'</td>';
+                            var  c3='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vname"+i+"' value='"+arr[i].vname+"'/>"+'</td>';
+                            var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='canlei"+i+"' value='"+arr[i].menutype+"'/>"+'</td>';
                             var c5='<td>'+'</td>';
                             str+='<tr>'+c1+c2+c3+c4+c5+'</tr>';
                         }
                         $('#mytable').html(str);//添加生成的行
-                        if(arr.rowcount%10==0)a=arr.rowcount/10;
+
+                        if(number%10==0)a=number/10;
                         else
-                            a=parseInt(arr.rowcount/10)+1;
+                            a=parseInt(number/10)+1;
 
                         if(page==0){
                             if(a<3){
@@ -139,40 +161,43 @@
             var index=tr.rowIndex;
             tb.deleteRow(index);
         }
-    	
-    	
+
         var str='',span='',a=0;
         userid=$.session.get('userid');
         var time=$('#time').val();
+        getnum3(time,userid,"none")
         $.ajax({//
                 type:"POST",
-                url:"userViewOrderPrivate",//
+                url:"select_ordered_private_by_customer.do",//
                 dateType:"JSON",
-                data:{p:page,date:time,eno:userid},//传送想要的页数
+                data:{p:page,date:time,account:userid},//传送想要的页数
                 beforeSend:function () {},
                 success:function(data){
-                    var arr=JSON.parse(data);
-                    if(arr.data.length != 0)//判断为不为零
+                    var arr=data.message;
+                    if(data.message.length != 0)//判断为不为零
                     {
                         var  c22='<td>选择</td>';
                         var  c23='<td>编号</td>';
                         var c24='<td>菜名</td>';
                         var c25='<td>餐类</td>';
                         var c26='<td>价格</td>';
+                        var c27='<td>时间</td>';
                         str+='<tr>'+c22+c23+c24+c25+c26+'</tr>';
-                        for(var i=0;i<=arr.data.length-1;i++)
+                        for(var i=0;i<=data.message.length-1;i++)
                         {
                             var  c1='<td>'+"<input type='checkbox' name='ck'/>"+'</td>';
-                            var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr.data[i].vno+"'/>"+'</td>';
-                            var  c3='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vname"+i+"' value='"+arr.data[i].vname+"'/>"+'</td>';
-                            var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='canlei"+i+"' value='"+arr.data[i].menutype+"'/>"+'</td>';
-                            var c5='<td>'+'</td>';
-                            str+='<tr>'+c1+c2+c3+c4+c5+'</tr>';
+                            var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr[i].menuid+"'/>"+'</td>';
+                            var  c3='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vname"+i+"' value='"+arr[i].name+"'/>"+'</td>';
+                            var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='canlei"+i+"' value='"+arr[i].type+"'/>"+'</td>';
+                            var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='canlei"+i+"' value='"+arr[i].price+"'/>"+'</td>';
+                            var c6='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='canlei"+i+"' value='"+arr[i].useTime+"'/>"+'</td>';
+                            str+='<tr>'+c1+c2+c3+c4+c5+c6+'</tr>';
                         }
                         $('#mytable').html(str);//添加生成的行
-                        if(arr.rowcount%10==0)a=arr.rowcount/10;
+
+                        if(number%10==0)a=number/10;
                         else
-                            a=parseInt(arr.rowcount/10)+1;
+                            a=parseInt(number/10)+1;
 
                         if(page==0){
                             if(a<3){
@@ -271,12 +296,12 @@
                 if(ch[i].checked==true){
                     $.ajax({//
                             type:"POST",
-                            url:"userQuitOrderPrivate",//
+                            url:"remove_ordered_private.do",//
                             dateType:"JSON",
-                            data:{vno:vno,eno:userid,date:time},
+                            data:{menuid:vno,account:userid,date:time},
                             beforeSend:function () {},
                             success:function(data){
-                                if(data.status==1)
+                                if(data.status=="ok")
                                 {
                                     $("#vno"+m).val('已取消');
                                     alert("取消成功！");
@@ -309,9 +334,9 @@
             var time=$('#time').val();
             var can=$('#meal').val();
             userid=$.session.get('userid');
-            if(can==0)can='早餐';
-            else if(can==1)can='中餐';
-            else if(can==2)can='晚餐';
+            if(can==0)can='breakfast';
+            else if(can==1)can='lunch';
+            else if(can==2)can='supper';
             var flag=0;
             var tb=document.getElementById('mytable');
             var ch=document.getElementsByName('ck');
@@ -320,15 +345,15 @@
                 
                 if(ch[i].checked==true ){
                 	var vno=$("#vno"+i).val();
-                	alert(vno)
+                	//alert(vno)
                     $.ajax({//
                             type:"POST",
-                            url:"preorderPrivate",//
+                            url:"select_ordered_as_private.do",//
                             dateType:"JSON",
-                            data:{vno:vno,time:time,menutype:can,eno:userid},
+                            data:{menudid:vno,useTime:time,type:can,account:userid},
                             beforeSend:function () {},
                             success:function(data){
-                                if(data.status==1)
+                                if(data.status=="ok")
                                 {
                                 		alert('提交成功');
                                 		//$("#vno"+i).val('已提交')//修改标志位未成功

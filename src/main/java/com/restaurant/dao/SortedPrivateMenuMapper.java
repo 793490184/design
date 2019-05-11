@@ -13,7 +13,7 @@ public interface SortedPrivateMenuMapper {
 	public List<SortedMenu> selectPrivateMenus(@Param("start") int start, @Param("end") int end);
 	public List<SortedMenu> selectPrivateMenuBySeason(@Param("season") String season, @Param("start") int start, @Param("end") int end);
 	public List<SortedMenu> selectPrivateMenuByName(@Param("name") String name, @Param("start") int start, @Param("end") int end);
-	public List<SortedMenu> selectPrivateMenuByType(@Param("type") String type, @Param("start") int start, @Param("end") int end);
+	public List<SortedMenu> selectPrivateMenuByType(@Param("season") String season, @Param("type") String type, @Param("start") int start, @Param("end") int end);
 
 
 

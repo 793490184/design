@@ -55,5 +55,10 @@ public class CustomerController {
         return new BaseExecution(200, "ok", orderedMenuList);
     }
 
+    @RequestMapping("/select_ordered_by_customer")
+    @ResponseBody
+    public BaseExecution selectOrderedByCustomer(String type, String account) {
+         return null;
+    }
 
 }

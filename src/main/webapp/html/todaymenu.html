@@ -20,20 +20,42 @@
 
 
     <script type="text/javascript">//查询所有菜单
-    function AJAX(page) {
+
+    var number=0;
+    function getnum(type) {
+        $.ajax({
+            type:"POST",
+            url:"get_menu_number.do",//
+            dateType:"JSON",
+            data:{place:"public",type:type},
+            beforeSend:function () {},
+            success:function(data){
+                number=data.message.number;
+            },
+            error:function(data){
+                console.log();
+            },
+            complete:function(){}
+        })
+
+    }
+
+    function AJAX(page) {//没有对应的url
+
         var str='',span='',a=0;
         var can=$('#meal').val();
-        if(can==0)can='早餐';
-        else if(can==1)can='正餐';
+        if(can==0)can='breakfast';
+        else if(can==1)can='dinner';
+        getnum(can);//发送参数为食堂和餐类
         $.ajax({//
                 type:"POST",
-                url:"todaymenuBytype",//
+                url:"select_public_menu_by_season.do",//未修改url
                 dateType:"JSON",
-                data:{p:page,menutype:can},//传送想要的页数
+                data:{p:page,type:can},//传送想要的页数
                 beforeSend:function () {},
                 success:function(data){
-                    var arr=JSON.parse(data);
-                    if(arr.data.length != 0)//判断为不为零
+                    var arr=data.message;
+                    if(data.message.length != 0)//判断为不为零
                     {
                         var  c22='<td>选择</td>';
                         var  c23='<td>编号</td>';
@@ -42,21 +64,22 @@
                         var c26='<td>季节</td>';
                         var c27='<td>价格</td>';
                         str+='<tr>'+c22+c23+c24+c25+c26+c27+'</tr>';
-                        for(var i=0;i<=arr.data.length-1;i++)
+                        for(var i=0;i<=data.message.length-1;i++)
                         {
                             var  c1='<td>'+"<input type='checkbox' name='ck'/>"+'</td>';
-                            var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr.data[i].vno+"'/>"+'</td>';
-                            var  c3='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vname"+i+"' value='"+arr.data[i].vname+"'/>"+'</td>';
+                            var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr[i].id+"'/>"+'</td>';
+                            var  c3='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vname"+i+"' value='"+arr[i].name+"'/>"+'</td>';
                             
-                            var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='canlei"+i+"' value='"+arr.data[i].menutype+"'/>"+'</td>';
-                            var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='season"+i+"' value='"+arr.data[i].season+"'/>"+'</td>';
-                            var c6='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px'id='price"+i+"'value='"+arr.data[i].price+"'/>"+'</td>';
+                            var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='canlei"+i+"' value='"+arr[i].type+"'/>"+'</td>';
+                            var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='season"+i+"' value='"+arr[i].season+"'/>"+'</td>';
+                            var c6='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px'id='price"+i+"'value='"+arr[i].price+"'/>"+'</td>';
                             str+='<tr>'+c1+c2+c3+c4+c5+c6+'</tr>';
                         }
                         $('#mytable1').html(str);//添加生成的行
-                        if(arr.rowcount%10==0)a=arr.rowcount/10;
+
+                        if(number%10==0)a=number/10;
                         else
-                            a=parseInt(arr.rowcount/10)+1;
+                            a=parseInt(number/10)+1;
 
                         if(page==0){
                             if(a<3){
@@ -134,21 +157,21 @@
 
     <script type="text/javascript">//查询已添加菜单
     function AJAX1(page) {
+
         var str='',span='',a=0;
         var can=$('#meal').val();
-        if(can==0)can='早餐';
-        else if(can==1)can='正餐';
-       
+        if(can==0)can='breakfast';
+        else if(can==1)can='dinner';
+        getnum(can);
         $.ajax({//
                 type:"POST",
-                url:"menuHavePublished",//
+                url:"select_public_menus.do",//
                 dateType:"JSON",
-                data:{p:page,menutype:can},//传送想要的页数
+                data:{p:page,type:can},//传送想要的页数
                 beforeSend:function () {},
                 success:function(data){
-                
-                    var arr=JSON.parse(data);
-                    if(arr.data.length != 0)//判断为不为零
+                    var arr=data.message;
+                    if(data.message.length != 0)//判断为不为零
                     {
                         var  c22='<td>选择</td>';
                         var  c23='<td>编号</td>';
@@ -159,24 +182,24 @@
                         var c28='<td>操作一</td>';
                         str+='<tr>'+c22+c23+c24+c25+c26+c27+c28+'</tr>';
                        
-                        for(var i=0;i<=arr.data.length-1;i++)
+                        for(var i=0;i<=data.message.length-1;i++)
                         {
                             var  c1='<td>'+"<input type='checkbox' name='ck'/>"+'</td>';
-                            var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr.data[i].vno+"'/>"+'</td>';
+                            var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr[i].menuid+"'/>"+'</td>';
                             //alert(c2)
-                            var  c3='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vname"+i+"' value='"+arr.data[i].vname+"'/>"+'</td>';
-                            var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='canlei"+i+"' value='"+arr.data[i].menutype+"'/>"+'</td>';
-                            var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='season"+i+"' value='"+arr.data[i].season+"'/>"+'</td>';
-                            var c6='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px'id='price"+i+"'value='"+arr.data[i].price+"'/>"+'</td>';
+                            var  c3='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vname"+i+"' value='"+arr[i].name+"'/>"+'</td>';
+                            var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='canlei"+i+"' value='"+arr[i].type+"'/>"+'</td>';
+                            var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='season"+i+"' value='"+arr[i].season+"'/>"+'</td>';
+                            var c6='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px'id='price"+i+"'value='"+arr[i].price+"'/>"+'</td>';
                             var c7='<td>'+"<button class='myButton'  type='button' onclick='del(this)' >删除</button>"+'</td>';
                             str+='<tr>'+c1+c2+c3+c4+c5+c6+c7+'</tr>';
                             
                         }
                         $('#mytable1').html(str);//添加生成的行
-                       
-                        if(arr.rowcount%10==0)a=arr.rowcount/10;
+
+                        if(number%10==0)a=number/10;
                         else
-                            a=parseInt(arr.rowcount/10)+1;
+                            a=parseInt(number/10)+1;
 
                         if(page==0){
                             if(a<3){
@@ -283,12 +306,12 @@
                    
                     $.ajax({//
                             type:"POST",
-                            url:"menuPublish",//
+                            url:"select_menu_as_public.do",//
                             dateType:"JSON",
-                            data:{vno:vno},
+                            data:{id:vno},
                             beforeSend:function () {},
                             success:function(data){
-                                if(data.status == 1){
+                                if(data.status == "ok"){
                                 	
                                 		alert("已发布")
                                 		
@@ -337,12 +360,12 @@
             		//$("#vno"+c).val('已删除');
                 $.ajax({//
                         type:"POST",
-                        url:"menuPublishDelete",//
+                        url:"remove_menu_public.do",//
                         dateType:"JSON",
                         data:{vno:vno},
                         beforeSend:function () {},
                         success:function(data){
-                            if(data.status == 1)
+                            if(data.status == "ok")
                             {
                             	$("#vno"+c).val('已删除');
                                 alert("删除成功！");

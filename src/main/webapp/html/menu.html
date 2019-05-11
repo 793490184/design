@@ -18,12 +18,12 @@
     <script type="text/javascript">
 
         var number=0;
-        function getnum(type) {
+        function getnum(type, info) {
         $.ajax({
             type:"POST",
             url:"get_menu_number.do",//
             dateType:"JSON",
-            data:{type:type},
+            data:{place:"big",type:type,info:info},
             beforeSend:function () {},
             success:function(data){
                 number=data.message.number;
@@ -33,10 +33,11 @@
             },
             complete:function(){}
         })
+
     }
     function AJAX(page) {//查询全部的
         var str='',span='',a=0;
-        getnum("all");
+        getnum("all","none");
         $.ajax({//
                 type:"POST",
                 url:"select_menu.do",//
@@ -87,10 +88,6 @@
                             str+='<tr>'+c1+c2+c3+c4+c5+c6+c7+c8+c9+c10+'</tr>';
                         }
                         $('#mytable').html(str);//添加生成的行
-                        console.log("start")
-
-                        console.log("end")
-                        console.log(number)
                         if(number%10==0)a=number/10;
                         else
                             a=parseInt(number/10)+1;
@@ -136,12 +133,10 @@
 
                             }
                         }
-                        console.log("mark")
                         span+=" <label >总页数：</label>"
                         span+="<input size='3' readonly type='text' value='"+a+"'/>"
                         span+="<input size='3' type='text' id='z' value=''/>"
                         span+="<button type='button' onclick='b1()' >跳转</button>";
-                        console.log(span)
                         $('#mydiv').html(span);
                         $('span').on('click',send);//绑定响应事件
                         function send() {
@@ -173,12 +168,14 @@
     <script type="text/javascript">//查询季节
     function AJAX1(page) {
         var str='',span='',a=0;
+
         var season=$('#season2').val();
         if(season==0)season='春季';
         else if(season==1)season='夏季';
         else if(season==2)season='秋季';
         else if(season==3)season='冬季';
-        else if(season==4)season='通用';
+        else if(season==4)season='';
+        getnum("season",season);
         $.ajax({//
                 type:"POST",
                 url:"select_menu_by_season.do",//
@@ -233,7 +230,7 @@
 
                         }
                         $('#mytable').html(str);//添加生成的行
-                        getnum("season");
+
                         if(number%10==0)a=number/10;
                         else
                             a=parseInt(number/10)+1;
@@ -314,12 +311,14 @@
     <script type="text/javascript">//查询菜名
     function AJAX2(page) {
         var str='',span='',a=0;
+
         var vname=$('#vname2').val();
+        getnum("name",vname);
         $.ajax({//
                 type:"POST",
                 url:" select_menu_by_name.do",//
                 dateType:"JSON",
-                data:{p:page,vname:vname},//传送想要的页数
+                data:{page:page,name:vname},//传送想要的页数
                 beforeSend:function () {},
                 success:function(data){
                     var arr=data.message;
@@ -368,7 +367,7 @@
 
                         }
                         $('#mytable').html(str);//添加生成的行
-                        getnum("name");
+
                         if(number%10==0)a=number/10;
                         else
                             a=parseInt(number/10)+1;
@@ -448,10 +447,12 @@
     <script type="text/javascript">//查询类别
     function AJAX3(page) {
         var str='',span='',a=0;
+
         var can=$('#can1').val();
-        if(can==0)can='早餐';
-        else if(can==1)can='正餐';
-        else if(can==2)can='酒水';
+        if(can==0)can='breakfast';
+        else if(can==1)can='dinner';
+        else if(can==2)can='wine';
+        getnum("type", can);
         //alert(can)
         $.ajax({//
                 type:"POST",
@@ -506,7 +507,7 @@
 
                         }
                         $('#mytable').html(str);//添加生成的行
-                        getnum("type");
+
                         if(number%10==0)a=number/10;
                         else
                             a=parseInt(number/10)+1;
@@ -586,8 +587,10 @@
 
     <script type="text/javascript">
         function add() {/*增加*/
+
             var ch=document.getElementsByName('ck');
             if(ch[0].checked==true){
+
                 var tr1=document.getElementById('mytable').insertRow(2);
                 var c0=tr1.insertCell(0);
                 var c1=tr1.insertCell(1);
@@ -601,17 +604,17 @@
                 var c9=tr1.insertCell(9);
 
                 var can=$('#canleic').val();
-                if(can==0)can='早餐';
-                else if(can==1)can='正餐';
-                else if(can==2)can='酒水';
-                //alert(can)
+                if(can==0)can='breakfast';
+                else if(can==1)can='dinner';
+                else if(can==2)can='wine';
+
                 var season=$('#seasonc').val();
-                //alert(season)
+
                 if(season==0)season='春季';
                 else if(season==1)season='夏季';
                 else if(season==2)season='秋季';
                 else if(season==3)season='冬季';
-                else if(season==4)season='通用';
+                else if(season==4)season='';
                 var vname=$('#vnamec').val();
                 var price=$('#pricec').val();
 
@@ -625,6 +628,8 @@
                 c7.innerHTML="";
                 c8.innerHTML="<button class='myButton'  type='button' onclick='' >删除（无用）</button>";
                 c9.innerHTML="<button class='myButton'  type='button' onclick='' >修改（无用）</button>";
+
+                console.log(vname,price,season,can)
                 $.ajax({//
                         type:"POST",
                         url:"add_menu.do",//
@@ -730,7 +735,7 @@
 
             //alert(i);
             var vno=$("#vnoc"+(i-2)).val();
-            alert(vno);
+            //alert(vno);
             var ch=document.getElementsByName('ck');
             if(ch[i-1].checked==true){
                 document.getElementById('mytable').deleteRow(i);
@@ -944,17 +949,17 @@
 
                     </th>
                     <th >
-                        <input type="text" id="v0" value="" size="10">
+                        <input type="text" id="vnamec" value="" size="10">
                     </th>
                     <th >
-                        <select id="c0" style="width: 80px ;height:30px" > 
+                        <select id="canleic" style="width: 80px ;height:30px" > 
                             <option value="0" >&nbsp;&nbsp;&nbsp;早餐</option> 
                             <option value="1">&nbsp;&nbsp;&nbsp;正餐</option>
                             <option value="2">&nbsp;&nbsp;&nbsp;酒水</option>
                         </select> 
                     </th>
                     <th >
-                        <select id="s0" style="width: 80px ;height:30px" > 
+                        <select id="seasonc" style="width: 80px ;height:30px" > 
                             <option value="0" >&nbsp;&nbsp;&nbsp;春季</option> 
                             <option value="1">&nbsp;&nbsp;&nbsp;夏季</option>
                             <option value="2">&nbsp;&nbsp;&nbsp;秋季</option>
@@ -963,7 +968,7 @@
                         </select> 
                     </th>
                     <th >
-                        <input type="text" id="p0" value="" size="5">
+                        <input type="text" id="pricec" value="" size="5">
                     </th>
                     <th >
 
@@ -981,11 +986,13 @@
                 </tr>
                 </tbody>
             </table>
+
             <div  class="myd">
                 <div id="mydiv" style="position: absolute;left: 30%;">
 
                 </div>
             </div>
+
         </div>
     </div>
     <div class="myweb6">

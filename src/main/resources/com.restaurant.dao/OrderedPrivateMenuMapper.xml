@@ -5,6 +5,13 @@
 <mapper namespace="com.restaurant.dao.OrderedPrivateMenuMapper">
 
     <!--useGeneratedKeys="true" keyProperty="id"-->
+    <select id="selectOrderedPrivate" resultType="Integer">
+        select count(account)
+        from tbl_menu_order_private
+        where delete_flag != 1
+        and type = #{type}
+    </select>
+
     <insert id="selectOrderedAsPrivate">
         insert into
         tbl_menu_order_private
