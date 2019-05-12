@@ -11,6 +11,7 @@ public interface SortedPrivateMenuMapper {
 	public void selectMenuAsPrivate(int id);
 	public void removeMenuPrivate(int id);
 	public List<SortedMenu> selectPrivateMenus(@Param("start") int start, @Param("end") int end);
+	public List<SortedMenu> selectPrivateSortedMenu(@Param("season") String season, @Param("type") String type, @Param("start") int start, @Param("end") int end);
 	public List<SortedMenu> selectPrivateMenuBySeason(@Param("season") String season, @Param("start") int start, @Param("end") int end);
 	public List<SortedMenu> selectPrivateMenuByName(@Param("name") String name, @Param("start") int start, @Param("end") int end);
 	public List<SortedMenu> selectPrivateMenuByType(@Param("season") String season, @Param("type") String type, @Param("start") int start, @Param("end") int end);

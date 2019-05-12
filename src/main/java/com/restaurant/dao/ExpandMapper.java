@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ExpandMapper {
 
+	public int getExpandNumber(@Param("type") String type, @Param("startTime") String startTime, @Param("endTime") String endTime);
 	public void insert(Expand expand);
 	public void deleteFromDB(@Param("id") int id);
 	public List<Expand> selectExpandByData(@Param("dateBegin") String dateBegin, @Param("dateEnd") String dateEnd,

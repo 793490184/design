@@ -50,7 +50,10 @@ public class ManagerController {
 
     @RequestMapping("/select_account_by_date.do")
     @ResponseBody
-    public BaseExecution selectAccountByDate(String dateBegin, String dateEnd, int start, int end) {
+    public BaseExecution selectAccountByDate(String dateBegin, String dateEnd, int p) {
+        int start = p * 10;
+        int end = p * 10 + 9;
+        System.out.println(dateBegin + dateEnd + p);
         List<Account> accountList = managerService.selectAccountByDate(dateBegin, dateEnd, start, end);
         return new BaseExecution(200, "ok", accountList);
     }
@@ -87,7 +90,9 @@ public class ManagerController {
 
     @RequestMapping("/select_expands.do")
     @ResponseBody
-    public BaseExecution selectExpands(String dateBegin, String dateEnd, String type, int start, int end) {
+    public BaseExecution selectExpands(String dateBegin, String dateEnd, String type, int p) {
+        int start = p * 10;
+        int end = p * 10 + 9;
         List<Expand> expandList = managerService.selectExpands(dateBegin, dateEnd, type, start, end);
         return new BaseExecution(200, "ok", expandList);
     }

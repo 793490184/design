@@ -185,7 +185,7 @@
                         for(var i=0;i<=data.message.length-1;i++)
                         {
                             var  c1='<td>'+"<input type='checkbox' name='ck'/>"+'</td>';
-                            var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr[i].menuid+"'/>"+'</td>';
+                            var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr[i].id+"'/>"+'</td>';
                             //alert(c2)
                             var  c3='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vname"+i+"' value='"+arr[i].name+"'/>"+'</td>';
                             var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='canlei"+i+"' value='"+arr[i].type+"'/>"+'</td>';
@@ -362,7 +362,7 @@
                         type:"POST",
                         url:"remove_menu_public.do",//
                         dateType:"JSON",
-                        data:{vno:vno},
+                        data:{id:vno},
                         beforeSend:function () {},
                         success:function(data){
                             if(data.status == "ok")

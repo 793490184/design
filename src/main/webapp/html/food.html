@@ -20,16 +20,36 @@
 
 
     <script type="text/javascript">//查询全部的
+    var number=0;
+    function getnum(type) {
+        $.ajax({
+            type:"POST",
+            url:"get_menu_number.do",//
+            dateType:"JSON",
+            data:{place:"food",type:type},
+            beforeSend:function () {},
+            success:function(data){
+                number=data.message.number;
+            },
+            error:function(data){
+                console.log();
+            },
+            complete:function(){}
+        })
+
+    }
+
+
 
     function AJAX(page) {
         var a=$('#liebiao').val();
         if(a==0)a="食材"
         else if(a==1)a="酒水"
-
+        getnum(a)
         var str='',span='';
         $.ajax({//
                 type:"POST",
-                url:"select.do",//
+                url:"../storeman/select.do",//
                 dateType:"JSON",
                 data:{p:page,foodType:a},//传送想要的页数
                 beforeSend:function () {},
@@ -190,7 +210,7 @@
                 c9.innerHTML="";
                 $.ajax({//
                         type:"POST",
-                        url:"insert.do",//
+                        url:"../storeman/insert.do",//
                         dateType:"JSON",
                         data:{name:vname,number:num,date:datepicker1,security:datepicker2,foodType:q},
                         beforeSend:function () {},
@@ -251,9 +271,9 @@
             	//alert('111')
                 $.ajax({//
                         type:"POST",
-                        url:"update.do",//
+                        url:"../storeman/use.do",//
                         dateType:"JSON",
-                        data:{id:vno,usenumber:use},
+                        data:{id:vno,useNumber:use},
                         beforeSend:function () {},
                         success:function(data){
                             if(data.status=="ok")
@@ -293,15 +313,15 @@
                 /* 每周从周一开始 */
                 firstDay : 1,
                 /* 区域化月名为中文习惯 */
-                monthNames : ["1月", "2月", "3月", "4月", "5月", "6月",
-                    "7月", "8月", "9月", "10月", "11月", "12月"],
+                monthNames : ["1", "2", "3", "4", "5", "6",
+                    "7", "8", "9", "10", "11", "12"],
                 /* 月份显示在年后面 */
                 showMonthAfterYear : true,
                 /* 年份后缀字符 */
                 yearSuffix : "年",
                 /* 格式化中文日期
                 （因为月份中已经包含“月”字，所以这里省略） */
-                dateFormat : "yy年MMdd日"
+                dateFormat : "yy-MM-dd"
             });
         });
 
@@ -313,15 +333,15 @@
                 /* 每周从周一开始 */
                 firstDay : 1,
                 /* 区域化月名为中文习惯 */
-                monthNames : ["1月", "2月", "3月", "4月", "5月", "6月",
-                    "7月", "8月", "9月", "10月", "11月", "12月"],
+                monthNames : ["1", "2", "3", "4", "5", "6",
+                    "7", "8", "9", "10", "11", "12"],
                 /* 月份显示在年后面 */
                 showMonthAfterYear : true,
                 /* 年份后缀字符 */
                 yearSuffix : "年",
                 /* 格式化中文日期
                 （因为月份中已经包含“月”字，所以这里省略） */
-                dateFormat : "yy年MMdd日"
+                dateFormat : "yy-MM-dd"
             });
         });
 
@@ -340,19 +360,20 @@
         function rq(){
             $("#datepicker1").datepicker({
                 /* 区域化周名为中文 */
+                /* 区域化周名为中文 */
                 dayNamesMin : ["日", "一", "二", "三", "四", "五", "六"],
                 /* 每周从周一开始 */
                 firstDay : 1,
                 /* 区域化月名为中文习惯 */
-                monthNames : ["1月", "2月", "3月", "4月", "5月", "6月",
-                    "7月", "8月", "9月", "10月", "11月", "12月"],
+                monthNames : ["1", "2", "3", "4", "5", "6",
+                    "7", "8", "9", "10", "11", "12"],
                 /* 月份显示在年后面 */
                 showMonthAfterYear : true,
                 /* 年份后缀字符 */
                 yearSuffix : "年",
                 /* 格式化中文日期
                 （因为月份中已经包含“月”字，所以这里省略） */
-                dateFormat : "yy年MMdd日"
+                dateFormat : "yy-MM-dd"
             });
             $("#datepicker1").blur();
             $("#datepicker1").focus();
@@ -366,15 +387,15 @@
                 /* 每周从周一开始 */
                 firstDay : 1,
                 /* 区域化月名为中文习惯 */
-                monthNames : ["1月", "2月", "3月", "4月", "5月", "6月",
-                    "7月", "8月", "9月", "10月", "11月", "12月"],
+                monthNames : ["1", "2", "3", "4", "5", "6",
+                    "7", "8", "9", "10", "11", "12"],
                 /* 月份显示在年后面 */
                 showMonthAfterYear : true,
                 /* 年份后缀字符 */
                 yearSuffix : "年",
                 /* 格式化中文日期
                 （因为月份中已经包含“月”字，所以这里省略） */
-                dateFormat : "yy年MMdd日"
+                dateFormat : "yy-MM-dd"
             });
             $("#datepicker2").blur();
             $("#datepicker2").focus();

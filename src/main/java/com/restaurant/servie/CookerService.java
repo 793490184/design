@@ -44,7 +44,7 @@ public interface CookerService {
 	public int selectOrderedNumber(String place, String type);
 	public List<OrderedMenu> selectOrderedPrivateMenus(String type, String useTime, int start, int end);
 	public List<OrderedMenu> selectOrderedPublicMenus(String type, String useTime,int start, int end);
-	public List<OrderedMenu> selectOrderedPublicMenuNumbers(String type, String useTime, int start, int end);
+	public List<OrderedMenu> selectOrderedPublicMenuNumbers(String type, String date, String useTime, int start, int end);
 	public List<OrderedMenu> selectOrderedPrivateMenuNumbers(String type, String useTime, int start, int end);
 
 }

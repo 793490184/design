@@ -4,6 +4,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.restaurant.dao.AccountMapper">
 
+    <select id="getAccountNumber" resultType="Integer">
+        select count(date)
+        from tbl_account
+        where
+        date between #{startTime} and #{endTime}
+        and paid_flag = #{paid_flag}
+        and delete_flag != 1
+    </select>
     <!--useGeneratedKeys="true" keyProperty="id"-->
     <insert id="insertAccount" parameterType="com.restaurant.entity.Account">
         insert into

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>发布菜单</title>
+    <meta name="viewport" content="width=device-width,target-densitydpi=high-dpi,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link href="../css/mobilcommon.css" rel="stylesheet"/>
+    <link href="../css/mobilfabu.css" rel="stylesheet"/>
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>  <!--<引用jquery库>-->
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="http://www.gongjuji.net/Content/files/jquery.md5.js"></script>
+    <script src="JquerySession.js"></script>
+
+    <script type="text/javascript">
+
+        var number=0;
+
+        function mobilgetnum(place,type) {
+            $.ajax({
+                type:"POST",
+                url:"get_menu_number.do",//
+                dateType:"JSON",
+                data:{place:place,type:type},
+                beforeSend:function () {},
+                success:function(data){
+                    number=data.message.number;
+                },
+                error:function(data){
+                    console.log();
+                },
+                complete:function(){}
+            })
+
+        }
+
+
+        function deleteAll(){
+            var flag=0;
+            var tb=document.getElementById('mytable1');
+            var ch=document.getElementsByName('ck');
+            for(i=ch.length-1;i>=0;i--){
+                var tr=ch[i].parentNode.parentNode;
+                var index=tr.rowIndex;
+                tb.deleteRow(index);
+            }
+        }
+
+        function chaxun() {
+            var str='';
+            deleteAll()
+            var can=$('#liebiao1').val();
+            var place=$('#liebiao').val();
+            if(can==0)can='breakfast';
+            else if(can==1)can='dinner';
+            alert(place)
+            if(place==0)place="public";
+            else place="private"
+            mobilgetnum(place,can);
+            $.ajax({
+                type:"POST",
+                url: (place == "public" ? "select_public_menu_by_season.do" : "select_private_menu_by_season.do"),//
+                dateType:"JSON",
+                data:{p:number*(-1),type:can},//传送想要的页数
+                beforeSend:function () {},
+                success:function(data){
+
+                    var arr=data.message;
+                    if(data.message.length != 0)//判断为不为零
+                    {
+                        var  c22='<td>选择</td>';
+                        var  c23='<td>编号</td>';
+                        var c24='<td>菜名</td>';
+                        var c25='<td>餐类</td>';
+                        str+='<tr>'+c22+c23+c24+c25+'</tr>';
+                        for(var i=0;i<=data.message.length-1;i++)
+                        {
+                            var  c1='<td>'+"<input type='checkbox' name='ck'/>"+'</td>';
+                            var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr[i].id+"'/>"+'</td>';
+                            var  c3='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vname"+i+"' value='"+arr[i].name+"'/>"+'</td>';
+                            var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='canlei"+i+"' value='"+arr[i].type+"'/>"+'</td>';
+                            str+='<tr>'+c1+c2+c3+c4+'</tr>';
+                        }
+                        $('#mytable1').html(str);//添加生成的行
+                    }
+                },
+                error:function(data){
+                    console.log();
+                },
+                complete:function(){}
+            })
+
+        }
+
+        function fabu(){
+            var flag=0;
+            var can=$('#liebiao').val();
+            if(can==0)can='public';
+            else if(can==1)can='private';
+            var tb=document.getElementById('mytable1');
+            var ch=document.getElementsByName('ck');
+            for(i=ch.length-1;i>=0;i--){
+                if(ch[i].checked==true){
+                    var c=i;
+                    var vno=$("#vno"+c).val();
+
+                    $.ajax({//
+                            type:"POST",
+                            url:"menuPublish",//
+                            dateType:"JSON",
+                            data:{id:vno,place:can},
+                            beforeSend:function () {},
+                            success:function(data){
+                                if(data.status == "ok"){
+
+                                    alert("已发布")
+
+                                }else{
+                                    alert("发布失败")
+                                }
+                            },
+                            error:function(data){
+                                console.log();
+                            },
+                            complete:function(){}
+                        }
+
+                    )
+                    flag=flag+1;
+                }
+            }
+            if(flag<=0){
+                alert("请选定要发布的菜！");
+            }
+            var ch=document.getElementsByName('ck');
+            for(i=ch.length-1;i>=0;i--){
+                ch[i].checked=false;
+            }
+
+        }
+
+    </script>
+
+
+</head>
+<body>
+<div>
+    <hr class="hr1"></hr>
+</div>
+<div class="myweb">
+    <div class="myweb1">
+        <div class="photo1">
+        </div>
+    </div>
+
+    <div>
+        <hr class="hr2"></hr>
+    </div>
+
+    <div class="myweb2">
+        <div class="p1">
+
+        </div>
+        <div class="p2">
+
+        </div>
+        <div class="p3">
+        </div>
+    </div>
+
+    <div class="myweb3" >
+        <div class="myweb4">
+            <div class="web4-1">
+                <div class="web4-1-1">
+                    <label >地方：</label>
+                </div>
+                <div class="web4-1-2">
+                    <select id="liebiao"  > 
+                        <option value="0" >食堂</option> 
+                        <option value="1" >餐厅</option> 
+                    </select>
+                </div>
+            </div>
+            <div class="web4-2">
+            </div>
+
+            <div class="web4-3">
+                <div class="web4-1-1">
+                    <label >餐类：</label>
+                </div>
+                <div class="web4-1-2">
+                    <select id="liebiao1" > 
+                        <option value="0" >早餐</option> 
+                        <option value="1" >正餐</option> 
+                    </select>
+                </div>
+            </div>
+            <div class="web4-4">
+                <div class="web4-1-3">
+                    <button  type="button" class="myButton"  onclick="chaxun()">查询</button>
+                </div>
+            </div>
+        </div>
+        <div class="myweb5">
+            <div style="width:100%;height:100%;overflow-y: scroll;overflow-x:hidden;border:1px solid gray">
+                <table  id="mytable1" style="height: 100%;width: 100%">
+                </table>
+            </div>
+
+        </div>
+        <div class="myweb6">
+            <div class="bt1">
+                <button class="myButton" type="button "  onclick="fabu()">发布</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

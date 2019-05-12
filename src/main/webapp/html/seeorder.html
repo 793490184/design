@@ -61,24 +61,24 @@
                     var arr=data.message;
                     if(data.message.length != 0)//判断为不为零
                     {
+                        var  c21='<td>选择</td>';
                         var  c22='<td>编号</td>';
                         var c23='<td>菜名</td>';
                         var c24='<td>使用时间</td>';
                         var c25='<td>价格</td>';
                         var c26='<td>类型</td>';
                         var c27='<td>份数</td>';
-
-                        str+='<tr>'+c22+c23+c24+c25+c26+'</tr>';
-
+                        var str='';
+                        str+='<tr>'+c21+c22+c23+c24+c25+c26+c27+'</tr>';
                         for(var i=0;i<=data.message.length-1;i++)
                         {
                             var  c1='<td>'+"<input type='checkbox' name='ck'/>"+'</td>';
                             var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr[i].id+"'/>"+'</td>';
-                            var  c3='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr[i].name+"'/>"+'</td>';
+                            var  c3='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vname"+i+"' value='"+arr[i].name+"'/>"+'</td>';
                             var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='season"+i+"' value='"+arr[i].useTime+"'/>"+'</td>';
                             var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px'id='price"+i+"'value='"+arr[i].price+"'/>"+'</td>';
                             var c6='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='canlei"+i+"' value='"+arr[i].type+"'/>"+'</td>';
-                            var c7='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='canlei"+i+"' value='"+arr[i].number+"'/>"+'</td>';
+                            var c7='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='number"+i+"' value='"+arr[i].number+"'/>"+'</td>';
                             str+='<tr>'+c1+c2+c3+c4+c5+c6+c7+'</tr>';
                         }
                         $('#mytable').html(str);//添加生成的行
@@ -87,6 +87,7 @@
                         else
                             a=parseInt(number/10)+1;
 
+                        var span='';
                         if(page==0){
                             if(a<3){
                                 for(var i=1;i<=a;i++){

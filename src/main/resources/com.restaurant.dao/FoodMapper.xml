@@ -13,6 +13,14 @@
         (#{name},  #{date}, #{security}, #{foodType}, #{number}, #{measure})
     </insert>
 
+    <select id="getFoodNumber" resultType="Integer">
+        select count(name)
+        from tbl_food
+        where food_type = #{type}
+        and delete_flag != 1
+        and used_flag != 1
+    </select>
+
     <update id="remove" parameterType="Integer">
         update
         tbl_food
@@ -27,6 +35,15 @@
         tbl_food
         set
         used_flag = 1
+        where
+        id = #{id}
+    </update>
+
+    <update id="use" parameterType="com.restaurant.entity.Food">
+        update
+        tbl_food
+        set
+        number = number - #{number}
         where
         id = #{id}
     </update>
@@ -53,6 +70,7 @@
         where
         delete_flag != 1
         and used_flag != 1
+        and food_type like #{foodType}
         limit #{start}, #{end}
     </select>
 

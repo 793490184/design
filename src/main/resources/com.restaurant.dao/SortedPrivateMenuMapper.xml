@@ -82,4 +82,18 @@
         limit #{start}, #{end}
     </select>
 
+    <select id="selectPrivateSortedMenu" resultType="com.restaurant.entity.SortedMenu">
+        <bind name="season" value="'%' + _parameter.season + '%'" />
+        <bind name="type" value="'%' + _parameter.type + '%'" />
+        select
+        id, name, type, price, season
+        from
+        tbl_menu
+        where season like #{season}
+        and type like #{type}
+        and delete_flag != 1
+        limit #{start}, #{end}
+    </select>
+
+
 </mapper>

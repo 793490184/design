@@ -49,7 +49,7 @@
         getnum2(time1,time2,"out");
         $.ajax({//
                 type:"POST",
-                url:"select_account_by_date.do",//
+                url:"select_expands.do",//
                 dateType:"JSON",
                 data:{p:page,dateBegin:time1,dateEnd:time2,type:"out"},//传送想要的页数
                 beforeSend:function () {},
@@ -191,7 +191,7 @@
         getnum2(time1,time2,"in");
         $.ajax({//
                 type:"POST",
-                url:"select_account_by_date.do",//
+                url:"../manager/select_account_by_date.do",//
                 dateType:"JSON",
                 data:{p:page,dateBegin:time1,dateEnd:time2,type:"in"},//传送想要的页数
                 beforeSend:function () {},

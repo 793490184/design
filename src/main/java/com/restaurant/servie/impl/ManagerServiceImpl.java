@@ -19,6 +19,11 @@ public class ManagerServiceImpl implements ManagerService {
 	private ExpandMapper expandMapper;
 
 	@Override
+	public int getAccountNumber(String type, String startTime, String endTime) {
+		return 0;
+	}
+
+	@Override
 	public void insertAccount(Account account) {
 		accountMapper.insertAccount(account);
 	}
@@ -42,6 +47,12 @@ public class ManagerServiceImpl implements ManagerService {
 	public List<Account> selectAccountByDate(String dateBegin, String dateEnd, int start, int end) {
 		List<Account> accountList = accountMapper.selectAccountByDate(dateBegin, dateEnd, start, end);
 		return accountList;
+	}
+
+	@Override
+	public int getExpandNumber(String type, String startTime, String endTime) {
+		int result = expandMapper.getExpandNumber(type, startTime, endTime);
+		return result;
 	}
 
 	@Override

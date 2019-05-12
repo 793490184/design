@@ -176,7 +176,15 @@ public class CookerServiceImpl implements CookerService {
 	@Override
 	public List<SortedMenu> selectPrivateMenuByType(String type, int start, int end) {
 		String season = BaseInfo.getSeason();
-		List<SortedMenu> sortedMenuList = sortedPrivateMenuMapper.selectPrivateMenuByType(type, start, end);
+		List<SortedMenu> sortedMenuList = sortedPrivateMenuMapper.selectPrivateMenuByType(season, type, start, end);
+		return sortedMenuList;
+	}
+
+	@Override
+	public List<SortedMenu> selectPrivateSortedMenu(String type, int start, int end) {
+		String season = BaseInfo.getSeason();
+		List<SortedMenu> sortedMenuList = sortedPrivateMenuMapper.selectPrivateSortedMenu(season, type, start, end);
+//		System.out.println(sortedMenuList.toString());
 		return sortedMenuList;
 	}
 
@@ -205,9 +213,15 @@ public class CookerServiceImpl implements CookerService {
 	}
 
 	@Override
-	public List<OrderedMenu> selectOrderedPublicMenuNumbers(String type, String useTime, int start, int end) {
-		List<OrderedMenu> orderedMenuList = orderedPublicMenuMapper.selectOrderedPublicMenuNumbers(type, useTime, start, end);
-		return orderedMenuList;
+	public List<OrderedMenu> selectOrderedPublicMenuNumbers(String type, String restaurant, String useTime, int start, int end) {
+		if (restaurant.equals("public")) {
+			List<OrderedMenu> orderedMenuList = orderedPublicMenuMapper.selectOrderedPublicMenuNumbers(type, useTime, start, end);
+			return orderedMenuList;
+		} else if (restaurant.equals("private")) {
+			List<OrderedMenu> orderedMenuList = orderedPrivateMenuMapper.selectOrderedPrivateMenuNumbers(type, useTime, start, end);
+			return orderedMenuList;
+		}
+		return null;
 	}
 
 	@Override
