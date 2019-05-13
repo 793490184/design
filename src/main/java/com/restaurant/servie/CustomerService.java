@@ -12,7 +12,7 @@ public interface CustomerService {
 
 	public void selectOrderedAsPrivate(int menuId, String account, String type, String useTime, int number);
 	public void removeOrderedPrivate(int menuId, String account, String type, String useTime);
-	public List<OrderedMenu> selectOrderedPrivateByCustomer(String account, String type, String useTime);
+	public List<OrderedMenu> selectOrderedPrivateByCustomer(String account, String useTime, int start, int end);
 
 	public int selectOrderedByCustomer(String type, String account);
 

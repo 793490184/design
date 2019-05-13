@@ -15,8 +15,8 @@ public interface OrderedPrivateMenuMapper {
 									   @Param("number")int number);
 	public void removeOrderedPrivate(@Param("menuId")int menuId, @Param("account")String account,
 									 @Param("type")String type, @Param("useTime")String useTime);
-	public List<OrderedMenu> selectOrderedPrivateByCustomer(@Param("account")String account, @Param("type")String type,
-													 @Param("useTime")String useTime);
+	public List<OrderedMenu> selectOrderedPrivateByCustomer(@Param("account")String account, @Param("useTime")String useTime,
+															@Param("start") int start, @Param("end") int end);
 	public List<OrderedMenu> selectOrderedPrivateMenus(@Param("type")String type, @Param("useTime")String useTime,
 													   @Param("start") int start, @Param("end") int end);
 	public List<OrderedMenu> selectOrderedPrivateMenuNumbers(@Param("type")String type, @Param("useTime")String useTime,

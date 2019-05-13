@@ -43,20 +43,23 @@ public class CustomerController {
 
     @RequestMapping("/select_ordered_as_private.do")
     @ResponseBody
-    public BaseExecution selectOrderedAsPrivate(int menuId, String account, String type, String useTime, int number) {
+    public BaseExecution selectOrderedAsPrivate(Integer menuId, String account, String type, String useTime) {
+        int number = 1;
         customerService.selectOrderedAsPrivate(menuId, account, type, useTime, number);
         return new BaseExecution(200, "ok", "订餐成功");
     }
     @RequestMapping("/remove_ordered_private.do")
     @ResponseBody
-    public BaseExecution removeOrderedPrivate(int menuId, String account, String type, String useTime) {
+    public BaseExecution removeOrderedPrivate(Integer menuId, String account, String type, String useTime) {
         customerService.removeOrderedPrivate(menuId, account, type, useTime);
         return new BaseExecution(200, "ok", "取消订餐成功");
     }
     @RequestMapping("/select_ordered_private_by_customer.do")
     @ResponseBody
-    public BaseExecution selectOrderedPrivateByCustomer(String account, String type, String useTime) {
-        List<OrderedMenu> orderedMenuList = customerService.selectOrderedPrivateByCustomer(account, type, useTime);
+    public BaseExecution selectOrderedPrivateByCustomer(String account, Integer p, String useTime) {
+        int start = p * 10;
+        int end = p * 10 + 9;
+        List<OrderedMenu> orderedMenuList = customerService.selectOrderedPrivateByCustomer(account, useTime, start, end);
         return new BaseExecution(200, "ok", orderedMenuList);
     }
 

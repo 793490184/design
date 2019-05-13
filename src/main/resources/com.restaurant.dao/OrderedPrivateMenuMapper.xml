@@ -36,9 +36,9 @@
         from tbl_menu, tbl_menu_order_private
         where tbl_menu_order_private.menu_id = tbl_menu.id
         and account  = #{account}
-        and tbl_menu_order_private.type  = #{type}
         and use_time = #{useTime}
         and tbl_menu_order_private.delete_flag != 1
+        limit #{start}, #{end}
     </select>
     
     <select id="selectOrderedPrivateMenus" resultType="com.restaurant.entity.OrderedMenu">
