@@ -19,6 +19,7 @@
         function mobilgetnum(place,type) {
             $.ajax({
                 type:"POST",
+                async:false,
                 url:"get_menu_number.do",//
                 dateType:"JSON",
                 data:{place:place,type:type},
@@ -26,6 +27,7 @@
                 success:function(data){
                     number=data.message.number;
                 },
+
                 error:function(data){
                     console.log();
                 },
@@ -46,19 +48,27 @@
             }
         }
 
-        function chaxun() {
-            var str='';
+        function beforchaxun(){
             deleteAll()
             var can=$('#liebiao1').val();
             var place=$('#liebiao').val();
             if(can==0)can='breakfast';
             else if(can==1)can='dinner';
-            alert(place)
             if(place==0)place="public";
             else place="private"
             mobilgetnum(place,can);
+
+            chaxun(place,can);
+           // setTimeout(chaxun(place,can),10000);
+           // alert(number)
+
+        }
+
+        function chaxun(place,can) {
+            var str='';
             $.ajax({
                 type:"POST",
+                async:false,
                 url: (place == "public" ? "select_public_menu_by_season.do" : "select_private_menu_by_season.do"),//
                 dateType:"JSON",
                 data:{p:number*(-1),type:can},//传送想要的页数
@@ -68,17 +78,17 @@
                     var arr=data.message;
                     if(data.message.length != 0)//判断为不为零
                     {
-                        var  c22='<td>选择</td>';
-                        var  c23='<td>编号</td>';
-                        var c24='<td>菜名</td>';
-                        var c25='<td>餐类</td>';
+                        var  c22='<td style="text-align: center;width: 80px;height: 30px;">选择</td>';
+                        var  c23='<td style="text-align: center;width: 80px;height: 30px;">编号</td>';
+                        var c24='<td style="text-align: center;width: 80px;height: 30px;">菜名</td>';
+                        var c25='<td style="text-align: center;width: 80px;height: 30px;">餐类</td>';
                         str+='<tr>'+c22+c23+c24+c25+'</tr>';
                         for(var i=0;i<=data.message.length-1;i++)
                         {
                             var  c1='<td>'+"<input type='checkbox' name='ck'/>"+'</td>';
-                            var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr[i].id+"'/>"+'</td>';
-                            var  c3='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vname"+i+"' value='"+arr[i].name+"'/>"+'</td>';
-                            var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='canlei"+i+"' value='"+arr[i].type+"'/>"+'</td>';
+                            var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px;height: 30px;' id='vno"+i+"' value='"+arr[i].id+"'/>"+'</td>';
+                            var  c3='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px;height: 30px;' id='vname"+i+"' value='"+arr[i].name+"'/>"+'</td>';
+                            var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px;height: 30px;' id='canlei"+i+"' value='"+arr[i].type+"'/>"+'</td>';
                             str+='<tr>'+c1+c2+c3+c4+'</tr>';
                         }
                         $('#mytable1').html(str);//添加生成的行
@@ -197,13 +207,13 @@
             </div>
             <div class="web4-4">
                 <div class="web4-1-3">
-                    <button  type="button" class="myButton"  onclick="chaxun()">查询</button>
+                    <button  type="button" class="myButton"  onclick="beforchaxun()">查询</button>
                 </div>
             </div>
         </div>
         <div class="myweb5">
             <div style="width:100%;height:100%;overflow-y: scroll;overflow-x:hidden;border:1px solid gray">
-                <table  id="mytable1" style="height: 100%;width: 100%">
+                <table  id="mytable1" style="width: 100%">
                 </table>
             </div>
 

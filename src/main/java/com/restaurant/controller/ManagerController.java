@@ -76,8 +76,10 @@ public class ManagerController {
 
     @RequestMapping("/select_expand_by_date.do")
     @ResponseBody
-    public BaseExecution selectExpandByDate(String dateBegin, String dateEnd, int start, int end) {
-        List<Expand> expandList = managerService.selectExpandByData(dateBegin, dateEnd, start, end);
+    public BaseExecution selectExpandByDate(String dateBegin, String dateEnd, String type, int p) {
+        int start = p * 10;
+        int end = p * 10 + 9;
+        List<Expand> expandList = managerService.selectExpandByData(dateBegin, dateEnd, type, start, end);
         return new BaseExecution(200, "ok", expandList);
     }
 
@@ -87,6 +89,16 @@ public class ManagerController {
         List<Expand> expandList = managerService.selectExpandByType(type, start, end);
         return new BaseExecution(200, "ok", expandList);
     }
+
+
+    @RequestMapping("/update_expand.do")
+    @ResponseBody
+    public BaseExecution update(int id, String date, double money, String type) {
+        Expand expand = new Expand(id, date, type, money);
+        managerService.update(expand);
+        return new BaseExecution(200, "ok", "已经修改");
+    }
+
 
     @RequestMapping("/select_expands.do")
     @ResponseBody

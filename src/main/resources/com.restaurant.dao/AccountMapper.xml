@@ -19,12 +19,16 @@
         date,
         name,
         money,
+        room_number,
+        people_number,
         paid_flag,
         message)
         values (
         #{date},
         #{name},
         #{money},
+        #{roomNumber},
+        #{peopleNumber},
         #{paidFlag},
         #{message})
     </insert>
@@ -45,7 +49,9 @@
         name = #{name},
         message = #{message},
         money = #{money},
-        paid_flag = #{paidFlag}
+        paid_flag = #{paidFlag},
+        room_number = #{roomNumber},
+        people_number = #{peopleNumber}
         where
         id = #{id}
     </update>
@@ -60,7 +66,7 @@
     </update>
     
     <select id="selectAccountByDate" resultType="com.restaurant.entity.Account">
-        select id, date, name, message, money, paid_flag
+        select id, date, name, message, money, paid_flag, people_number, room_number
         from tbl_account
         where
         delete_flag != 1

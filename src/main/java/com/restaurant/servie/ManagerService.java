@@ -17,8 +17,9 @@ public interface ManagerService {
 	// expand
 	public int getExpandNumber(String type, String startTime, String endTime);
 	public void insert(Expand expand);
+	public void update(Expand expand);
 	public void deleteFromDB(int id);
-	public List<Expand> selectExpandByData(String dateBegin, String dateEnd, int start, int end);
+	public List<Expand> selectExpandByData(String dateBegin, String dateEnd, String type, int start, int end);
 	public List<Expand> selectExpandByType(String type, int start, int end);
 	public List<Expand> selectExpands(String dateBegin, String dateEnd, String type, int start, int end);
 

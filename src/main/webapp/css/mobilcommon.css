@@ -169,4 +169,19 @@ div{
     top:1px;
 }
 
+table,th, td
+{
+    border: 1px solid black;
+}
+
+th
+{
+    height:50px;
+    text-align: center;
+}
+
+td{
+    height:20px;
+    text-align: center;
+}
 .

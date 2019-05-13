@@ -49,7 +49,7 @@
         getnum2(time1,time2,"out");
         $.ajax({//
                 type:"POST",
-                url:"select_expands.do",//
+                url:"../manager/select_expand_by_date.do",//
                 dateType:"JSON",
                 data:{p:page,dateBegin:time1,dateEnd:time2,type:"out"},//传送想要的页数
                 beforeSend:function () {},
@@ -71,7 +71,7 @@
                         var  c13='<td>'+'</td>';
                         var c14='<td>'+"<input type='text'   style='text-align: center;width: 80px ;height:30px' id='datepicker' onclick='rq()' value=''/>"+'</td>';
                         var c15='<td>'+"<input type='text'   style='text-align: center;width: 80px ;height:30px' id='money1' value=''/>"+'</td>';
-                        var c16='<td>'+"<select id='type' style='width: 80px ;height:30px' onchange='my_se()'><option value='1' >&nbsp;&nbsp;&nbsp;out</option><option value='2' >&nbsp;&nbsp;&nbsp;收入</option></select>"+'</td>';
+                        var c16='<td>'+"<select id='type' style='width: 80px ;height:30px' onchange='my_se()'><option value='1' >&nbsp;&nbsp;&nbsp;支出</option><option value='2' >&nbsp;&nbsp;&nbsp;收入</option></select>"+'</td>';
                         var c17='<td>'+"<button class='myButton'  type='button' onclick='mclear(this)' >清除</button>"+'</td>';
                         var c18='<td>'+"<button class='myButton'  type='button' onclick='add(this)' >增加</button>"+'</td>';
                         str+='<tr>'+c11+c13+c14+c15+c16+c17+c18+'</tr>';
@@ -81,10 +81,10 @@
                         	    if(i==0){
                         	    	
                                     var  c1='<td>'+'</td>';
-                                    var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='sno"+i+"' value='"+arr[i].id+"'/>"+'</td>';
+                                    var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='sno"+i+"' value=''/>"+'</td>';
                                     var  c3='<td>'+'</td>';
                                     var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='moneya"+i+"' value='"+arr[i].money+"'/>"+'</td>';
-                                    var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='diarytype"+i+"' value='ALLout'/>"+'</td>';
+                                    var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='diarytype"+i+"' value='总支出'/>"+'</td>';
                                     var c6='<td>'+'</td>';
                                     var c7='<td>'+'</td>';
                         	    }
@@ -191,7 +191,7 @@
         getnum2(time1,time2,"in");
         $.ajax({//
                 type:"POST",
-                url:"../manager/select_account_by_date.do",//
+                url:"../manager/select_expand_by_date.do",//
                 dateType:"JSON",
                 data:{p:page,dateBegin:time1,dateEnd:time2,type:"in"},//传送想要的页数
                 beforeSend:function () {},
@@ -213,7 +213,7 @@
                         var  c13='<td>'+'</td>';
                         var c14='<td>'+"<input type='text'   style='text-align: center;width: 80px ;height:30px' id='datepicker' onclick='rq()' value=''/>"+'</td>';
                         var c15='<td>'+"<input type='text'   style='text-align: center;width: 80px ;height:30px' id='money1' value=''/>"+'</td>';
-                        var c16='<td>'+"<select id='type' style='width: 80px ;height:30px' onchange='my_se()'><option value='1' >&nbsp;&nbsp;&nbsp;in</option><option value='2' >&nbsp;&nbsp;&nbsp;收入</option></select>"+'</td>';
+                        var c16='<td>'+"<select id='type' style='width: 80px ;height:30px' onchange='my_se()'><option value='1' >&nbsp;&nbsp;&nbsp;支出</option><option value='2' >&nbsp;&nbsp;&nbsp;收入</option></select>"+'</td>';
                         var c17='<td>'+"<button class='myButton'  type='button' onclick='mclear(this)' >清除</button>"+'</td>';
                         var c18='<td>'+"<button class='myButton'  type='button' onclick='add(this)' >增加</button>"+'</td>';
                         str+='<tr>'+c11+c13+c14+c15+c16+c17+c18+'</tr>';
@@ -222,10 +222,10 @@
                         {
 	                        	if(i==0){
                                         var  c1='<td>'+'</td>';
-                                        var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='sno"+i+"' value='"+arr[i].sno+"'/>"+'</td>';
+                                        var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='sno"+i+"' value=''/>"+'</td>';
                                         var  c3='<td>'+'</td>';
                                         var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='moneya"+i+"' value='"+arr[i].money+"'/>"+'</td>';
-                                        var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='diarytype"+i+"' value='allIn'/>"+'</td>';
+                                        var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='diarytype"+i+"' value='总收入'/>"+'</td>';
                                         var c6='<td>'+'</td>';
                                         var c7='<td>'+'</td>';
 	            	    			}
@@ -352,7 +352,7 @@
                 c6.innerHTML="";
                 $.ajax({//
                         type:"POST",
-                        url:"insert_expand.do",//
+                        url:"../manager/insert_expand.do",//
                         dateType:"JSON",
                         data:{money:a,date:b,type:c},
                         beforeSend:function () {
@@ -429,9 +429,9 @@
             //	alert("111")
                 $.ajax({//
                         type:"POST",
-                        url:"update_account.do",//
+                        url:"../manager/update_expand.do",//
                         dateType:"JSON",
-                        data:{id:sno,date:time,money:money,Type:diarytype},
+                        data:{id:sno,date:time,money:money,type:diarytype},
                         beforeSend:function () {     
                         	
                         },
@@ -473,7 +473,7 @@
             if(ch[i].checked==true){
                 $.ajax({//
                         type:"POST",
-                        url:"delete_expand.do",//
+                        url:"../manager/delete_expand.do",//
                         dateType:"JSON",
                         data:{id:sno},
                         beforeSend:function () {

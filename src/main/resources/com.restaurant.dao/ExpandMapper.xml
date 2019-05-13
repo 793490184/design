@@ -27,6 +27,14 @@
         #{message})
     </insert>
 
+    <update id="update" parameterType="com.restaurant.entity.Expand">
+        update tbl_expand
+        set date = #{date},
+        money = #{money},
+        type = #{type}
+        where id = #{id}
+    </update>
+
     <update id="deleteFromDB" parameterType="Integer">
         update
         tbl_expand
@@ -43,6 +51,7 @@
         tbl_expand
         where
         date between #{dateBegin} and #{dateEnd}
+        and type = #{type}
         and delete_flag != 1
         limit #{start}, #{end}
     </select>

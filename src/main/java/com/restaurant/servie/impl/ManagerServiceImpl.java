@@ -8,6 +8,8 @@ import com.restaurant.servie.ManagerService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -61,14 +63,28 @@ public class ManagerServiceImpl implements ManagerService {
 	}
 
 	@Override
+	public void update(Expand expand) {
+		expandMapper.update(expand);
+	}
+
+	@Override
 	public void deleteFromDB(int id) {
 		expandMapper.deleteFromDB(id);
 	}
 
 	@Override
-	public List<Expand> selectExpandByData(String dateBegin, String dateEnd, int start, int end) {
-		List<Expand> expandList = expandMapper.selectExpandByData(dateBegin, dateEnd, start, end);
-		return expandList;
+	public List<Expand> selectExpandByData(String dateBegin, String dateEnd, String type,  int start, int end) {
+		List<Expand> expandList = expandMapper.selectExpandByData(dateBegin, dateEnd, type,  start, end);
+		double money = 0;
+		for(Iterator iterators = expandList.iterator(); iterators.hasNext();){
+			Expand tmp = (Expand) iterators.next();
+			money += tmp.getMoney();
+		}
+		Expand tmp = new Expand(money);
+		List<Expand> result = new ArrayList<>();
+		result.add(tmp);
+		result.addAll(expandList);
+		return result;
 	}
 
 	@Override
