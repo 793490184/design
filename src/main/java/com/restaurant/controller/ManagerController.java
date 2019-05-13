@@ -20,8 +20,9 @@ public class ManagerController {
 
     @RequestMapping("/insert_account.do")
     @ResponseBody
-    public BaseExecution insertAccount(String date, String name, String message, double money, int paidFlag) {
-        Account account = new Account(date, name, message, money, paidFlag);
+    public BaseExecution insertAccount(String date, String name, String message, double money, String peopleNumber, String roomNumber) {
+        int paidFlag = 0;
+        Account account = new Account(date, name, message, money, roomNumber, peopleNumber, paidFlag);
         managerService.insertAccount(account);
         return new BaseExecution(200, "ok", "插入账单成功");
     }
@@ -35,8 +36,8 @@ public class ManagerController {
 
     @RequestMapping("/update_account.do")
     @ResponseBody
-    public BaseExecution updateAccount(Integer id, String date, String name, String message, double money, int paidFlag) {
-        Account account = new Account(id, date, name, message, money, paidFlag);
+    public BaseExecution updateAccount(Integer id, String date, String name, String message, double money, String peopleNumber, String roomNumber) {
+        Account account = new Account(id, date, name, message, money, peopleNumber, roomNumber);
         managerService.updateAccount(account);
         return new BaseExecution(200, "ok", "更新账单成功");
     }
@@ -50,11 +51,13 @@ public class ManagerController {
 
     @RequestMapping("/select_account_by_date.do")
     @ResponseBody
-    public BaseExecution selectAccountByDate(String dateBegin, String dateEnd, int p) {
+    public BaseExecution selectAccountByDate(String startTime, String endTime, Integer p, Integer paidFlag) {
+        System.out.println(startTime + endTime + p);
+
         int start = p * 10;
         int end = p * 10 + 9;
-        System.out.println(dateBegin + dateEnd + p);
-        List<Account> accountList = managerService.selectAccountByDate(dateBegin, dateEnd, start, end);
+        List<Account> accountList = managerService.selectAccountByDate(startTime, endTime, start, end, paidFlag);
+        System.out.println(accountList.toString());
         return new BaseExecution(200, "ok", accountList);
     }
 

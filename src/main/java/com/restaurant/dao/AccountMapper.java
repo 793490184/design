@@ -12,6 +12,6 @@ public interface AccountMapper {
 	public void updateAccount(Account account);
 	public void accountPaid(int id);
 	public List<Account> selectAccountByDate(@Param("dateBegin") String dateBegin, @Param("dateEnd") String dateEnd,
-											 @Param("start") int start, @Param("end") int end);
+											 @Param("start") int start, @Param("end") int end, @Param("paidFlag") int paidFlag);
 
 }

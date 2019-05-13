@@ -46,9 +46,18 @@ public class ManagerServiceImpl implements ManagerService {
 	}
 
 	@Override
-	public List<Account> selectAccountByDate(String dateBegin, String dateEnd, int start, int end) {
-		List<Account> accountList = accountMapper.selectAccountByDate(dateBegin, dateEnd, start, end);
-		return accountList;
+	public List<Account> selectAccountByDate(String dateBegin, String dateEnd, int start, int end, int paidFlag) {
+		List<Account> accountList = accountMapper.selectAccountByDate(dateBegin, dateEnd, start, end, paidFlag);
+		double money = 0;
+		for(Iterator iterators = accountList.iterator(); iterators.hasNext();){
+			Account tmp = (Account) iterators.next();
+			money += tmp.getMoney();
+		}
+		Account tmp = new Account(-1, money);
+		List<Account> result = new ArrayList<>();
+		result.add(tmp);
+		result.addAll(accountList);
+		return result;
 	}
 
 	@Override

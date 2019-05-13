@@ -70,6 +70,7 @@
         from tbl_account
         where
         delete_flag != 1
+        and paid_flag = #{paidFlag}
         limit #{start}, #{end}
     </select>
 

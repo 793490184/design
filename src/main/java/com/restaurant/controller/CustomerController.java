@@ -19,7 +19,8 @@ public class CustomerController {
 
     @RequestMapping("/select_ordered_as_public.do")
     @ResponseBody
-    public BaseExecution selectOrderedAsPublic(int menuId, String account, String type, String useTime, int number) {
+    public BaseExecution selectOrderedAsPublic(int menuId, String account, String type, String useTime) {
+        int number = 1;
         customerService.selectOrderedAsPublic(menuId, account, type, useTime, number);
         return new BaseExecution(200, "ok", "订餐成功");
     }
@@ -31,8 +32,12 @@ public class CustomerController {
     }
     @RequestMapping("/select_ordered_public_by_customer.do")
     @ResponseBody
-    public BaseExecution selectOrderedPublicByCustomer(String account, String type, String useTime) {
-        List<OrderedMenu> orderedMenuList = customerService.selectOrderedPublicByCustomer(account, type, useTime);
+    public BaseExecution selectOrderedPublicByCustomer(String account, Integer p, String useTime) {
+        System.out.println(account + "," + p + "," + useTime);
+        int start = p * 10;
+        int end = p * 10 + 9;
+        List<OrderedMenu> orderedMenuList = customerService.selectOrderedPublicByCustomer(account, useTime, start, end);
+        System.out.println(orderedMenuList.toString());
         return new BaseExecution(200, "ok", orderedMenuList);
     }
 

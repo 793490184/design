@@ -10,7 +10,7 @@ public class Account {
 	private String peopleNumber;
 	private int paidFlag;
 
-	public Account(Integer id, String date, String name, String message, double money, String roomNumber, String peopleNumber, int paidFlag) {
+	public Account(int id, String date, String name, String message, double money, String roomNumber, String peopleNumber, int paidFlag) {
 		this.id = id;
 		this.date = date;
 		this.name = name;
@@ -20,6 +20,28 @@ public class Account {
 		this.peopleNumber = peopleNumber;
 		this.paidFlag = paidFlag;
 	}
+
+	public Account(int id, String date, String name, String message, double money, String roomNumber, String peopleNumber) {
+		this.id = id;
+		this.date = date;
+		this.name = name;
+		this.message = message;
+		this.money = money;
+		this.roomNumber = roomNumber;
+		this.peopleNumber = peopleNumber;
+	}
+
+	public Account(String date, String name, String message, double money, String roomNumber, String peopleNumber, int paidFlag) {
+		this.date = date;
+		this.name = name;
+		this.message = message;
+		this.money = money;
+		this.roomNumber = roomNumber;
+		this.peopleNumber = peopleNumber;
+		this.paidFlag = paidFlag;
+	}
+
+
 
 	public Account(int id, String date, String name, String message, double money, int paidFlag) {
 		this.id = id;
@@ -36,6 +58,11 @@ public class Account {
 		this.message = message;
 		this.money = money;
 		this.paidFlag = paidFlag;
+	}
+
+	public Account(int id, double money) {
+		this.id = id;
+		this.money = money;
 	}
 
 	public Account() {

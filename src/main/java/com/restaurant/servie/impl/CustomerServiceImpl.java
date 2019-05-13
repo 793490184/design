@@ -24,12 +24,13 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public void removeOrderedPublic(int menuId, String account, String type, String useTime) {
+		System.out.println(menuId + account + type + useTime);
 		orderedPublicMenuMapper.removeOrderedPublic(menuId, account, type, useTime);
 	}
 
 	@Override
-	public List<OrderedMenu> selectOrderedPublicByCustomer(String account, String type, String useTime) {
-		List<OrderedMenu> orderedMenuList = orderedPublicMenuMapper.selectOrderedPublicByCustomer(account, type, useTime);
+	public List<OrderedMenu> selectOrderedPublicByCustomer(String account, String useTime, int start, int end) {
+		List<OrderedMenu> orderedMenuList = orderedPublicMenuMapper.selectOrderedPublicByCustomer(account, useTime, start, end);
 		return orderedMenuList;
 	}
 

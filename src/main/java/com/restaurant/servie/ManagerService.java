@@ -12,7 +12,7 @@ public interface ManagerService {
 	public void deleteAccount(int id);
 	public void updateAccount(Account account);
 	public void accountPaid(int id);
-	public List<Account> selectAccountByDate(String dateBegin, String dateEnd, int start, int end);
+	public List<Account> selectAccountByDate(String dateBegin, String dateEnd, int start, int end, int paidFlag);
 
 	// expand
 	public int getExpandNumber(String type, String startTime, String endTime);

@@ -46,14 +46,14 @@
         if(can==0)can='breakfast';
         else if(can==1)can='lunch';
         else if(can==2)can='supper';
-        getnum3(time,"accountnone",type)
+        getnum3(time,"accountnone",can)
         $.ajax({//
                 type:"POST",
-                url:"select_public_menus.do",//
+                url:"../html/select_public_menus.do",//
                 dateType:"JSON",
                 data:{
                     p:page,
-                    type:can
+                    type:can,
                 },//传送想要的页数
                 beforeSend:function () {},
                 success:function(data){
@@ -69,7 +69,7 @@
                         for(var i=0;i<=data.message.length-1;i++)
                         {
                             var  c1='<td>'+"<input type='checkbox' name='ck'/>"+'</td>';
-                            var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr[i].menuid+"'/>"+'</td>';
+                            var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr[i].menuId+"'/>"+'</td>';
                             var  c3='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vname"+i+"' value='"+arr[i].name+"'/>"+'</td>';
                             var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='canlei"+i+"' value='"+arr[i].type+"'/>"+'</td>';
                             var c5='<td>'+'</td>';
@@ -165,14 +165,15 @@
             tb.deleteRow(index);
         }
         var str='',span='',a=0;
-        userid=$.session.get('userid');
+        //userid=$.session.get('userid');
+        userid="acca"
         var time=$('#time').val();
-        getnum(time,userid,"none");
+        getnum3(time,userid,"none");
         $.ajax({//
                 type:"POST",
-                url:"select_ordered_public_by_customer.do",//
+                url:"../customer/select_ordered_public_by_customer.do",//
                 dateType:"JSON",
-                data:{p:page,date:time,account:userid},//传送想要的页数
+                data:{p:page,useTime:time,account:userid},//传送想要的页数
                 beforeSend:function () {},
                 success:function(data){
                     var arr=data.message;
@@ -187,9 +188,9 @@
                         for(var i=0;i<=data.message.length-1;i++)
                         {
                             var  c1='<td>'+"<input type='checkbox' name='ck'/>"+'</td>';
-                            var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr.data[i].menu+"'/>"+'</td>';
-                            var  c3='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vname"+i+"' value='"+arr.data[i].name+"'/>"+'</td>';
-                            var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='canlei"+i+"' value='"+arr.data[i].type+"'/>"+'</td>';
+                            var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr[i].menuId+"'/>"+'</td>';
+                            var  c3='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vname"+i+"' value='"+arr[i].name+"'/>"+'</td>';
+                            var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='canlei"+i+"' value='"+arr[i].type+"'/>"+'</td>';
                             var c5='<td>'+'</td>';
                             str+='<tr>'+c1+c2+c3+c4+c5+'</tr>';
                         }
@@ -287,18 +288,20 @@
             var time=$('#time').val();
             var tb=document.getElementById('mytable');
             var ch=document.getElementsByName('ck');
-            userid=$.session.get('userid');
+            // userid=$.session.get('userid');
+            userid = "acca"
             for(i=ch.length-1;i>=0;i--){
                 var m=i;
                 var vno=$("#vno"+m).val();
+                var can=$("#canlei"+m).val();
                 var tr=ch[i].parentNode.parentNode;
                 var index=tr.rowIndex;
                 if(ch[i].checked==true){
                     $.ajax({//
                             type:"POST",
-                            url:"remove_ordered_public.do",//
+                            url:"../customer/remove_ordered_public.do",//
                             dateType:"JSON",
-                            data:{menuid:vno,account:userid,date:time},
+                            data:{menuId:vno,account:userid,useTime:time, type:can},
                             beforeSend:function () {},
                             success:function(data){
                                 if(data.status=="ok")
@@ -331,7 +334,8 @@
         	
             var time=$('#time').val();
             var can=$('#meal').val();
-            userid=$.session.get('userid');
+            //userid=$.session.get('userid');
+            userid="acca"
             if(can==0)can='breakfast';
             else if(can==1)can='lunch';
             else if(can==2)can='supper';
@@ -347,9 +351,9 @@
                 //	alert(vno);
                     $.ajax({//
                             type:"POST",
-                            url:"select_ordered_as_public.do",//
+                            url:"../customer/select_ordered_as_public.do",//
                             dateType:"JSON",
-                            data:{menuid:vno,useTime:time,type:can,account:userid},
+                            data:{menuId:vno,useTime:time,type:can,account:userid},
                             beforeSend:function () {},
                             success:function(data){
                                 if(data.status=="ok")
