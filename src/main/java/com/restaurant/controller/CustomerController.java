@@ -63,10 +63,12 @@ public class CustomerController {
         return new BaseExecution(200, "ok", orderedMenuList);
     }
 
-    @RequestMapping("/select_ordered_by_customer")
+    @RequestMapping("/user_mark.do")
     @ResponseBody
-    public BaseExecution selectOrderedByCustomer(String type, String account) {
-         return null;
+    public BaseExecution customerMark(Integer menuId, String useTime, String place, String account, Integer grade) {
+        customerService.customerMark(menuId, useTime, place, account, grade);
+        return new BaseExecution(200, "ok", "");
     }
+
 
 }

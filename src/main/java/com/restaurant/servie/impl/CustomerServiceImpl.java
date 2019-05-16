@@ -51,7 +51,17 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public int selectOrderedByCustomer(String type, String account) {
-		return 0;
+	public void customerMark(Integer menuId, String useTime, String place, String account, Integer grade) {
+		if (place.equals("public")) {
+			orderedPublicMenuMapper.customerMark(menuId, useTime, account, grade);
+			double avg = orderedPublicMenuMapper.getAvgMark(menuId);
+			orderedPublicMenuMapper.updateMenuMark(menuId, avg);
+		} else if (place.equals("private")) {
+			orderedPrivateMenuMapper.customerMark(menuId, useTime, account, grade);
+			double avg = orderedPrivateMenuMapper.getAvgMark(menuId);
+			orderedPrivateMenuMapper.updateMenuMark(menuId, avg);
+		}
 	}
+
+
 }

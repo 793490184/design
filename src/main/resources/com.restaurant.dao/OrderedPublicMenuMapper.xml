@@ -67,4 +67,27 @@
         limit #{start}, #{end}
     </select>
 
+    <update id="customerMark">
+        update tbl_menu_order_public
+        set mark = #{grade}
+        where menu_id = #{menuId}
+        and use_time = #{useTime}
+        and account = #{account}
+    </update>
+
+    <select id="getAvgMark" parameterType="Integer" resultType="Double">
+        select avg(mark)
+        from tbl_menu_order_public
+        where menu_id = #{menuId}
+        and delete_flag != 1
+        and mark != 0;
+    </select>
+
+    <update id="updateMenuMark">
+        update tbl_menu
+        set public_mark = #{mark}
+        where id = #{menuId}
+    </update>
+
+
 </mapper>

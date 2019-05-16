@@ -21,5 +21,9 @@ public interface OrderedPrivateMenuMapper {
 													   @Param("start") int start, @Param("end") int end);
 	public List<OrderedMenu> selectOrderedPrivateMenuNumbers(@Param("type")String type, @Param("useTime")String useTime,
 															@Param("start") int start, @Param("end") int end);
+	public void customerMark(@Param("menuId") Integer menuId, @Param("useTime") String useTime,
+							 @Param("account") String account, @Param("grade") Integer grade);
+	public double getAvgMark(Integer menuId);
+	public void updateMenuMark(@Param("menuId") Integer menuId, @Param("mark") double mark);
 
 }
