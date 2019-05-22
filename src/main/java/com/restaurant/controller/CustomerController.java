@@ -34,8 +34,8 @@ public class CustomerController {
     @ResponseBody
     public BaseExecution selectOrderedPublicByCustomer(String account, Integer p, String useTime) {
         System.out.println(account + "," + p + "," + useTime);
-        int start = p * 10;
-        int end = p * 10 + 9;
+        int start = p < 0 ? 0 : p * 10;
+        int end = p < 0 ? p * (-1) : p * 10 + 9;
         List<OrderedMenu> orderedMenuList = customerService.selectOrderedPublicByCustomer(account, useTime, start, end);
         System.out.println(orderedMenuList.toString());
         return new BaseExecution(200, "ok", orderedMenuList);
@@ -57,8 +57,8 @@ public class CustomerController {
     @RequestMapping("/select_ordered_private_by_customer.do")
     @ResponseBody
     public BaseExecution selectOrderedPrivateByCustomer(String account, Integer p, String useTime) {
-        int start = p * 10;
-        int end = p * 10 + 9;
+        int start = p < 0 ? 0 : p * 10;
+        int end = p < 0 ? p * (-1) : p * 10 + 9;
         List<OrderedMenu> orderedMenuList = customerService.selectOrderedPrivateByCustomer(account, useTime, start, end);
         return new BaseExecution(200, "ok", orderedMenuList);
     }

@@ -38,12 +38,14 @@
         account,
         password,
         name,
-        telephone)
+        telephone,
+        position)
         values (
         #{account},
         #{password},
         #{name},
-        #{telephone})
+        #{telephone},
+        #{position})
     </insert>
 
     <select id="isExists" parameterType="String" resultType="Integer">
@@ -73,7 +75,8 @@
         account,
         password,
         name,
-        telephone
+        telephone,
+        position
         from person
         where
         account = #{account}

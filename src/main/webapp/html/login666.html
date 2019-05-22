@@ -19,25 +19,34 @@
             var password=$('#passWord').val();
             $.ajax({//
                     type:"POST",
-                    url:"login",//
+                    url:"../user/login.do",//
                     dateType:"JSON",
-                    data:{pid:userid,pwd:password},
+                    data:{account:userid,password:password},
                     beforeSend:function () {},
                     success:function(data){
-                        if(data.status==1&&data.job==1)//登录厨师
+                        if(data.message=="cooker")//登录厨师
                         {
-                            $.session.set('userid',userid);//cookies
-                            $.session.set('userpw',password);
-                            window.location = "menu.html";
+                            sessionStorage.setItem('userid', userid);
+                            sessionStorage.setItem('userpw', password);
+                            if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+                                window.location.href="../mobile/html/mbshouye.html";
+                            }else{
+                                window.location.href="shouye.html";
+                            }
                         }
-                        else if(data.status==1&&data.job==0){//登录用户
-                            $.session.set('userid',userid);
-                            $.session.set('userpw',password);
-                            window.location = "userbigmenu.html";
+                        else if(data.message=="customer"){//登录用户
+                            sessionStorage.setItem('userid', userid);
+                            sessionStorage.setItem('userpw', password);
+                            if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)) {
+                                window.location.href="../mobile/html/usermbshouye.html";
+                            }else{
+                                window.location.href="userbigmenu.html";
+                            }
                         }
+
                         else
                         {
-                            alert("账号或密码错误，登陆失败");
+                            alert(data.message);
 
                         }
                     },

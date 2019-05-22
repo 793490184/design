@@ -47,13 +47,14 @@
             var m_tel = $("#phoneNum").val();
             $.ajax({
                 type : "POST",
-                url : "registor",
+                url : "../user/register.do",
                 dataType : "JSON",
                 data : {
-                    unum : userid,
-                    pwd : password,
-                    uname : m_uname,
-                    utel : m_tel
+                    account : userid,
+                    password : password,
+                    name : m_uname,
+                    telephone : m_tel,
+                    position: "customer"
                 },
                 beforeSend : function() {
                 	

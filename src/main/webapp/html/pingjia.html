@@ -16,8 +16,8 @@
     <script type="text/javascript">//查询全部的
     function AJAX(page) {
         var str = '', span = '', a = 0;
-        // userid=$.session.get('userid');
-        userid = "acca"
+        userid = sessionStorage.getItem('userid');
+        // userid = "acca"
         var time = $('#time').val();
         var place = $('#place').val();
         // if (place == 1)
@@ -138,8 +138,8 @@
     <script type="text/javascript">
         function chaxun1() {/*无需时间季节，后台直接取当前时间即可，只需提供后台餐类,0早餐，1中，2 晚*/
             var tab = document.getElementById("mytable");
-            // userid=$.session.get('userid');
-            userid = "acca"
+            userid = sessionStorage.getItem('userid');
+            // userid = "acca"
             var rows = tab.rows.length;//表格行数
             for (i = rows - 1; i >= 1; i--) {
                 document.getElementById('mytable').deleteRow(i);
@@ -154,8 +154,8 @@
         function tijiao() {//sno必须通过session获取，此时还未获取,规定时间内点餐，过时不候
             var time = $('#time').val();
             var place = $('#place').val();
-            // userid=$.session.get('userid');
-            userid = "acca"
+            userid = sessionStorage.getItem('userid');
+            // userid = "acca"
             var flag = 0;
             var tb = document.getElementById('mytable');
             var ch = document.getElementsByName('ck');

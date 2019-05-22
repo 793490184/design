@@ -198,6 +198,10 @@ public class CookerController {
         System.out.println("111" + p + type);
         int start = p * 10;
         int end = p * 10 + 9;
+        if (p < 0) {
+            start = 0;
+            end = p * (-1);
+        }
         List<SortedMenu> sortedMenuList = cookerService.selectPublicMenuByType(type, start, end);
         return new BaseExecution(200, "ok", sortedMenuList);
 
@@ -318,8 +322,9 @@ public class CookerController {
     @RequestMapping("/select_ordered_public_menu_numbers.do")
     @ResponseBody
     public BaseExecution selectOrderedPublicMenuNumbers(String type, String date, Integer p, String restaurant) {
-        int start = p * 10;
-        int end = p * 10 + 9;
+        int start = p < 0 ? 0 : p * 10;
+        int end = p < 0 ? p * (-1) : p * 10 + 9;
+
         List<OrderedMenu> orderedMenuList = cookerService.selectOrderedPublicMenuNumbers(type, restaurant, date, start, end);
         return new BaseExecution(200, "ok", orderedMenuList);
     }

@@ -32,7 +32,7 @@ public class PersonServiceImpl implements PersonService {
 	 * @return
 	 * @author lihaimeng 2018/1/14
 	 */
-	public BaseExecution register(String account, String password, String name, String telephone) {
+	public BaseExecution register(String account, String password, String name, String telephone, String position) {
 //		PersonMapper personMapper = new PersonMapperImpl();
 		if (account.contains(" ") || password.contains(" ")) {
 			return new BaseExecution(200, BaseExecution.OK, "账号或密码包含空格");
@@ -43,7 +43,7 @@ public class PersonServiceImpl implements PersonService {
 		password = encryption(password);
 		System.out.println(password.length());
 		System.out.println(account + ", " + password);
-		Person person = new Person(account, password, name, telephone);
+		Person person = new Person(account, password, name, telephone, position);
 		personMapper.addPerson(person);
 		return new BaseExecution(200, BaseExecution.OK, "注册成功");
 	}
@@ -56,13 +56,16 @@ public class PersonServiceImpl implements PersonService {
 	 */
 	public BaseExecution login(String account, String password) {
 		//  账号检测
-		String passFromFB = personMapper.selectPassword(account);
+		Person person = personMapper.selectPerson(account);
+		String passFromFB = person.getPassword();
+//		String passFromFB = personMapper.selectPassword(account);
 		System.out.println(account + " " + password + " " + passFromFB);
 		password = encryption(password);
 		if (personMapper.isExists(account) == 0) {
 			return new BaseExecution(200, BaseExecution.OK, "账号不存在");
 		} else if (account.equals(account) && password.equals(passFromFB)) {
-			return new BaseExecution(200, BaseExecution.OK, "登录成功");
+			System.out.println(person.getPosition());
+			return new BaseExecution(200, BaseExecution.OK, person.getPosition());
 		} else {
 			return new BaseExecution(200, BaseExecution.OK, "密码错误");
 		}

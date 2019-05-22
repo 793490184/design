@@ -165,8 +165,9 @@
             tb.deleteRow(index);
         }
         var str='',span='',a=0;
-        //userid=$.session.get('userid');
-        userid="acca"
+
+        userid = sessionStorage.getItem('userid');
+
         var time=$('#time').val();
         getnum3(time,userid,"none");
         $.ajax({//
@@ -288,8 +289,7 @@
             var time=$('#time').val();
             var tb=document.getElementById('mytable');
             var ch=document.getElementsByName('ck');
-            // userid=$.session.get('userid');
-            userid = "acca"
+            userid = sessionStorage.getItem('userid');            // userid = "acca"
             for(i=ch.length-1;i>=0;i--){
                 var m=i;
                 var vno=$("#vno"+m).val();
@@ -334,8 +334,7 @@
         	
             var time=$('#time').val();
             var can=$('#meal').val();
-            //userid=$.session.get('userid');
-            userid="acca"
+            userid = sessionStorage.getItem('userid');
             if(can==0)can='breakfast';
             else if(can==1)can='lunch';
             else if(can==2)can='supper';

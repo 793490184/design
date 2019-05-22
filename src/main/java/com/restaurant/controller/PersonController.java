@@ -46,10 +46,10 @@ public class PersonController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/register.do", method = RequestMethod.POST)
-	public BaseExecution register(String account, String password, String name, String telephone) {
-		Person person = new Person(account, password, name, telephone);
+	public BaseExecution register(String account, String password, String name, String telephone, String position) {
+//		Person person = new Person(account, password, name, telephone);
 //		System.out.println(JSON.toJSONString(person));
-		BaseExecution baseExecution = personService.register(account, password, name, telephone);
+		BaseExecution baseExecution = personService.register(account, password, name, telephone, position);
 		return baseExecution;
 	}
 

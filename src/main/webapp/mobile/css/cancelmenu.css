@@ -1,0 +1,27 @@
+.p1{
+    background-size:cover;
+    width:30%;
+    height:100%;
+    position: absolute;
+    background-image: url("../photo/cancelmenu/photo1.jpg");
+    border-style:solid;
+}
+.p2{
+    background-size:cover;
+    width:30%;
+    height:100%;
+
+    left:35%;
+    position: absolute;
+    background-image: url("../photo/cancelmenu/photo2.jpg");
+    border-style:solid;
+}
+.p3{
+    background-size:cover;
+    width:30%;
+    height:100%;
+    right: 0%;
+    position: absolute;
+    background-image: url("../photo/cancelmenu/photo3.jpg");
+    border-style:solid;
+}

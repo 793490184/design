@@ -93,7 +93,9 @@
         name,
         type,
         price,
-        season
+        season,
+        public_mark,
+        private_mark
         from tbl_menu
         where delete_flag != 1
         limit #{start}, #{end}
