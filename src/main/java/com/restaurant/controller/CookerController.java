@@ -4,7 +4,10 @@ import com.restaurant.entity.Menu;
 import com.restaurant.entity.OrderedMenu;
 import com.restaurant.entity.SortedMenu;
 import com.restaurant.servie.CookerService;
+import com.restaurant.servie.ManagerService;
+import com.restaurant.servie.StoremanService;
 import com.restaurant.utils.BaseExecution;
+import com.restaurant.utils.BaseInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -13,11 +16,15 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Controller
-@RequestMapping("/cooker")
+@RequestMapping("/html")
 public class CookerController {
 
     @Resource
     private CookerService cookerService;
+    @Resource
+    private ManagerService managerService;
+    @Resource
+    private StoremanService storemanService;
 
     /**
      * @author lihaimeng
@@ -25,7 +32,7 @@ public class CookerController {
      */
     @RequestMapping("/get_menu_number.do")
     @ResponseBody
-    public BaseExecution getMenuNumber() {
+    public BaseExecution getMenuNumber(String place, String type, String startTime, String endTime) {
         class Number {
             private String number;
 
@@ -41,7 +48,22 @@ public class CookerController {
                 this.number = number;
             }
         }
-        int result = cookerService.getMenuNumber();
+//        System.out.println(place + type);
+        int result;
+        System.out.println(type + startTime + endTime);
+        if (type.equals("in") || type.equals("out")) {
+            if (startTime.equals(""))
+                startTime = "1970-01-01";
+            result = managerService.getExpandNumber(type, startTime, endTime);
+        } else if (type.equals("1") || type.equals("2")|| type.equals("0")) {
+            if (startTime.equals(""))
+                startTime = "1970-01-01";
+            result = managerService.getAccountNumber(type, startTime, endTime);
+        } else if (place.equals("food")) {
+            result = storemanService.getFoodNumber(type);
+        } else {
+            result = cookerService.getMenuNumber(place, type);
+        }
         Number number = new Number(String.valueOf(result));
         return new BaseExecution(200, "ok", number);
     }
@@ -96,28 +118,36 @@ public class CookerController {
 
     @RequestMapping("/select_menu.do")
     @ResponseBody
-    public BaseExecution selectMenu(int start, int end) {
+    public BaseExecution selectMenu(int p) {
+        int start = p * 10;
+        int end = p * 10 + 9;
         List<Menu> menuList = cookerService.selectMenu(start, end);
         return new BaseExecution(200, "ok", menuList);
     }
 
     @RequestMapping("/select_menu_by_name.do")
     @ResponseBody
-    public BaseExecution selectMenuByName(String name, int start, int end) {
+    public BaseExecution selectMenuByName(String name, int page) {
+        int start = page * 10;
+        int end = page * 10 + 9;
         List<Menu> menuList = cookerService.selectMenuByName(name, start, end);
         return new BaseExecution(200, "ok", menuList);
     }
 
     @RequestMapping("/select_menu_by_season.do")
     @ResponseBody
-    public BaseExecution selectMenuBySeason(String season, int start, int end) {
+    public BaseExecution selectMenuBySeason(String season, int p) {
+        int start = p * 10;
+        int end = p * 10 + 9;
         List<Menu> menuList = cookerService.selectMenuBySeason(season, start, end);
         return new BaseExecution(200, "ok", menuList);
     }
 
     @RequestMapping("/select_menu_by_type.do")
     @ResponseBody
-    public BaseExecution selectMenuByType(String type, int start, int end) {
+    public BaseExecution selectMenuByType(String type, int p) {
+        int start = p * 10;
+        int end = p * 10 + 9;
         List<Menu> menuList = cookerService.selectMenuByType(type, start, end);
         return new BaseExecution(200, "ok", menuList);
     }
@@ -125,7 +155,7 @@ public class CookerController {
     // Sorted
     @RequestMapping("/get_public_number.do")
     @ResponseBody
-    public BaseExecution getPublicNumber() {
+    public BaseExecution getPublicNumber(String type) {
         class Number {
             int number;
 
@@ -141,7 +171,9 @@ public class CookerController {
                 this.number = number;
             }
         }
+        System.out.println(type);
         int result = cookerService.getPublicNumber();
+        System.out.println(result);
         Number number = new Number(result);
         return new BaseExecution(200, "ok", number);
     }
@@ -162,15 +194,29 @@ public class CookerController {
 
     @RequestMapping("/select_public_menus.do")
     @ResponseBody
-    public BaseExecution selectPublicMenus(int start, int end) {
-        List<SortedMenu> sortedMenuList = cookerService.selectPublicMenus(start, end);
+    public BaseExecution selectPublicMenus(int p, String type) {
+        System.out.println("111" + p + type);
+        int start = p * 10;
+        int end = p * 10 + 9;
+        if (p < 0) {
+            start = 0;
+            end = p * (-1);
+        }
+        List<SortedMenu> sortedMenuList = cookerService.selectPublicMenuByType(type, start, end);
         return new BaseExecution(200, "ok", sortedMenuList);
+
     }
 
     @RequestMapping("/select_public_menu_by_season.do")
     @ResponseBody
-    public BaseExecution selectPublicMenuBySeason(String season, int start, int end) {
-        List<SortedMenu> sortedMenuList = cookerService.selectPublicMenuBySeason(season, start, end);
+    public BaseExecution selectPublicMenuBySeason(String type, int p) {
+        int start = p * 10;
+        int end = p * 10 + 9;
+        if (p <= 0) {
+            start = 0;
+            end = -1 * p;
+        }
+        List<SortedMenu> sortedMenuList = cookerService.selectPublicSortedMenu(type, start, end);
         return new BaseExecution(200, "ok", sortedMenuList);
     }
 
@@ -227,15 +273,20 @@ public class CookerController {
 
     @RequestMapping("/select_private_menus.do")
     @ResponseBody
-    public BaseExecution selectPrivateMenus(int start, int end) {
-        List<SortedMenu> sortedMenuList = cookerService.selectPrivateMenus(start, end);
+    public BaseExecution selectPrivateMenus(int p, String type) {
+        int start = p * 10;
+        int end = p * 10 + 9;
+        List<SortedMenu> sortedMenuList = cookerService.selectPrivateMenuByType(type, start, end);
         return new BaseExecution(200, "ok", sortedMenuList);
+
     }
 
     @RequestMapping("/select_private_menu_by_season.do")
     @ResponseBody
-    public BaseExecution selectPrivateMenuBySeason(String season, int start, int end) {
-        List<SortedMenu> sortedMenuList = cookerService.selectPrivateMenuBySeason(season, start, end);
+    public BaseExecution selectPrivateMenuBySeason(int p, String type) {
+        int start = p * 10;
+        int end = p * 10 + 9;
+        List<SortedMenu> sortedMenuList = cookerService.selectPrivateSortedMenu(type, start, end);
         return new BaseExecution(200, "ok", sortedMenuList);
     }
 
@@ -270,8 +321,11 @@ public class CookerController {
 
     @RequestMapping("/select_ordered_public_menu_numbers.do")
     @ResponseBody
-    public BaseExecution selectOrderedPublicMenuNumbers(String type, String useTime, int start, int end) {
-        List<OrderedMenu> orderedMenuList = cookerService.selectOrderedPublicMenuNumbers(type, useTime, start, end);
+    public BaseExecution selectOrderedPublicMenuNumbers(String type, String date, Integer p, String restaurant) {
+        int start = p < 0 ? 0 : p * 10;
+        int end = p < 0 ? p * (-1) : p * 10 + 9;
+
+        List<OrderedMenu> orderedMenuList = cookerService.selectOrderedPublicMenuNumbers(type, restaurant, date, start, end);
         return new BaseExecution(200, "ok", orderedMenuList);
     }
 
@@ -280,6 +334,29 @@ public class CookerController {
     public BaseExecution selectOrderedPrivateMenuNumbers(String type, String useTime, int start, int end) {
         List<OrderedMenu> orderedMenuList = cookerService.selectOrderedPrivateMenuNumbers(type, useTime, start, end);
         return new BaseExecution(200, "ok", orderedMenuList);
+    }
+
+    @RequestMapping("/select_ordered_number.do")
+    @ResponseBody
+    public BaseExecution selectOrderedNumber(String place, String type) {
+        class Number {
+            int number;
+
+            public Number(int number) {
+                this.number = number;
+            }
+
+            public int getNumber() {
+                return number;
+            }
+
+            public void setNumber(int number) {
+                this.number = number;
+            }
+        }
+        int result = cookerService.selectOrderedNumber(place, type);
+        Number number = new Number(result);
+        return new BaseExecution(200, "ok", number);
     }
 
 

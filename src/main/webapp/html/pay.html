@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>统计支出</title>
+
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>  <!--<引用jquery库>-->
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="http://www.gongjuji.net/Content/files/jquery.md5.js"></script>
+    <script src="JquerySession.js"></script>
+
+    <link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+    <script src="//apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="jqueryui/style.css">
+
+    <link href="../css/common.css" rel="stylesheet"/>
+    <link href="../css/pay.css" rel="stylesheet"/>
+
+    <script type="text/javascript">//支出
+    var number=0;
+    function getnum2(time1,time2,type) {
+        $.ajax({
+            type:"POST",
+            url:"get_menu_number.do",//
+            dateType:"JSON",
+            data:{startTime:time1,endTime:time2,type:type},
+            beforeSend:function () {},
+            success:function(data){
+                number=data.message.number;
+            },
+            error:function(data){
+                console.log();
+            },
+            complete:function(){}
+        })
+
+    }
+
+
+
+
+    function AJAX(page) {
+    		
+        var str='',span='',a=0;
+        time1 = $('#time1').val();
+        time2 = $('#time2').val();
+        getnum2(time1,time2,"out");
+        $.ajax({//
+                type:"POST",
+                url:"../manager/select_expand_by_date.do",//
+                dateType:"JSON",
+                data:{p:page,dateBegin:time1,dateEnd:time2,type:"out"},//传送想要的页数
+                beforeSend:function () {},
+                success:function(data){
+
+                    var arr=data.message;
+                    if(data.message.length != 0)//判断为不为零
+                    {
+                        var  c22='<td>选择</td>';
+                        var  c23='<td>编号</td>';
+                        var c24='<td>时间</td>';
+                        var c25='<td>金额</td>';
+                        var c26='<td>类型</td>';
+                        var c27='<td>操作一</td>';
+                        var  c28='<td>操作二</td>';
+                        str+='<tr>'+c22+c23+c24+c25+c26+c27+c28+'</tr>';
+
+                        var  c11='<td>'+"<input type='checkbox' name='ck'/>"+'</td>';
+                        var  c13='<td>'+'</td>';
+                        var c14='<td>'+"<input type='text'   style='text-align: center;width: 80px ;height:30px' id='datepicker' onclick='rq()' value=''/>"+'</td>';
+                        var c15='<td>'+"<input type='text'   style='text-align: center;width: 80px ;height:30px' id='money1' value=''/>"+'</td>';
+                        var c16='<td>'+"<select id='type' style='width: 80px ;height:30px' onchange='my_se()'><option value='1' >&nbsp;&nbsp;&nbsp;支出</option><option value='2' >&nbsp;&nbsp;&nbsp;收入</option></select>"+'</td>';
+                        var c17='<td>'+"<button class='myButton'  type='button' onclick='mclear(this)' >清除</button>"+'</td>';
+                        var c18='<td>'+"<button class='myButton'  type='button' onclick='add(this)' >增加</button>"+'</td>';
+                        str+='<tr>'+c11+c13+c14+c15+c16+c17+c18+'</tr>';
+
+                        for(var i=0;i<=data.message.length-1;i++)
+                        {
+                        	    if(i==0){
+                        	    	
+                                    var  c1='<td>'+'</td>';
+                                    var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='sno"+i+"' value=''/>"+'</td>';
+                                    var  c3='<td>'+'</td>';
+                                    var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='moneya"+i+"' value='"+arr[i].money+"'/>"+'</td>';
+                                    var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='diarytype"+i+"' value='总支出'/>"+'</td>';
+                                    var c6='<td>'+'</td>';
+                                    var c7='<td>'+'</td>';
+                        	    }
+                        	    else{
+                        	    	var  c1='<td>'+"<input type='checkbox' name='ck'/>"+'</td>';
+                                    var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='sno"+i+"' value='"+arr[i].id+"'/>"+'</td>';
+                                    var  c3='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='date"+i+"' value='"+arr[i].date+"'/>"+'</td>';
+                                    var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='moneya"+i+"' value='"+arr[i].money+"'/>"+'</td>';
+                                    var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='diarytype"+i+"' value='out'/>"+'</td>';
+                                    var c6='<td>'+"<button class='myButton'  type='button' onclick='del(this)' >删除</button>"+'</td>';
+                                    var c7='<td>'+"<button class='myButton'  type='button' onclick='xiugai(this)' >修改</button>"+'</td>';
+                        	    	
+                        	    }
+                            str+='<tr>'+c1+c2+c3+c4+c5+c6+c7+'</tr>';
+                        }
+                        $('#mytable').html(str);//添加生成的行
+
+                        if(number%10==0)a=number/10;
+                        else
+                            a=parseInt(number/10)+1;
+
+                        if(page==0){
+                            if(a<3){
+                                for(var i=1;i<=a;i++){
+                                    if(i==page+1){
+                                        span+='<span style="background-color: #DEDEDE">'+i+'</span>';//添加span
+                                        continue;}
+                                    span+='<span>'+i+'</span>';//添加span
+                                }
+                            }
+                            else
+                            {
+                                for(var i=1;i<=3;i++){
+                                    if(i==page+1){
+                                        span+='<span style="background-color: #DEDEDE">'+i+'</span>';//添加span
+                                        continue;}
+                                    span+='<span>'+i+'</span>';//添加span
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            if(a>=page+2){
+                                for(var i=page;i<=page+2;i++){
+                                    if(i==page+1){
+                                        span+='<span style="background-color: #DEDEDE">'+i+'</span>';//添加span
+                                        continue;}
+                                    span+='<span>'+i+'</span>';//添加span
+                                }
+                            }
+                            else
+                            {
+                                for(var i=page;i<=a;i++){
+                                    if(i==page+1){
+                                        span+='<span style="background-color: #DEDEDE">'+i+'</span>';//添加span
+                                        continue;}
+                                    span+='<span>'+i+'</span>';//添加span
+                                }
+
+                            }
+                        }
+                        span+=" <label >总页数：</label>"
+                        span+="<input size='3' readonly type='text' value='"+a+"'/>"
+                        span+="<input size='3' type='text' id='z' value=''/>"
+                        span+="<button type='button' onclick='b()' >跳转</button>";
+                        $('#mydiv').html(span);
+                        $('span').on('click',send);//绑定响应事件
+                        function send() {
+                            var p=parseInt($(this).text())-1;
+
+                            AJAX(p);
+                        }
+                    }
+                    else
+                    {
+                        alert("当前菜单未补充");
+                    }
+                },
+                error:function(data){
+                    console.log();
+                },
+                complete:function(){}
+            }
+
+        )
+        
+       
+        
+        
+    }
+
+    function b() {//查询按钮事件
+        var p=parseInt($('#z').val())-1;
+        AJAX(p);
+    }
+    </script>
+
+    <script type="text/javascript">//收入
+    function AJAX1(page) {
+        var str='',span='',a=0;
+        time1 = $('#time1').val();
+        time2 = $('#time2').val();
+        getnum2(time1,time2,"in");
+        $.ajax({//
+                type:"POST",
+                url:"../manager/select_expand_by_date.do",//
+                dateType:"JSON",
+                data:{p:page,dateBegin:time1,dateEnd:time2,type:"in"},//传送想要的页数
+                beforeSend:function () {},
+                success:function(data){
+
+                    var arr=data.message;
+                    if(data.message.length != 0)//判断为不为零
+                    {
+                        var  c22='<td>选择</td>';
+                        var  c23='<td>编号</td>';
+                        var c24='<td>时间</td>';
+                        var c25='<td>金额</td>';
+                        var c26='<td>类型</td>';
+                        var c27='<td>操作一</td>';
+                        var  c28='<td>操作二</td>';
+                        str+='<tr>'+c22+c23+c24+c25+c26+c27+c28+'</tr>';
+
+                        var  c11='<td>'+"<input type='checkbox' name='ck'/>"+'</td>';
+                        var  c13='<td>'+'</td>';
+                        var c14='<td>'+"<input type='text'   style='text-align: center;width: 80px ;height:30px' id='datepicker' onclick='rq()' value=''/>"+'</td>';
+                        var c15='<td>'+"<input type='text'   style='text-align: center;width: 80px ;height:30px' id='money1' value=''/>"+'</td>';
+                        var c16='<td>'+"<select id='type' style='width: 80px ;height:30px' onchange='my_se()'><option value='1' >&nbsp;&nbsp;&nbsp;支出</option><option value='2' >&nbsp;&nbsp;&nbsp;收入</option></select>"+'</td>';
+                        var c17='<td>'+"<button class='myButton'  type='button' onclick='mclear(this)' >清除</button>"+'</td>';
+                        var c18='<td>'+"<button class='myButton'  type='button' onclick='add(this)' >增加</button>"+'</td>';
+                        str+='<tr>'+c11+c13+c14+c15+c16+c17+c18+'</tr>';
+
+                        for(var i=0;i<=data.message.length-1;i++)
+                        {
+	                        	if(i==0){
+                                        var  c1='<td>'+'</td>';
+                                        var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='sno"+i+"' value=''/>"+'</td>';
+                                        var  c3='<td>'+'</td>';
+                                        var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='moneya"+i+"' value='"+arr[i].money+"'/>"+'</td>';
+                                        var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='diarytype"+i+"' value='总收入'/>"+'</td>';
+                                        var c6='<td>'+'</td>';
+                                        var c7='<td>'+'</td>';
+	            	    			}
+	            	    			else{
+                                        var  c1='<td>'+"<input type='checkbox' name='ck'/>"+'</td>';
+                                        var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='sno"+i+"' value='"+arr[i].id+"'/>"+'</td>';
+                                        var  c3='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='date"+i+"' value='"+arr[i].date+"'/>"+'</td>';
+
+                                        var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='moneya"+i+"' value='"+arr[i].money+"'/>"+'</td>';
+                                        //alert(c4)
+                                        var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='diarytype"+i+"' value='in'/>"+'</td>';
+                                        var c6='<td>'+"<button class='myButton'  type='button' onclick='del(this)' >删除</button>"+'</td>';
+                                        var c7='<td>'+"<button class='myButton'  type='button' onclick='xiugai(this)' >修改</button>"+'</td>';
+            	    	
+            	    }
+                            str+='<tr>'+c1+c2+c3+c4+c5+c6+c7+'</tr>';
+                        }
+                        $('#mytable').html(str);//添加生成的行
+                        if(number%10==0)a=number/10;
+                        else
+                            a=parseInt(number/10)+1;
+
+                        if(page==0){
+                            if(a<3){
+                                for(var i=1;i<=a;i++){
+                                    if(i==page+1){
+                                        span+='<span style="background-color: #DEDEDE">'+i+'</span>';//添加span
+                                        continue;}
+                                    span+='<span>'+i+'</span>';//添加span
+                                }
+                            }
+                            else
+                            {
+                                for(var i=1;i<=3;i++){
+                                    if(i==page+1){
+                                        span+='<span style="background-color: #DEDEDE">'+i+'</span>';//添加span
+                                        continue;}
+                                    span+='<span>'+i+'</span>';//添加span
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            if(a>=page+2){
+                                for(var i=page;i<=page+2;i++){
+                                    if(i==page+1){
+                                        span+='<span style="background-color: #DEDEDE">'+i+'</span>';//添加span
+                                        continue;}
+                                    span+='<span>'+i+'</span>';//添加span
+                                }
+                            }
+                            else
+                            {
+                                for(var i=page;i<=a;i++){
+                                    if(i==page+1){
+                                        span+='<span style="background-color: #DEDEDE">'+i+'</span>';//添加span
+                                        continue;}
+                                    span+='<span>'+i+'</span>';//添加span
+                                }
+
+                            }
+                        }
+                        span+=" <label >总页数：</label>"
+                        span+="<input size='3' readonly type='text' value='"+a+"'/>"
+                        span+="<input size='3' type='text' id='z' value=''/>"
+                        span+="<button type='button' onclick='b1()' >跳转</button>";
+                        $('#mydiv').html(span);
+                        $('span').on('click',send);//绑定响应事件
+                        function send() {
+                            var p=parseInt($(this).text())-1;
+
+                            AJAX1(p);
+                        }
+                    }
+                    else
+                    {
+                        alert("当前菜单未补充");
+                    }
+                },
+                error:function(data){
+                    console.log();
+                },
+                complete:function(){}
+            }
+
+        )
+    }
+
+    function b1() {//查询按钮事件
+        var p=parseInt($('#z').val())-1;
+        AJAX1(p);
+    }
+    </script>
+
+
+
+    <script type="text/javascript">
+        function add(){
+            var a=$('#money1').val();
+            var b=$('#datepicker').val();
+            var c=$('#type').val();
+            if(c==1) c="out"
+            else c="in"
+            // alert(a)
+            // alert(b)
+            // alert(c)
+            var ch=document.getElementsByName('ck');
+            if(ch[0].checked==true){
+                var tr1=document.getElementById('mytable').insertRow(2);
+                var c0=tr1.insertCell(0);
+                var c1=tr1.insertCell(1);
+                var c2=tr1.insertCell(2);
+                var c3=tr1.insertCell(3);
+                var c4=tr1.insertCell(4);
+                var c5=tr1.insertCell(5);
+                var c6=tr1.insertCell(6);
+                c0.innerHTML="";
+                c1.innerHTML="";
+                c2.innerHTML="<input type='text'  style='text-align: center;' size='11' name='time' value='"+b+"'/>";
+                c3.innerHTML="<input type='text'  style='text-align: center;width: 80px ;height:30px' name='money' value='"+a+"'/>";
+                c4.innerHTML="<input type='text'  style='text-align: center;width: 80px ;height:30px' name='' value='"+c+"'/>";;
+                c5.innerHTML="";
+                c6.innerHTML="";
+                $.ajax({//
+                        type:"POST",
+                        url:"../manager/insert_expand.do",//
+                        dateType:"JSON",
+                        data:{money:a,date:b,type:c},
+                        beforeSend:function () {
+                        	//alert("qq");
+                        },
+                        success:function(data){
+                            if(data.diarytype != null){
+                                alert("添加信息成功！");
+                            } else{
+                                alert("输入信息有误无法操作！");
+                            }
+                        },
+                        error:function(data){
+                            console.log();
+                        },
+                        complete:function(){}
+                    }
+
+                )
+            }
+            else
+            {
+                alert("请点击选择确认框！")
+            }
+
+        }
+
+
+        function mclear() {
+            $('#datepicker').val('');
+            $('#type').val('1')
+            $('#money1').val('');
+            var ch=document.getElementsByName('ck');
+            for(i=ch.length-1;i>=0;i--){
+                ch[i].checked=false;
+            }
+        }
+
+
+        function zhongzhichu() {
+            var tab = document.getElementById("mytable");
+            var rows = tab.rows.length;//表格行数
+            for (i = rows - 1; i >= 0; i--) {
+                document.getElementById('mytable').deleteRow(i);
+            }
+
+            AJAX(0)
+
+
+
+        }
+
+        function zhongshouru(){
+            var tab = document.getElementById("mytable") ;
+            var rows = tab.rows.length ;//表格行数
+            for(i=rows-1;i>=2;i--){
+                document.getElementById('mytable').deleteRow(i);
+            }
+            AJAX1(0)
+        }
+
+
+        function xiugai(r) {//1111
+            var c=r.parentNode.parentNode.rowIndex;
+            // alert(c)
+            i=c-2;
+            //alert(i);
+            var sno=$("#sno"+i).val();
+            var time=$("#date"+i).val();
+            var money=$("#moneya"+i).val();
+            var diarytype=$("#diarytype"+i).val();
+            var ch=document.getElementsByName('ck');
+            if(ch[i].checked==true){
+            //	alert("111")
+                $.ajax({//
+                        type:"POST",
+                        url:"../manager/update_expand.do",//
+                        dateType:"JSON",
+                        data:{id:sno,date:time,money:money,type:diarytype},
+                        beforeSend:function () {     
+                        	
+                        },
+                        success:function(data){
+                            if(data.status=="ok")
+                            {
+                                alert("修改成功！");
+                            }
+                            else
+                            {
+                                alert("输入信息有误无法操作！");
+
+                            }
+                        },
+                        error:function(data){
+                            console.log();
+                        },
+                        complete:function(){}
+                    }
+
+                )
+
+
+            }
+            else
+                alert("未选中要修改的行")
+
+            var ch=document.getElementsByName('ck');
+            for(i=ch.length-1;i>=0;i--){
+                ch[i].checked=false;
+            }
+        }
+
+        function del(r){
+            var c=r.parentNode.parentNode.rowIndex;
+            i=c-2;
+            var sno=$("#sno"+i).val();
+            var ch=document.getElementsByName('ck');
+            if(ch[i].checked==true){
+                $.ajax({//
+                        type:"POST",
+                        url:"../manager/delete_expand.do",//
+                        dateType:"JSON",
+                        data:{id:sno},
+                        beforeSend:function () {
+                        	//alert('aaa')
+                        },
+                        success:function(data){
+                            if(data.status=="ok")
+                            {
+                            		$("#sno"+i).val('已删除');
+                                alert("删除成功！");
+                            }
+                            else
+                            {
+                                alert("输入信息有误无法操作！");
+
+                            }
+                        },
+                        error:function(data){
+                            console.log();
+                        },
+                        complete:function(){}
+                    }
+
+                )
+
+
+            }
+            else
+                alert("未选中要删除的行")
+            var ch=document.getElementsByName('ck');
+            for(i=ch.length-1;i>=0;i--){
+                ch[i].checked=false;
+            }
+
+        }
+
+
+
+        function my_time() {
+            var a=$('#mytime').val();
+            if(a=='1')
+            {
+                var today=new Date();
+                var submittime=today.getFullYear()+'/'+(today.getMonth()+1)+'/'+today.getDate();
+                $("#time").attr('value',submittime);
+            }
+            else if(a=='2')
+            {
+                var today=new Date();
+                var submittime=today.getFullYear()+'/'+(today.getMonth()+1)+'/'+(today.getDate()+1);
+                $("#time").attr('value',submittime);
+            }
+        }
+
+
+
+
+        function my_se(){
+            var a=$('#liebiao').val();
+            if(a=='1')
+            {
+                $('#pay2').show();
+                $('#pay3').hide();
+                $('#pay4').hide();
+            }
+            else if(a=='2')
+            {
+                $('#pay2').hide();
+                $('#pay3').show();
+                $('#pay4').show();
+            }
+        }
+
+        $(function() {
+            $("#time1").datepicker({
+                /* 区域化周名为中文 */
+                dayNamesMin : ["日", "一", "二", "三", "四", "五", "六"],
+                /* 每周从周一开始 */
+                firstDay : 1,
+                /* 区域化月名为中文习惯 */
+                monthNames : ["1", "2", "3", "4", "5", "6",
+                    "7", "8", "9", "10", "11", "12"],
+                /* 月份显示在年后面 */
+                showMonthAfterYear : true,
+                /* 年份后缀字符 */
+                yearSuffix : "年",
+                /* 格式化中文日期
+                （因为月份中已经包含“月”字，所以这里省略） */
+                dateFormat : "yy-MM-dd"
+            });
+        });
+
+        $(function() {
+            $("#time2").datepicker({
+                /* 区域化周名为中文 */
+                dayNamesMin : ["日", "一", "二", "三", "四", "五", "六"],
+                /* 每周从周一开始 */
+                firstDay : 1,
+                /* 区域化月名为中文习惯 */
+                monthNames : ["1", "2", "3", "4", "5", "6",
+                    "7", "8", "9", "10", "11", "12"],
+                /* 月份显示在年后面 */
+                showMonthAfterYear : true,
+                /* 年份后缀字符 */
+                yearSuffix : "年",
+                /* 格式化中文日期
+                （因为月份中已经包含“月”字，所以这里省略） */
+                dateFormat : "yy-MM-dd"
+            });
+        });
+
+
+        $(function() {
+            $("#datepicker").datepicker({
+                /* 区域化周名为中文 */
+                dayNamesMin : ["日", "一", "二", "三", "四", "五", "六"],
+                /* 每周从周一开始 */
+                firstDay : 1,
+                /* 区域化月名为中文习惯 */
+                monthNames : ["1", "2", "3", "4", "5", "6",
+                    "7", "8", "9", "10", "11", "12"],
+                /* 月份显示在年后面 */
+                showMonthAfterYear : true,
+                /* 年份后缀字符 */
+                yearSuffix : "年",
+                /* 格式化中文日期
+                （因为月份中已经包含“月”字，所以这里省略） */
+                dateFormat : "yy-MM-dd"
+            });
+        });
+
+		function rq(){
+			$("#datepicker").datepicker({
+                /* 区域化周名为中文 */
+                dayNamesMin : ["日", "一", "二", "三", "四", "五", "六"],
+                /* 每周从周一开始 */
+                firstDay : 1,
+                /* 区域化月名为中文习惯 */
+                monthNames : ["1", "2", "3", "4", "5", "6",
+                    "7", "8", "9", "10", "11", "12"],
+                /* 月份显示在年后面 */
+                showMonthAfterYear : true,
+                /* 年份后缀字符 */
+                yearSuffix : "年",
+                /* 格式化中文日期
+                （因为月份中已经包含“月”字，所以这里省略） */
+                dateFormat : "yy-MM-dd"
+            });
+			$("#datepicker").blur();
+			$("#datepicker").focus();
+			//$("#money1").focus();
+			$("#datepicker").focus();
+		}
+
+
+
+
+
+    </script>
+
+</head>
+<body style="margin: 0px 0px 0px 0px;padding: 0px 0px 0px 0px; ">
+
+<div>
+    <hr class="hr1"></hr>
+</div>
+
+<div class="myweb">
+    <div class="myweb1">/*放login图标*/
+        <div class="photo1">
+        </div>
+    </div>
+
+    <div class="myweb2">
+        <div class="nav" >
+            <ul >
+                   <li><a href="shouye.html" >首页</a></li>
+                    <li><a href="menu.html" >大菜单</a></li>
+                   <li><a href="todaymenu.html" >今日食堂</a></li>
+                   <li><a href="littlemenu.html" >今日餐厅</a></li>
+                   <li><a href="seeorder.html">查看预约</a></li>
+                   <li><a href="pay.html">统计支出</a></li>
+                   <li><a href="mark.html">签留单</a></li>
+                <li><a href="food.html">仓库管理</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="myweb3">
+        <div class="hr2"></div>
+    </div>
+
+    <div class="myweb4">
+        <div class="pt1">
+        </div>
+        <div class="duan">
+            <p style="font-size: 35px;color: white;position: absolute;left: 180px;top: 10px;">"我是一个快乐的厨师!"</p>
+            <div class="hr5"></div>
+            <p style="font-size: 20px;color: white;position: absolute;left: 80px;top: 90px;">"我要workhard，因为这样我做出的菜肴才美味可口！"</p>
+            <p style="font-size: 20px;color: white;position: absolute;left: 80px;top: 120px;">"我要happyhappy，因为这样我做出的菜肴才美味可口！"</p>
+            <p style="font-size: 20px;color: white;position: absolute;left: 80px;top: 150px;">"我要everyone都喜欢我的菜，我要认真的对待每一个人的需求！"</p>
+        </div>
+    </div>
+
+
+    <div class="myweb5">
+    </div>
+
+    <div class="myweb7">
+
+        <div class="hr3"></div>
+        <div style="position: absolute;height: 100px;width:580px;border-color:#e67a73 ;position: absolute;left:450px;">
+            <div class="btxg2">
+
+                <div style="position: absolute;left: 10px;top: 5px;text-align: center;width: 80px;">
+                    <label >开始时间:</label>
+                </div>
+                <div style="position: absolute;left: 95px;width: 80px;height: 30px;">
+                    <input type="text" id="time1" value="" size="10">
+                </div>
+                <div style="position: absolute;left: 210px;top: 5px;text-align: center;width: 80px;">
+                    <label >截至时间:</label>
+                </div>
+                <div id="pay2" style=";position: absolute;left: 295px;width: 80px;height: 30px;">
+                    <input type="text" id="time2" value="" size="10">
+                </div>
+                <script language="JavaScript">
+                    var today=new Date();
+                    var submittime=today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                    $("#time2").attr('value',submittime);
+                </script>
+
+
+                <div style="position: absolute;left: 495px;width: 80px;">
+                    <button class="myButton" type="button" onclick="zhongshouru()">总收入</button>
+                </div>
+
+                <div style="position: absolute;left: 630px;width: 120px;">
+                    <button class="myButton" type="button" onclick="zhongzhichu()">总支出</button>
+                </div>
+            </div>
+
+        </div>
+        <div class="hr4"></div>
+
+        <div class="table1">
+            <table  id="mytable" >
+                <thead >
+                <tr >
+                    <th style="background-color: #DEDEDE;">
+                        选择
+                    </th>
+                    <th style="background-color: #DEDEDE;">
+                        编号
+                    </th>
+                    <th style="background-color: #DEDEDE;">
+                        时间
+                    </th>
+                    <th style="background-color: #DEDEDE;">
+                        金额
+                    </th>
+                    <th style="background-color: #DEDEDE;">
+                        类型
+                    </th>
+                    <th style="background-color: #DEDEDE;">
+                        操作一
+                    </th>
+                    <th style="background-color: #DEDEDE;">
+                        操作二
+                    </th>
+                </tr>
+                </thead>
+
+                <tbody >
+                <tr >
+                    <th >
+                        <input type='checkbox' name='ck'/>
+                    </th>
+                    <th >
+
+                    </th>
+                    <th >
+                        <input type="text" id="datepicker" size="10">
+                    </th>
+                    <th >
+                        <input type="text"  id="money1" size="10">
+                    </th>
+                    <th >
+                        <select id="type" style="width: 80px ;height:30px" onchange="my_se()"> 
+                            <option value="1" >&nbsp;&nbsp;&nbsp;支出</option> 
+                            <option value="2">&nbsp;&nbsp;&nbsp;收入</option>
+                        </select> 
+                    </th>
+
+                    <th>
+                        <button class="myButton" type="button" onclick="mclear()">清除</button>
+
+                    </th>
+                    <th>
+                        <button class="myButton" type="button" onclick="add()">增加</button>
+                    </th>
+                </tr>
+                </tbody>
+            </table>
+
+            <div  class="myd">
+                <div id="mydiv" style="position: absolute;left: 30%;">
+
+                </div>
+            </div>
+
+        </div>
+
+
+        
+    </div>
+    <div class="myweb6">
+            <p style="text-align: center;color: white;">乐百特公司服务地址</p>
+        </div>
+</div>
+</body>
+</html>>

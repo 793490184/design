@@ -4,7 +4,7 @@ public class Food {
     private int id;
     private String name;
     private String date;
-    private int security;
+    private String security;
     private String foodType;
     private int number;
     private String measure;
@@ -13,7 +13,20 @@ public class Food {
     public Food() {
     }
 
-    public Food(int id, String name, String date, int security, String foodType, int number, String measure, int usedFlag) {
+    public Food(String name, String date, String security, String foodType, int number) {
+        this.name = name;
+        this.date = date;
+        this.security = security;
+        this.foodType = foodType;
+        this.number = number;
+    }
+
+    public Food(int id, int number) {
+        this.id = id;
+        this.number = number;
+    }
+
+    public Food(int id, String name, String date, String security, String foodType, int number, String measure, int usedFlag) {
         this.id = id;
         this.name = name;
         this.date = date;
@@ -24,7 +37,7 @@ public class Food {
         this.usedFlag = usedFlag;
     }
 
-    public Food(String name, String date, int security, String foodType, int number, String measure, int usedFlag) {
+    public Food(String name, String date, String security, String foodType, int number, String measure, int usedFlag) {
         this.name = name;
         this.date = date;
         this.security = security;
@@ -72,11 +85,11 @@ public class Food {
         this.date = date;
     }
 
-    public int getSecurity() {
+    public String getSecurity() {
         return security;
     }
 
-    public void setSecurity(int security) {
+    public void setSecurity(String security) {
         this.security = security;
     }
 

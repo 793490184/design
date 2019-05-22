@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+    <meta charset="UTF-8">
+    <title>今日食堂</title>
+
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>  <!--<引用jquery库>-->
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="http://www.gongjuji.net/Content/files/jquery.md5.js"></script>
+    <script src="JquerySession.js"></script>
+
+    <link href="../css/common.css" rel="stylesheet"/>
+    <link href="../css/todaymenu.css" rel="stylesheet"/>
+
+
+
+
+
+    <script type="text/javascript">//查询所有菜单
+
+    var number=0;
+    function getnum(type) {
+        $.ajax({
+            type:"POST",
+            url:"get_menu_number.do",//
+            dateType:"JSON",
+            data:{place:"public",type:type},
+            beforeSend:function () {},
+            success:function(data){
+                number=data.message.number;
+            },
+            error:function(data){
+                console.log();
+            },
+            complete:function(){}
+        })
+
+    }
+
+    function AJAX(page) {//没有对应的url
+
+        var str='',span='',a=0;
+        var can=$('#meal').val();
+        if(can==0)can='breakfast';
+        else if(can==1)can='dinner';
+        getnum(can);//发送参数为食堂和餐类
+        $.ajax({//
+                type:"POST",
+                url:"select_public_menu_by_season.do",//未修改url
+                dateType:"JSON",
+                data:{p:page,type:can},//传送想要的页数
+                beforeSend:function () {},
+                success:function(data){
+                    var arr=data.message;
+                    if(data.message.length != 0)//判断为不为零
+                    {
+                        var  c22='<td>选择</td>';
+                        var  c23='<td>编号</td>';
+                        var c24='<td>菜名</td>';
+                        var c25='<td>餐类</td>';
+                        var c26='<td>季节</td>';
+                        var c27='<td>价格</td>';
+                        str+='<tr>'+c22+c23+c24+c25+c26+c27+'</tr>';
+                        for(var i=0;i<=data.message.length-1;i++)
+                        {
+                            var  c1='<td>'+"<input type='checkbox' name='ck'/>"+'</td>';
+                            var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr[i].id+"'/>"+'</td>';
+                            var  c3='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vname"+i+"' value='"+arr[i].name+"'/>"+'</td>';
+                            
+                            var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='canlei"+i+"' value='"+arr[i].type+"'/>"+'</td>';
+                            var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='season"+i+"' value='"+arr[i].season+"'/>"+'</td>';
+                            var c6='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px'id='price"+i+"'value='"+arr[i].price+"'/>"+'</td>';
+                            str+='<tr>'+c1+c2+c3+c4+c5+c6+'</tr>';
+                        }
+                        $('#mytable1').html(str);//添加生成的行
+
+                        if(number%10==0)a=number/10;
+                        else
+                            a=parseInt(number/10)+1;
+
+                        if(page==0){
+                            if(a<3){
+                                for(var i=1;i<=a;i++){
+                                    if(i==page+1){
+                                        span+='<span style="background-color: #DEDEDE">'+i+'</span>';//添加span
+                                        continue;}
+                                    span+='<span>'+i+'</span>';//添加span
+                                }
+                            }
+                            else
+                            {
+                                for(var i=1;i<=3;i++){
+                                    if(i==page+1){
+                                        span+='<span style="background-color: #DEDEDE">'+i+'</span>';//添加span
+                                        continue;}
+                                    span+='<span>'+i+'</span>';//添加span
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            if(a>=page+2){
+                                for(var i=page;i<=page+2;i++){
+                                    if(i==page+1){
+                                        span+='<span style="background-color: #DEDEDE">'+i+'</span>';//添加span
+                                        continue;}
+                                    span+='<span>'+i+'</span>';//添加span
+                                }
+                            }
+                            else
+                            {
+                                for(var i=page;i<=a;i++){
+                                    if(i==page+1){
+                                        span+='<span style="background-color: #DEDEDE">'+i+'</span>';//添加span
+                                        continue;}
+                                    span+='<span>'+i+'</span>';//添加span
+                                }
+
+                            }
+                        }
+                        span+=" <label >总页数：</label>"
+                        span+="<input size='3' readonly type='text' value='"+a+"'/>"
+                        span+="<input size='3' type='text' id='z' value=''/>"
+                        span+="<button type='button' onclick='b()' >跳转</button>";
+                        $('#mydiv').html(span);
+                        $('span').on('click',send);//绑定响应事件
+                        function send() {
+                            var p=parseInt($(this).text())-1;
+                            AJAX(p);
+                        }
+                    }
+                    else
+                    {
+                        alert("当前菜单未补充");
+                    }
+                },
+                error:function(data){
+                    console.log();
+                },
+                complete:function(){}
+            }
+
+        )
+    }
+
+    function b() {//查询按钮事件
+        var p=parseInt($('#z').val())-1;
+        AJAX(p);
+    }
+    </script>
+
+
+
+    <script type="text/javascript">//查询已添加菜单
+    function AJAX1(page) {
+
+        var str='',span='',a=0;
+        var can=$('#meal').val();
+        if(can==0)can='breakfast';
+        else if(can==1)can='dinner';
+        getnum(can);
+        $.ajax({//
+                type:"POST",
+                url:"select_public_menus.do",//
+                dateType:"JSON",
+                data:{p:page,type:can},//传送想要的页数
+                beforeSend:function () {},
+                success:function(data){
+                    var arr=data.message;
+                    if(data.message.length != 0)//判断为不为零
+                    {
+                        var  c22='<td>选择</td>';
+                        var  c23='<td>编号</td>';
+                        var c24='<td>菜名</td>';
+                        var c25='<td>餐类</td>';
+                        var c26='<td>季节</td>';
+                        var c27='<td>价格</td>';
+                        var c28='<td>操作一</td>';
+                        str+='<tr>'+c22+c23+c24+c25+c26+c27+c28+'</tr>';
+                       
+                        for(var i=0;i<=data.message.length-1;i++)
+                        {
+                            var  c1='<td>'+"<input type='checkbox' name='ck'/>"+'</td>';
+                            var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr[i].id+"'/>"+'</td>';
+                            //alert(c2)
+                            var  c3='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vname"+i+"' value='"+arr[i].name+"'/>"+'</td>';
+                            var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='canlei"+i+"' value='"+arr[i].type+"'/>"+'</td>';
+                            var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='season"+i+"' value='"+arr[i].season+"'/>"+'</td>';
+                            var c6='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px'id='price"+i+"'value='"+arr[i].price+"'/>"+'</td>';
+                            var c7='<td>'+"<button class='myButton'  type='button' onclick='del(this)' >删除</button>"+'</td>';
+                            str+='<tr>'+c1+c2+c3+c4+c5+c6+c7+'</tr>';
+                            
+                        }
+                        $('#mytable1').html(str);//添加生成的行
+
+                        if(number%10==0)a=number/10;
+                        else
+                            a=parseInt(number/10)+1;
+
+                        if(page==0){
+                            if(a<3){
+                                for(var i=1;i<=a;i++){
+                                    if(i==page+1){
+                                        span+='<span style="background-color: #DEDEDE">'+i+'</span>';//添加span
+                                        continue;}
+                                    span+='<span>'+i+'</span>';//添加span
+                                }
+                            }
+                            else
+                            {
+                                for(var i=1;i<=3;i++){
+                                    if(i==page+1){
+                                        span+='<span style="background-color: #DEDEDE">'+i+'</span>';//添加span
+                                        continue;}
+                                    span+='<span>'+i+'</span>';//添加span
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            if(a>=page+2){
+                                for(var i=page;i<=page+2;i++){
+                                    if(i==page+1){
+                                        span+='<span style="background-color: #DEDEDE">'+i+'</span>';//添加span
+                                        continue;}
+                                    span+='<span>'+i+'</span>';//添加span
+                                }
+                            }
+                            else
+                            {
+                                for(var i=page;i<=a;i++){
+                                    if(i==page+1){
+                                        span+='<span style="background-color: #DEDEDE">'+i+'</span>';//添加span
+                                        continue;}
+                                    span+='<span>'+i+'</span>';//添加span
+                                }
+
+                            }
+                        }
+                        span+=" <label >总页数：</label>"
+                        span+="<input size='3' readonly type='text' value='"+a+"'/>"
+                        span+="<input size='3' type='text' id='z' value=''/>"
+                        span+="<button type='button' onclick='b1()' >跳转</button>";
+                        $('#mydiv').html(span);
+                        $('span').on('click',send);//绑定响应事件
+                        function send() {
+                            var p=parseInt($(this).text())-1;
+                            AJAX1(p);
+                        }
+                    }
+                    else
+                    {
+                        alert("当前菜单未补充");
+                    }
+                },
+                error:function(data){
+                    console.log();
+                },
+                complete:function(){}
+            }
+
+        )
+    }
+
+    function b1() {//查询按钮事件
+        var p=parseInt($('#z').val())-1;
+        AJAX1(p);
+    }
+    </script>
+
+
+
+
+    <script type="text/javascript">
+
+        function deleteAll(){
+            var flag=0;
+            var tb=document.getElementById('mytable1');
+            var ch=document.getElementsByName('ck');
+            for(i=ch.length-1;i>=0;i--){
+                var tr=ch[i].parentNode.parentNode;
+                var index=tr.rowIndex;
+                tb.deleteRow(index);
+            }
+        }
+
+        function chaxun() {/*无需时间季节，后台直接取当前时间即可，只需提供后台餐类,0早餐，1中，2 晚*/
+            deleteAll()
+            AJAX(0)
+        }
+
+
+        function fabu(){
+            var flag=0;
+            var tb=document.getElementById('mytable1');
+            var ch=document.getElementsByName('ck');
+            for(i=ch.length-1;i>=0;i--){
+                if(ch[i].checked==true){
+                		var c=i;
+                    var vno=$("#vno"+c).val();//把vno取完发ajax 所以无法确定c
+                   
+                    $.ajax({//
+                            type:"POST",
+                            url:"select_menu_as_public.do",//
+                            dateType:"JSON",
+                            data:{id:vno},
+                            beforeSend:function () {},
+                            success:function(data){
+                                if(data.status == "ok"){
+                                	
+                                		alert("已发布")
+                                		
+                                }else{
+                                		alert("发布失败")
+                                }
+                            },
+                            error:function(data){
+                                console.log();
+                            },
+                            complete:function(){}
+                        }
+
+                    )
+                    flag=flag+1;
+                }
+            }
+            if(flag<=0){
+                alert("请选定要发布的菜！");
+            }
+            var ch=document.getElementsByName('ck');
+            for(i=ch.length-1;i>=0;i--){
+                ch[i].checked=false;
+            }
+
+        }
+
+        function chaxun1() {/*无需时间季节，后台直接取当前时间即可，只需提供后台餐类,0早餐，1中，2 晚*/
+            deleteAll()
+            var can=$('#meal').val();
+            $('#mytable').hide();
+            $('#mytable1').show();
+            if(can==0)can='早餐';
+            else if(can==1)can='正餐';
+            AJAX1(0)
+        }
+
+        function del(r){
+            var i=r.parentNode.parentNode.rowIndex;
+            //alert(i)
+            var c=i-1;
+            var vno=$("#vno"+c).val();
+            //alert(vno)
+            var ch=document.getElementsByName('ck');
+            if(ch[i-1].checked==true){
+            		//$("#vno"+c).val('已删除');
+                $.ajax({//
+                        type:"POST",
+                        url:"remove_menu_public.do",//
+                        dateType:"JSON",
+                        data:{id:vno},
+                        beforeSend:function () {},
+                        success:function(data){
+                            if(data.status == "ok")
+                            {
+                            	$("#vno"+c).val('已删除');
+                                alert("删除成功！");
+                            }
+                            else
+                            {
+                                alert("输入信息有误无法操作！");
+                            }
+                        },
+                        error:function(data){
+                            console.log();
+                        },
+                        complete:function(){}
+                    }
+
+                )
+
+
+            }
+            else
+                alert("未选中要删除的行")
+                
+            var ch=document.getElementsByName('ck');
+            for(i=ch.length-1;i>=0;i--){
+                ch[i].checked=false;
+            }
+        }
+
+
+
+    </script>
+
+</head>
+<body style="margin: 0px 0px 0px 0px;padding: 0px 0px 0px 0px; ">
+
+<div>
+    <hr class="hr1"></hr>
+</div>
+
+<div class="myweb">
+    <div class="myweb1">/*放login图标*/
+        <div class="photo1">
+        </div>
+    </div>
+
+    <div class="myweb2">
+        <div class="nav" >
+            <ul >
+                   <li><a href="shouye.html" >首页</a></li>
+                   <li><a href="menu.html" >大菜单</a></li>
+                   <li><a href="todaymenu.html" >今日食堂</a></li>
+                   <li><a href="littlemenu.html" >今日餐厅</a></li>
+                   <li><a href="seeorder.html">查看预约</a></li>
+                   <li><a href="pay.html">统计支出</a></li>
+                   <li><a href="mark.html">签留单</a></li>
+                <li><a href="food.html">仓库管理</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="myweb3">
+        <div class="hr2"></div>
+    </div>
+
+    <div class="myweb4">
+        <div class="pt1">
+        </div>
+        <div class="pt2">
+        </div>
+        <div class="pt3">
+        </div>
+        <div class="pt4">
+        </div>
+    </div>
+
+    <div class="myweb5">
+    </div>
+
+    <div class="myweb7">
+        <div class="hr3"></div>
+
+        <div class="btxg1">
+            <div style="position: absolute;left: 50px;top: 5px;text-align: center;width: 80px;">
+                <label >季节：</label>
+            </div>
+
+            <div style="position: absolute;left: 130px;">
+                <input type="text" id="season"  size="5" readonly="true" style="text-align: center;width: 80px;">
+                <script language="JavaScript">
+                    var today=new Date();
+                    var i=today.getMonth()+1;
+                    if(i>=3&&i<=5)
+                        $("#season").attr('value','春季');
+                    else if(i>=6&&i<=8)
+                        $("#season").attr('value','夏季');
+                    else if(i>=9&&i<=11)
+                        $("#season").attr('value','秋季');
+                    else
+                        $("#season").attr('value','冬季');
+                </script>
+            </div>
+
+            <div style="position: absolute;left: 230px;top: 5px;text-align: center;width: 80px;">
+                <label >时间：</label>
+            </div>
+
+            <div style="position: absolute;left: 310px;">
+                <input type="text" id="time"  size="10" readonly="true" style="text-align: center;width: 80px;">
+                <script language="JavaScript">
+                    var today=new Date();
+                    var submittime=today.getFullYear()+'/'+(today.getMonth()+1)+'/'+today.getDate();
+                    $("#time").attr('value',submittime);
+                </script>
+            </div>
+
+            <div style="position: absolute;left: 410px;top: 5px;text-align: center;width: 80px;">
+                <label >餐类：</label>
+            </div>
+
+            <div style="position: absolute;left: 490px;">
+                <select id="meal" style="width: 80px ;height:30px;text-align: center;"> 
+                    <option value="0" >&nbsp;&nbsp;&nbsp;早餐</option> 
+                    <option value="1">&nbsp;&nbsp;&nbsp;正餐</option>
+                </select> 
+            </div>
+
+            <div style="position: absolute;left: 700px;">
+                <button class="myButton" type="button" onclick="chaxun()">查询（添加）</button>
+            </div>
+
+            <div style="position: absolute;left: 870px;">
+                <button class="myButton" type="button" onclick="fabu()">发布菜单</button>
+            </div>
+
+            <div style="position: absolute;left: 1000px;">
+                <button class="myButton" type="button" onclick="chaxun1()">查询（删除）</button>
+            </div>
+
+        </div>
+
+        <div class="hr4">
+        </div>
+
+        <div class="table1">
+            <table  id="mytable1" >
+            </table>
+        </div>
+        <div  class="myd">
+            <div id="mydiv" style="position: absolute;left: 30%;">
+
+            </div>
+        </div>
+
+        </div>
+
+
+
+    </div>
+
+
+    <div class="myweb6" style="position: absolute;left: 150px">
+        <p style="text-align: center;color: white;">乐百特公司服务地址</p>
+    </div>
+</div>
+
+</body>
+</html>

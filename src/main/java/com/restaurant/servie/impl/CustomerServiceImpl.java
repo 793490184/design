@@ -24,12 +24,13 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public void removeOrderedPublic(int menuId, String account, String type, String useTime) {
+		System.out.println(menuId + account + type + useTime);
 		orderedPublicMenuMapper.removeOrderedPublic(menuId, account, type, useTime);
 	}
 
 	@Override
-	public List<OrderedMenu> selectOrderedPublicByCustomer(String account, String type, String useTime) {
-		List<OrderedMenu> orderedMenuList = orderedPublicMenuMapper.selectOrderedPublicByCustomer(account, type, useTime);
+	public List<OrderedMenu> selectOrderedPublicByCustomer(String account, String useTime, int start, int end) {
+		List<OrderedMenu> orderedMenuList = orderedPublicMenuMapper.selectOrderedPublicByCustomer(account, useTime, start, end);
 		return orderedMenuList;
 	}
 
@@ -44,8 +45,23 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public List<OrderedMenu> selectOrderedPrivateByCustomer(String account, String type, String useTime) {
-		List<OrderedMenu> orderedMenuList = orderedPrivateMenuMapper.selectOrderedPrivateByCustomer(account, type, useTime);
+	public List<OrderedMenu> selectOrderedPrivateByCustomer(String account, String useTime, int start, int end) {
+		List<OrderedMenu> orderedMenuList = orderedPrivateMenuMapper.selectOrderedPrivateByCustomer(account, useTime, start, end);
 		return orderedMenuList;
 	}
+
+	@Override
+	public void customerMark(Integer menuId, String useTime, String place, String account, Integer grade) {
+		if (place.equals("public")) {
+			orderedPublicMenuMapper.customerMark(menuId, useTime, account, grade);
+			double avg = orderedPublicMenuMapper.getAvgMark(menuId);
+			orderedPublicMenuMapper.updateMenuMark(menuId, avg);
+		} else if (place.equals("private")) {
+			orderedPrivateMenuMapper.customerMark(menuId, useTime, account, grade);
+			double avg = orderedPrivateMenuMapper.getAvgMark(menuId);
+			orderedPrivateMenuMapper.updateMenuMark(menuId, avg);
+		}
+	}
+
+
 }

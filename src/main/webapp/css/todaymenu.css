@@ -1,0 +1,80 @@
+.myweb{
+    width: 1220px;
+    height:1350px;
+    position: absolute;
+    left:150px;
+    right:150px;
+    top:12px;
+
+}
+
+.myweb4{
+    width: 1220px;
+    height:440px;
+    position: absolute;
+    top:230px;
+
+}
+.myweb5{
+    width: 1220px;
+    height:30px;
+    position: absolute;
+    top:670px;
+    background-color:white;
+}
+.myweb7{
+    width: 1220px;
+    height:600px;
+    position: absolute;
+    top:700px;
+}
+.myweb6{
+    width: 1220px;
+    height: 50px;
+    background-color: #232323;
+    position: absolute;
+    top:1300px;
+
+}
+
+.pt1{
+    background-size:cover;
+    width:275px;
+    height:400px;
+    top:35px;
+    left: 15px;
+    position: absolute;
+    background-image: url("../photo/todaymenu/photo1.jpg");
+    border-style:solid;
+}
+
+.pt2{
+    background-size:cover;
+    width:275px;
+    height:400px;
+    top:35px;
+    left: 320px;
+    position: absolute;
+    background-image: url("../photo/todaymenu/photo2.jpg");
+    border-style:solid;
+}
+.pt3{
+    background-size:cover;
+    width:275px;
+    height:400px;
+    top:35px;
+    left: 625px;
+    position: absolute;
+    background-image: url("../photo/todaymenu/photo3.jpg");
+    border-style:solid;
+}
+.pt4{
+    background-size:cover;
+    width:275px;
+    height:400px;
+    top:35px;
+    left: 930px;
+    position: absolute;
+    background-image: url("../photo/todaymenu/photo4.jpg");
+    border-style:solid;
+}

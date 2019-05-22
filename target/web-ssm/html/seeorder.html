@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查看预约</title>
+
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>  <!--<引用jquery库>-->
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="http://www.gongjuji.net/Content/files/jquery.md5.js"></script>
+    <script src="JquerySession.js"></script>
+
+    <link href="../css/common.css" rel="stylesheet"/>
+    <link href="../css/seeorder.css" rel="stylesheet"/>
+
+
+
+
+
+    <script type="text/javascript">
+        var number=0;
+        function getnum1(place,type1) {
+            $.ajax({
+                type:"POST",
+                url:"get_menu_number.do",//
+                dateType:"JSON",
+                data:{place:place,type:type1},
+                beforeSend:function () {},
+                success:function(data){
+                    number=data.message.number;
+                },
+                error:function(data){
+                    console.log();
+                },
+                complete:function(){}
+            })
+
+        }
+    function AJAX(page) {
+        var a=$('#depart').val();
+        if(a==0)a="public"
+        else if(a==1)a="private"
+
+        var b=$('#meal').val();
+
+        if(b==0)b="breakfast"
+        else if(b==1)b="lunch"
+        else if(b==2)b="supper"
+        var c=$('#time').val();
+
+        getnum1(a,b)
+
+        $.ajax({//
+                type:"POST",
+                url:"select_ordered_public_menu_numbers.do",//
+                dateType:"JSON",
+                data:{p:page,restaurant:a,date:c,type:b},//传送想要的页数
+                beforeSend:function () {},
+                success:function(data){
+
+                    var arr=data.message;
+                    if(data.message.length != 0)//判断为不为零
+                    {
+                        var  c21='<td>选择</td>';
+                        var  c22='<td>编号</td>';
+                        var c23='<td>菜名</td>';
+                        var c24='<td>使用时间</td>';
+                        var c25='<td>价格</td>';
+                        var c26='<td>类型</td>';
+                        var c27='<td>份数</td>';
+                        var str='';
+                        str+='<tr>'+c21+c22+c23+c24+c25+c26+c27+'</tr>';
+                        for(var i=0;i<=data.message.length-1;i++)
+                        {
+                            var  c1='<td>'+"<input type='checkbox' name='ck'/>"+'</td>';
+                            var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr[i].id+"'/>"+'</td>';
+                            var  c3='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vname"+i+"' value='"+arr[i].name+"'/>"+'</td>';
+                            var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='season"+i+"' value='"+arr[i].useTime+"'/>"+'</td>';
+                            var c5='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px'id='price"+i+"'value='"+arr[i].price+"'/>"+'</td>';
+                            var c6='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='canlei"+i+"' value='"+arr[i].type+"'/>"+'</td>';
+                            var c7='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='number"+i+"' value='"+arr[i].number+"'/>"+'</td>';
+                            str+='<tr>'+c1+c2+c3+c4+c5+c6+c7+'</tr>';
+                        }
+                        $('#mytable').html(str);//添加生成的行
+
+                        if(number%10==0)a=number/10;
+                        else
+                            a=parseInt(number/10)+1;
+
+                        var span='';
+                        if(page==0){
+                            if(a<3){
+                                for(var i=1;i<=a;i++){
+                                    if(i==page+1){
+                                        span+='<span style="background-color: #DEDEDE">'+i+'</span>';//添加span
+                                        continue;}
+                                    span+='<span>'+i+'</span>';//添加span
+                                }
+                            }
+                            else
+                            {
+                                for(var i=1;i<=3;i++){
+                                    if(i==page+1){
+                                        span+='<span style="background-color: #DEDEDE">'+i+'</span>';//添加span
+                                        continue;}
+                                    span+='<span>'+i+'</span>';//添加span
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            if(a>=page+2){
+                                for(var i=page;i<=page+2;i++){
+                                    if(i==page+1){
+                                        span+='<span style="background-color: #DEDEDE">'+i+'</span>';//添加span
+                                        continue;}
+                                    span+='<span>'+i+'</span>';//添加span
+                                }
+                            }
+                            else
+                            {
+                                for(var i=page;i<=a;i++){
+                                    if(i==page+1){
+                                        span+='<span style="background-color: #DEDEDE">'+i+'</span>';//添加span
+                                        continue;}
+                                    span+='<span>'+i+'</span>';//添加span
+                                }
+
+                            }
+                        }
+                        span+=" <label >总页数：</label>"
+                        span+="<input size='3' readonly type='text' value='"+a+"'/>"
+                        span+="<input size='3' type='text' id='z' value=''/>"
+                        span+="<button type='button' onclick='b()' >跳转</button>";
+                        $('#mydiv').html(span);
+                        $('span').on('click',send);//绑定响应事件
+                        function send() {
+                            var p=parseInt($(this).text())-1;
+                            AJAX(p);
+                        }
+                    }
+                    else
+                    {
+                        alert("当前菜单未补充");
+                    }
+                },
+                error:function(data){
+                    console.log();
+                },
+                complete:function(){}
+            }
+
+        )
+    }
+
+    function b() {//查询按钮事件
+        var p=parseInt($('#z').val())-1;
+        AJAX(p);
+    }
+    </script>
+
+
+    <script type="text/javascript">
+
+        function chaxun(){
+            AJAX(0);
+        }
+
+
+
+
+        function my_time() {
+            var a=$('#mytime').val();
+            if(a=='1')
+            {
+                var today=new Date();
+                var submittime=today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                $("#time").attr('value',submittime);
+            }
+            else if(a=='2')
+            {
+                var today=new Date();
+                var submittime=today.getFullYear()+'-'+(today.getMonth()+1)+'-'+(today.getDate()+1);
+                $("#time").attr('value',submittime);
+            }
+        }
+    </script>
+
+</head>
+<body style="margin: 0px 0px 0px 0px;padding: 0px 0px 0px 0px; ">
+
+<div>
+    <hr class="hr1"></hr>
+</div>
+
+<div class="myweb">
+    <div class="myweb1">/*放login图标*/
+        <div class="photo1">
+        </div>
+    </div>
+
+    <div class="myweb2">
+        <div class="nav" >
+            <ul >
+                   <li><a href="shouye.html" >首页</a></li>
+                    <li><a href="menu.html" >大菜单</a></li>
+                   <li><a href="todaymenu.html" >今日食堂</a></li>
+                   <li><a href="littlemenu.html" >今日餐厅</a></li>
+                   <li><a href="seeorder.html">查看预约</a></li>
+                   <li><a href="pay.html">统计支出</a></li>
+                   <li><a href="mark.html">签留单</a></li>
+                <li><a href="food.html">仓库管理</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="myweb3">
+        <div class="hr2"></div>
+    </div>
+
+    <div class="myweb4">
+        <div class="pt1">
+        </div>
+        <div class="duan">
+            <p style="font-size: 35px;color: white;position: absolute;left: 180px;top: 10px;">"我是一个快乐的厨师!"</p>
+            <div class="hr5"></div>
+            <p style="font-size: 20px;color: white;position: absolute;left: 80px;top: 90px;">"我要workhard，因为这样我做出的菜肴才美味可口！"</p>
+            <p style="font-size: 20px;color: white;position: absolute;left: 80px;top: 120px;">"我要happyhappy，因为这样我做出的菜肴才美味可口！"</p>
+            <p style="font-size: 20px;color: white;position: absolute;left: 80px;top: 150px;">"我要everyone都喜欢我的菜，我要认真的对待每一个人的需求！"</p>
+        </div>
+    </div>
+
+
+    <div class="myweb5">
+    </div>
+
+    <div class="myweb7">
+        <div class="hr3"></div>
+
+        <div class="btxg1">
+            <div style="position: absolute;left: 50px;top: 5px;text-align: center;width: 80px;">
+                <label >地点：</label>
+            </div>
+
+            <div style="position: absolute;left: 130px;">
+                <select id="depart" style="width: 80px ;height:30px"> 
+                    <option value="0" >&nbsp;&nbsp;&nbsp;食堂</option> 
+                    <option value="1">&nbsp;&nbsp;&nbsp;餐厅</option>
+                </select> 
+            </div>
+
+            <div style="position: absolute;left: 230px;top: 5px;text-align: center;width: 80px;">
+                <label >时间：</label>
+            </div>
+
+            <div style="position: absolute;left: 310px;">
+                <select id="mytime" style="width: 80px ;height:30px " onchange="my_time()" > 
+                    <option  value="1"  >&nbsp;&nbsp;&nbsp;今日</option> 
+                    <option  value="2" >&nbsp;&nbsp;&nbsp;明日</option>
+                </select> 
+            </div>
+
+            <div style="position: absolute;left: 410px;text-align: center;width: 80px;">
+                <input type="text" id="time"  style="width: 80px ;height:30px" size="10" readonly="true">
+                <script language="JavaScript">
+                    var today=new Date();
+                    var submittime=today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                    $("#time").attr('value',submittime);
+                </script>
+            </div>
+
+            <div style="position: absolute;left: 510px;top: 5px;text-align: center;width: 80px;">
+                <label >餐类：</label>
+            </div>
+
+            <div style="position: absolute;left: 600px;">
+                <select id="meal" style="width: 80px ;height:30px;text-align: center;"> 
+                    <option value="0" >&nbsp;&nbsp;&nbsp;早餐</option> 
+                    <option value="1">&nbsp;&nbsp;&nbsp;中餐</option>
+                    <option value="2">&nbsp;&nbsp;&nbsp;晚餐</option>
+                </select> 
+            </div>
+
+            <div style="position: absolute;left: 800px;">
+                <button class="myButton" type="button" onclick="chaxun()">查询</button>
+            </div>
+        </div>
+
+        <div class="hr4"></div>
+
+        <div class="table1">
+            <table  id="mytable"  >
+            </table>
+        </div>
+        <div  class="myd">
+            <div id="mydiv" style="position: absolute;left: 30%;">
+
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <div class="myweb6">
+        <p style="text-align: center;color: white;">乐百特公司服务地址</p>
+    </div>
+</div>
+
+</body>
+</html>

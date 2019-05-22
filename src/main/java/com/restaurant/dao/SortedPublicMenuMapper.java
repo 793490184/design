@@ -11,9 +11,9 @@ public interface SortedPublicMenuMapper {
 	public void selectMenuAsPublic(int id);
 	public void removeMenuPublic(int id);
 	public List<SortedMenu> selectPublicMenus(@Param("start") int start, @Param("end") int end);
-	public List<SortedMenu> selectPublicMenuBySeason(@Param("season") String season, @Param("start") int start, @Param("end") int end);
+	public List<SortedMenu> selectPublicSortedMenu(@Param("season") String season, @Param("type") String type, @Param("start") int start, @Param("end") int end);
+	public List<SortedMenu> selectPublicMenuByType(@Param("season") String season, @Param("type") String type, @Param("start") int start, @Param("end") int end);
 	public List<SortedMenu> selectPublicMenuByName(@Param("name") String name, @Param("start") int start, @Param("end") int end);
-	public List<SortedMenu> selectPublicMenuByType(@Param("type") String type, @Param("start") int start, @Param("end") int end);
 
 
 }

@@ -9,17 +9,24 @@ import java.util.List;
 
 public interface OrderedPublicMenuMapper {
 
+	public int selectOrderedPublic(String type);
+
 	public void selectOrderedAsPublic(@Param("menuId")int menuId, @Param("account")String account,
 									   @Param("type")String type, @Param("useTime")String useTime,
 									   @Param("number")int number);
 	public void removeOrderedPublic(@Param("menuId")int menuId, @Param("account")String account,
 									 @Param("type")String type, @Param("useTime")String useTime);
-	public List<OrderedMenu> selectOrderedPublicByCustomer(@Param("account")String account, @Param("type")String type,
-															@Param("useTime")String useTime);
+	public List<OrderedMenu> selectOrderedPublicByCustomer(@Param("account")String account, @Param("useTime")String useTime,
+														   @Param("start") int start, @Param("end") int end);
 	public List<OrderedMenu> selectOrderedPublicMenus(@Param("type")String type, @Param("useTime")String useTime,
 													   @Param("start") int start, @Param("end") int end);
 
 	public List<OrderedMenu> selectOrderedPublicMenuNumbers(@Param("type")String type, @Param("useTime")String useTime,
 															@Param("start") int start, @Param("end") int end);
+
+	public void customerMark(@Param("menuId") Integer menuId, @Param("useTime") String useTime,
+							 @Param("account") String account, @Param("grade") Integer grade);
+	public double getAvgMark(Integer menuId);
+	public void updateMenuMark(@Param("menuId") Integer menuId, @Param("mark") double mark);
 
 }

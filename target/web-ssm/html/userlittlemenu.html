@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>今日食堂</title>
+
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>  <!--<引用jquery库>-->
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="http://www.gongjuji.net/Content/files/jquery.md5.js"></script>
+    <script src="JquerySession.js"></script>
+
+    <link href="../css/common.css" rel="stylesheet"/>
+    <link href="../css/userlittlemenu.css" rel="stylesheet"/>
+
+
+
+    <script type="text/javascript">//
+    function AJAX(page) {//查询菜单
+        var str='',span='',a=0;
+        var time=$('#time').val();
+        var can=$('#meal').val();
+        if(can==0)can='早餐';
+        else if(can==1)can='中餐';
+        else if(can==2)can='晚餐';
+        $.ajax({//
+                type:"POST",
+                url:"userViewPrivate",//
+                dateType:"JSON",
+                data:{p:page,menutype:can},//传送想要的页数
+                beforeSend:function () {},
+                success:function(data){
+                    var arr=JSON.parse(data);
+                    if(arr.data.length != 0)//判断为不为零
+                    {
+                        var  c22='<td>选择</td>';
+                        var  c23='<td>编号</td>';
+                        var c24='<td>菜名</td>';
+                        var c25='<td>餐类</td>';
+                        var c26='<td>价格</td>';
+                        str+='<tr>'+c22+c23+c24+c25+c26+'</tr>';
+                        for(var i=0;i<=arr.data.length-1;i++)
+                        {
+                            var  c1='<td>'+"<input type='checkbox' name='ck'/>"+'</td>';
+                            var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr.data[i].vno+"'/>"+'</td>';
+                            var  c3='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vname"+i+"' value='"+arr.data[i].vname+"'/>"+'</td>';
+                            var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='canlei"+i+"' value='"+arr.data[i].menutype+"'/>"+'</td>';
+                            var c5='<td>'+'</td>';
+                            str+='<tr>'+c1+c2+c3+c4+c5+'</tr>';
+                        }
+                        $('#mytable').html(str);//添加生成的行
+                        if(arr.rowcount%10==0)a=arr.rowcount/10;
+                        else
+                            a=parseInt(arr.rowcount/10)+1;
+
+                        if(page==0){
+                            if(a<3){
+                                for(var i=1;i<=a;i++){
+                                    if(i==page+1){
+                                        span+='<span style="background-color: #DEDEDE">'+i+'</span>';//添加span
+                                        continue;}
+                                    span+='<span>'+i+'</span>';//添加span
+                                }
+                            }
+                            else
+                            {
+                                for(var i=1;i<=3;i++){
+                                    if(i==page+1){
+                                        span+='<span style="background-color: #DEDEDE">'+i+'</span>';//添加span
+                                        continue;}
+                                    span+='<span>'+i+'</span>';//添加span
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            if(a>=page+2){
+                                for(var i=page;i<=page+2;i++){
+                                    if(i==page+1){
+                                        span+='<span style="background-color: #DEDEDE">'+i+'</span>';//添加span
+                                        continue;}
+                                    span+='<span>'+i+'</span>';//添加span
+                                }
+                            }
+                            else
+                            {
+                                for(var i=page;i<=a;i++){
+                                    if(i==page+1){
+                                        span+='<span style="background-color: #DEDEDE">'+i+'</span>';//添加span
+                                        continue;}
+                                    span+='<span>'+i+'</span>';//添加span
+                                }
+
+                            }
+                        }
+                        span+=" <label >总页数：</label>"
+                        span+="<input size='3' readonly type='text' value='"+a+"'/>"
+                        span+="<input size='3' type='text' id='z' value=''/>"
+                        span+="<button type='button' onclick='b()' >跳转</button>";
+                        $('#mydiv').html(span);
+                        $('span').on('click',send);//绑定响应事件
+                        function send() {
+                            var p=parseInt($(this).text())-1;
+
+                            AJAX(p);
+                        }
+                    }
+                    else
+                    {
+                        alert("当前菜单未补充");
+                    }
+                },
+                error:function(data){
+                    console.log();
+                },
+                complete:function(){}
+            }
+
+        )
+    }
+
+    function b() {//查询按钮事件
+        var p=parseInt($('#z').val())-1;
+        AJAX(p);
+    }
+    </script>
+
+
+    <script type="text/javascript">//
+    function AJAX1(page) {//查询已预订
+    		var tb=document.getElementById('mytable');
+        var ch=document.getElementsByName('ck');
+        for(i=ch.length-1;i>=0;i--){
+        		var tr=ch[i].parentNode.parentNode;
+            var index=tr.rowIndex;
+            tb.deleteRow(index);
+        }
+    	
+    	
+        var str='',span='',a=0;
+        userid=$.session.get('userid');
+        var time=$('#time').val();
+        $.ajax({//
+                type:"POST",
+                url:"userViewOrderPrivate",//
+                dateType:"JSON",
+                data:{p:page,date:time,eno:userid},//传送想要的页数
+                beforeSend:function () {},
+                success:function(data){
+                    var arr=JSON.parse(data);
+                    if(arr.data.length != 0)//判断为不为零
+                    {
+                        var  c22='<td>选择</td>';
+                        var  c23='<td>编号</td>';
+                        var c24='<td>菜名</td>';
+                        var c25='<td>餐类</td>';
+                        var c26='<td>价格</td>';
+                        str+='<tr>'+c22+c23+c24+c25+c26+'</tr>';
+                        for(var i=0;i<=arr.data.length-1;i++)
+                        {
+                            var  c1='<td>'+"<input type='checkbox' name='ck'/>"+'</td>';
+                            var  c2='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vno"+i+"' value='"+arr.data[i].vno+"'/>"+'</td>';
+                            var  c3='<td>'+"<input type='text'  readonly style='text-align: center;width: 80px ;height:30px' id='vname"+i+"' value='"+arr.data[i].vname+"'/>"+'</td>';
+                            var c4='<td>'+"<input type='text'  style='text-align: center;width: 80px ;height:30px' id='canlei"+i+"' value='"+arr.data[i].menutype+"'/>"+'</td>';
+                            var c5='<td>'+'</td>';
+                            str+='<tr>'+c1+c2+c3+c4+c5+'</tr>';
+                        }
+                        $('#mytable').html(str);//添加生成的行
+                        if(arr.rowcount%10==0)a=arr.rowcount/10;
+                        else
+                            a=parseInt(arr.rowcount/10)+1;
+
+                        if(page==0){
+                            if(a<3){
+                                for(var i=1;i<=a;i++){
+                                    if(i==page+1){
+                                        span+='<span style="background-color: #DEDEDE">'+i+'</span>';//添加span
+                                        continue;}
+                                    span+='<span>'+i+'</span>';//添加span
+                                }
+                            }
+                            else
+                            {
+                                for(var i=1;i<=3;i++){
+                                    if(i==page+1){
+                                        span+='<span style="background-color: #DEDEDE">'+i+'</span>';//添加span
+                                        continue;}
+                                    span+='<span>'+i+'</span>';//添加span
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            if(a>=page+2){
+                                for(var i=page;i<=page+2;i++){
+                                    if(i==page+1){
+                                        span+='<span style="background-color: #DEDEDE">'+i+'</span>';//添加span
+                                        continue;}
+                                    span+='<span>'+i+'</span>';//添加span
+                                }
+                            }
+                            else
+                            {
+                                for(var i=page;i<=a;i++){
+                                    if(i==page+1){
+                                        span+='<span style="background-color: #DEDEDE">'+i+'</span>';//添加span
+                                        continue;}
+                                    span+='<span>'+i+'</span>';//添加span
+                                }
+
+                            }
+                        }
+                        span+=" <label >总页数：</label>"
+                        span+="<input size='3' readonly type='text' value='"+a+"'/>"
+                        span+="<input size='3' type='text' id='z' value=''/>"
+                        span+="<button type='button' onclick='b1()' >跳转</button>";
+                        $('#mydiv').html(span);
+                        $('span').on('click',send);//绑定响应事件
+                        function send() {
+                            var p=parseInt($(this).text())-1;
+
+                            AJAX1(p);
+                        }
+                    }
+                    else
+                    {
+                        alert("当前菜单未补充");
+                    }
+                },
+                error:function(data){
+                    console.log();
+                },
+                complete:function(){}
+            }
+
+        )
+    }
+
+    function b1() {//查询按钮事件
+        var p=parseInt($('#z').val())-1;
+        AJAX1(p);
+    }
+    </script>
+
+    <script type="text/javascript">
+        function chaxun() {/*无需时间季节，后台直接取当前时间即可，只需提供后台餐类,0早餐，1中，2 晚*/
+            AJAX(0);
+        }
+
+        function chaxun1() {/*无需时间季节，后台直接取当前时间即可，只需提供后台餐类,0早餐，1中，2 晚*/
+            AJAX1(0);
+        }
+
+
+        function quxiao(){
+            var flag=0;
+            var time=$('#time').val();
+            var tb=document.getElementById('mytable');
+            var ch=document.getElementsByName('ck');
+            userid=$.session.get('userid');
+            for(i=ch.length-1;i>=0;i--){
+                var m=i;
+                var vno=$("#vno"+m).val();
+                var tr=ch[i].parentNode.parentNode;
+                var index=tr.rowIndex;
+                if(ch[i].checked==true){
+                    $.ajax({//
+                            type:"POST",
+                            url:"userQuitOrderPrivate",//
+                            dateType:"JSON",
+                            data:{vno:vno,eno:userid,date:time},
+                            beforeSend:function () {},
+                            success:function(data){
+                                if(data.status==1)
+                                {
+                                    $("#vno"+m).val('已取消');
+                                    alert("取消成功！");
+                                }
+                                else
+                                {
+                                    alert("信息有误无法操作！");
+
+                                }
+                            },
+                            error:function(data){
+                                console.log();
+                            },
+                            complete:function(){}
+                        }
+
+                    )
+                    flag=flag+1;
+                }
+            }
+            if(flag<=0){
+                alert("请选定取消项！");
+            }
+        }
+
+        
+
+		function tijiao(){//sno必须通过session获取，此时还未获取
+        	
+            var time=$('#time').val();
+            var can=$('#meal').val();
+            userid=$.session.get('userid');
+            if(can==0)can='早餐';
+            else if(can==1)can='中餐';
+            else if(can==2)can='晚餐';
+            var flag=0;
+            var tb=document.getElementById('mytable');
+            var ch=document.getElementsByName('ck');
+            
+            for(i=ch.length-1;i>=0;i--){
+                
+                if(ch[i].checked==true ){
+                	var vno=$("#vno"+i).val();
+                	alert(vno)
+                    $.ajax({//
+                            type:"POST",
+                            url:"preorderPrivate",//
+                            dateType:"JSON",
+                            data:{vno:vno,time:time,menutype:can,eno:userid},
+                            beforeSend:function () {},
+                            success:function(data){
+                                if(data.status==1)
+                                {
+                                		alert('提交成功');
+                                		//$("#vno"+i).val('已提交')//修改标志位未成功
+                                		//alert(a);
+                                }
+                                else
+                                {
+                                		alert('未提交成功');
+                                }
+                            },
+                            error:function(data){
+                                console.log();
+                            },
+                            complete:function(){}
+                        }
+
+                    )
+                    flag=flag+1;
+                }
+            }
+            if(flag<=0){
+                alert("请选定要提交的菜！");
+            }
+
+            var ch=document.getElementsByName('ck');
+            for(i=ch.length-1;i>=0;i--){
+                ch[i].checked=false;
+            }
+
+        }
+        
+        
+        function my_time() {
+            var a=$('#mytime').val();
+            if(a=='1')
+            {
+                var today=new Date();
+                var submittime=today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                $("#time").attr('value',submittime);
+            }
+            else if(a=='2')
+            {
+                var today=new Date();
+                var submittime=today.getFullYear()+'-'+(today.getMonth()+1)+'-'+(today.getDate()+1);
+                $("#time").attr('value',submittime);
+            }
+        }
+
+        function a(){
+            alert("aaaa");
+
+        }
+    </script>
+
+</head>
+<body style="margin: 0px 0px 0px 0px;padding: 0px 0px 0px 0px; ">
+
+<div>
+    <hr class="hr1"></hr>
+</div>
+
+<div class="myweb">
+    <div class="myweb1">/*放login图标*/
+        <div class="photo1">
+        </div>
+    </div>
+
+    <div class="myweb2">
+        <div class="nav" >
+            <ul >
+                   <li><a href="userbigmenu.html" >食堂预定</a><>
+                   <li><a href="userlittlemenu.html" >餐厅预定</a><>
+                <li><a href="pingjia.html" >佳肴评价</a><>
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="myweb3">
+        <div class="hr2"></div>
+    </div>
+
+    <div class="myweb4">
+        <div class="pt1">
+        </div>
+        <div class="pt2">
+        </div>
+        <div class="pt3">
+        </div>
+        <div class="pt4">
+        </div>
+    </div>
+
+    <div class="myweb5">
+    </div>
+
+    <div class="myweb7">
+        <div class="hr3"></div>
+
+        <div class="btxg1">
+            <div style="position: absolute;left: 50px;top: 5px;text-align: center;width: 80px;">
+                <label >地点：</label>
+            </div>
+
+            <div style="position: absolute;left: 130px;">
+                <input type="text" id="地点"  value="食堂" size="5" readonly="true" style="text-align: center;width: 80px;">
+            </div>
+
+            <div style="position: absolute;left: 230px;top: 5px;text-align: center;width: 80px;">
+                <label >时间：</label>
+            </div>
+
+            <div style="position: absolute;left: 310px;">
+                <select id="mytime" style="width: 80px ;height:30px " onchange="my_time()" > 
+                    <option  value="1"  >&nbsp;&nbsp;&nbsp;今日</option> 
+                    <option  value="2" >&nbsp;&nbsp;&nbsp;明日</option>
+                </select> 
+            </div>
+
+            <div style="position: absolute;left: 410px;text-align: center;width: 80px;">
+                <input type="text" id="time"  style="width: 80px ;height:30px" size="10" readonly="true">
+                <script language="JavaScript">
+                    var today=new Date();
+                    var submittime=today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                    $("#time").attr('value',submittime);
+                </script>
+            </div>
+
+
+            <div style="position: absolute;left: 520px;top: 5px;text-align: center;width: 80px;">
+                <label >餐类：</label>
+            </div>
+
+            <div style="position: absolute;left: 600px;">
+                <select id="meal" style="width: 80px ;height:30px;text-align: center;"> 
+                    <option value="0" >&nbsp;&nbsp;&nbsp;早餐</option> 
+                    <option value="1">&nbsp;&nbsp;&nbsp;中餐</option>
+                    <option value="2">&nbsp;&nbsp;&nbsp;晚餐</option>
+                </select> 
+            </div>
+
+            <div style="position: absolute;left: 850px;">
+                <button class="myButton" type="button" onclick="chaxun()">查询菜单</button>
+            </div>
+
+            <div style="position: absolute;left: 950px;">
+                <button class="myButton" type="button" onclick="tijiao()">提交</button>
+            </div>
+
+            <div style="position: absolute;left: 1020px;">
+                <button class="myButton" type="button" onclick="chaxun1()">查询预定</button>
+            </div>
+
+            <div style="position: absolute;left: 1150px;">
+                <button class="myButton" type="button" onclick="quxiao()">取消</button>
+            </div>
+        </div>
+
+        <div class="hr4">
+        </div>
+
+        <div class="table1">
+            <table  id="mytable"  >
+                <thead >
+                <tr >
+                    <th style="background-color: #DEDEDE;">
+                        选择
+                    </th>
+                    <th style="background-color: #DEDEDE;">
+                        编号
+                    </th>
+                    <th style="background-color: #DEDEDE;">
+                        菜名
+                    </th>
+                    <th style="background-color: #DEDEDE;">
+                        餐类
+                    </th>
+                    <th style="background-color: #DEDEDE;">
+                        价格
+                    </th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+        <div  class="myd">
+            <div id="mydiv" style="position: absolute;left: 30%;">
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <div class="myweb6">
+        <p style="text-align: center;color: white;">乐百特公司服务地址</p>
+    </div>
+</div>
+
+</body>
+</html>

@@ -33,6 +33,7 @@
         from tbl_menu
         where
         id = #{id}
+        and delete_flag != 1
     </select>
 
     <update id="updateMenu" parameterType="com.restaurant.entity.Menu">
@@ -59,14 +60,44 @@
         select count(name) from tbl_menu where delete_flag != 1
     </select>
 
+    <select id="selectMenuNumberBySeason" resultType="Integer">
+        select count(name)
+        from tbl_menu
+        where
+        season like #{season}
+        and delete_flag != 1
+    </select>
+
+    <select id="selectMenuPublicNumber" resultType="Integer">
+        select count(name)
+        from tbl_menu, tbl_menu_public
+        where
+        tbl_menu.id = tbl_menu_public.menu_id
+        and type like #{type}
+        and tbl_menu_public.delete_flag != 1
+    </select>
+
+    <select id="selectMenuPrivateNumber" resultType="Integer">
+        select count(name)
+        from tbl_menu, tbl_menu_private
+        where
+        tbl_menu.id = tbl_menu_private.menu_id
+        and type like #{type}
+        and tbl_menu_private.delete_flag != 1
+    </select>
+
+
     <select id="selectMenu" resultType="com.restaurant.entity.Menu">
         select
         id,
         name,
         type,
         price,
-        season
+        season,
+        public_mark,
+        private_mark
         from tbl_menu
+        where delete_flag != 1
         limit #{start}, #{end}
     </select>
 
@@ -81,6 +112,7 @@
         from tbl_menu
         where
         name like #{name}
+        and delete_flag != 1
         limit #{start}, #{end}
     </select>
 
@@ -95,6 +127,7 @@
         from tbl_menu
         where
         type like #{type}
+        and delete_flag != 1
         limit #{start}, #{end}
     </select>
 
@@ -110,6 +143,7 @@
         from tbl_menu
         where
         season like #{season}
+        and delete_flag != 1
         limit #{start}, #{end}
     </select>
 

@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface PersonService {
 	// basic message
-	public BaseExecution register(String account, String password, String name, String telephone);
+	public BaseExecution register(String account, String password, String name, String telephone, String position);
 	public BaseExecution login(String account, String password);
 	public Person getPerson(String account);
 	public BaseExecution updatePerson(String account,String name, String telephone, String password);

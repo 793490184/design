@@ -6,6 +6,16 @@ public class Person {
     private String password;
     private String name;
     private String telephone;
+    private String position;
+
+    public Person(String account, String password, String name, String telephone, String position) {
+        this.account = account;
+        this.password = password;
+        this.name = name;
+        this.telephone = telephone;
+        this.position = position;
+    }
+
 
     public Person(String account, String password, String name, String telephone) {
         this.account = account;
@@ -74,5 +84,13 @@ public class Person {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
     }
 }

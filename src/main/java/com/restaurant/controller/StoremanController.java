@@ -19,9 +19,8 @@ public class StoremanController {
 
 	@RequestMapping("/insert.do")
 	@ResponseBody
-	public BaseExecution insert(String name, String date, Integer security, String foodType, int number, String measure, Integer usedFlag) {
-		Food food = new Food(name, date, security, foodType, number, measure, usedFlag);
-		System.out.println(name);
+	public BaseExecution insert(String name,Integer number, String date, String security, String foodType) {
+		Food food = new Food(name, date, security, foodType, number);
 		storemanService.insert(food);
 		BaseExecution baseExecution = new BaseExecution(200, "ok", "插入食材成功");
 		return baseExecution;
@@ -45,17 +44,29 @@ public class StoremanController {
 
 	@RequestMapping("/update.do")
 	@ResponseBody
-	public BaseExecution update(Integer id, String name, String date, int security, String foodType, Integer number, String measure) {
+	public BaseExecution update(Integer id, String name, String date, String security, String foodType, Integer number, String measure) {
 		Food food = new Food(id, name, date, security, foodType, number, measure, 0);
 		storemanService.update(food);
 		BaseExecution baseExecution = new BaseExecution(200, "ok", "食物更新成功");
 		return baseExecution;
 	}
 
+	@RequestMapping("/use.do")
+	@ResponseBody
+	public BaseExecution use(Integer id,  Integer useNumber) {
+		Food food = new Food(id, useNumber);
+		storemanService.use(food);
+		BaseExecution baseExecution = new BaseExecution(200, "ok", "食物更新成功");
+		return baseExecution;
+	}
+
 	@RequestMapping("/select.do")
 	@ResponseBody
-	public BaseExecution select(int start, int end) {
-		List<Food> foods = storemanService.select(start, end);
+	public BaseExecution select(int p, String foodType) {
+		int start = p * 10;
+		int end = p * 10 + 9;
+
+		List<Food> foods = storemanService.select(foodType, start, end);
 		BaseExecution baseExecution = new BaseExecution(200, "ok", foods);
 		return baseExecution;
 	}

@@ -4,6 +4,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.restaurant.dao.AccountMapper">
 
+    <select id="getAccountNumber" resultType="Integer">
+        select count(date)
+        from tbl_account
+        where
+        date between #{startTime} and #{endTime}
+        and paid_flag = #{paid_flag}
+        and delete_flag != 1
+    </select>
     <!--useGeneratedKeys="true" keyProperty="id"-->
     <insert id="insertAccount" parameterType="com.restaurant.entity.Account">
         insert into
@@ -11,12 +19,16 @@
         date,
         name,
         money,
+        room_number,
+        people_number,
         paid_flag,
         message)
         values (
         #{date},
         #{name},
         #{money},
+        #{roomNumber},
+        #{peopleNumber},
         #{paidFlag},
         #{message})
     </insert>
@@ -37,7 +49,9 @@
         name = #{name},
         message = #{message},
         money = #{money},
-        paid_flag = #{paidFlag}
+        paid_flag = #{paidFlag},
+        room_number = #{roomNumber},
+        people_number = #{peopleNumber}
         where
         id = #{id}
     </update>
@@ -52,10 +66,11 @@
     </update>
     
     <select id="selectAccountByDate" resultType="com.restaurant.entity.Account">
-        select id, date, name, message, money, paid_flag
+        select id, date, name, message, money, paid_flag, people_number, room_number
         from tbl_account
         where
         delete_flag != 1
+        and paid_flag = #{paidFlag}
         limit #{start}, #{end}
     </select>
 

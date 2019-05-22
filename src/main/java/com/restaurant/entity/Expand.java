@@ -7,6 +7,10 @@ public class Expand {
 	private double money;
 	private String message;
 
+	public Expand(double money) {
+		this.money = money;
+	}
+
 	public Expand(int id, String date, String type, double money, String message) {
 		this.id = id;
 		this.date = date;
@@ -20,6 +24,13 @@ public class Expand {
 		this.type = type;
 		this.money = money;
 		this.message = message;
+	}
+
+	public Expand(int id, String date, String type, double money) {
+		this.id = id;
+		this.date = date;
+		this.type = type;
+		this.money = money;
 	}
 
 	public Expand() {

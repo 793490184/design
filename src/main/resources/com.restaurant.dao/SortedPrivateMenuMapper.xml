@@ -54,14 +54,15 @@
 
     <select id="selectPrivateMenuByType" resultType="com.restaurant.entity.SortedMenu">
         <bind name="type" value="'%' + _parameter.type + '%'" />
+        <bind name="season" value="'%' + _parameter.season + '%'" />
         select id, menu_id, name, type, price, season, delete_flag
             from ( select
             tbl_menu_private.id, menu_id, name, type, price, season, tbl_menu_private.delete_flag
             from
             tbl_menu_private left join tbl_menu
             on tbl_menu_private.menu_id = tbl_menu.id ) as tbl
-        where
-        tbl.type like #{type}
+        where tbl.season like #{season}
+        and tbl.type like #{type}
         and delete_flag != 1
         limit #{start}, #{end}
     </select>
@@ -80,5 +81,19 @@
         and delete_flag != 1
         limit #{start}, #{end}
     </select>
+
+    <select id="selectPrivateSortedMenu" resultType="com.restaurant.entity.SortedMenu">
+        <bind name="season" value="'%' + _parameter.season + '%'" />
+        <bind name="type" value="'%' + _parameter.type + '%'" />
+        select
+        id, name, type, price, season
+        from
+        tbl_menu
+        where season like #{season}
+        and type like #{type}
+        and delete_flag != 1
+        limit #{start}, #{end}
+    </select>
+
 
 </mapper>

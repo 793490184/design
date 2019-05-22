@@ -30,13 +30,24 @@ public class StoremanServiceImpl implements StoremanService {
 	}
 
 	@Override
+	public void use(Food food) {
+		foodMapper.use(food);
+	}
+
+	@Override
 	public void update(Food food) {
 		foodMapper.update(food);
 	}
 
 	@Override
-	public List<Food> select(int start, int end) {
-		List<Food> foods = foodMapper.select(start, end);
+	public int getFoodNumber(String type) {
+		int number = foodMapper.getFoodNumber(type);
+		return number;
+	}
+
+	@Override
+	public List<Food> select(String foodType, int start, int end) {
+		List<Food> foods = foodMapper.select(foodType, start, end);
 		return foods;
 	}
 
